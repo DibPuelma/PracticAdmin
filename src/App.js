@@ -26,6 +26,10 @@ class App extends Component {
           <RaisedButton onClick={this.handleClick}>A button!</RaisedButton>
           <br />
           <TextField hintText="An input"/>
+
+          <div>
+            {this.props.children}
+          </div>
         </div>
       </MuiThemeProvider>
     );
