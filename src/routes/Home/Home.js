@@ -43,7 +43,6 @@ export default class Home extends Component {
   render() {
     return (
       <div>
-        <Link to="/entrar"><RaisedButton label="Entrar" /></Link>
         <h2>Home</h2>
 
         <div>
@@ -57,9 +56,9 @@ export default class Home extends Component {
           >
             Ingresa como administrador<br />
             <TextField hintText="Usuario" style={ styles.loginInput }/><br />
-            <TextField hintText="Contraseña" style={ styles.loginInput }/><br />
+            <TextField hintText="Contraseña" type="password" style={ styles.loginInput } /><br />
             <div style={ styles.loginButtonsContainer }>
-              <RaisedButton primary={ true } style={ styles.loginSubmit }label="Entrar" />
+              <RaisedButton primary={ true } style={ styles.loginSubmit } label="Entrar" />
               <RaisedButton onClick={ this.handleClose } label="Cancelar" />
             </div>
           </Dialog>
