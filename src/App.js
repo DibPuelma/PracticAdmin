@@ -1,34 +1,99 @@
 import React, { Component } from 'react';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
+import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
+
+import { Router, Link } from 'react-router'
+
 import logo from './logo.svg';
 import './App.css';
 
-class App extends Component {
-  handleClick(e) {
-    e.preventDefault();
-    console.log("A button!");
+var styles = {
+  drawer: {
+    backgroundColor: '#0000ff',
+    height: '100%'
+  },
+  menuItem: {
+    fontSize: 14
+  },
+  nestedMenuItem: {
+    fontSize: 14,
+    paddingLeft: 10
   }
+}
 
+export default class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div className="App">
-          <div className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h2>Practiweb</h2>
-          </div>
-          <h1>Hello world!</h1>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p>
-          <RaisedButton onClick={this.handleClick}>A button!</RaisedButton>
-          <br />
-          <TextField hintText="An input"/>
+        <div>
+          <Drawer className="drawer" open={ true } width={ 250 } zDepth={ 1 }>
+            <div className="">
+              <div className="logo-container">
+                <img src={logo} className="App-logo" alt="logo" />
+              </div>
+              <h5>Practiweb</h5>
+            </div>
 
-          <div>
-            {this.props.children}
+            <Link to="/panel" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Inicio</MenuItem>
+            </Link>
+
+            
+            <h4>Datos/Análisis</h4>
+            <Link to="/abc" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Por tienda</MenuItem>
+            </Link>
+
+            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Por encuesta</MenuItem>
+            </Link>
+
+            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Por pregunta</MenuItem>
+            </Link>
+
+            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Avanzado/Personalizado</MenuItem>
+            </Link>
+
+            
+            <h4>Administración</h4>
+            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Encuestas</MenuItem>
+            </Link>
+
+            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Preguntas</MenuItem>
+            </Link>
+
+              <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+                <MenuItem className="menu-item" style={ styles.nestedMenuItem }>Opciones</MenuItem>
+              </Link>
+
+            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Empleados</MenuItem>
+            </Link>
+
+            <h4>Cuenta</h4>
+            <Link to="/" className="menu-item-link">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Salir</MenuItem>
+            </Link>
+          </Drawer>
+
+          <div className="app">
+            <AppBar
+              title="Title"
+              iconClassNameRight="muidocs-icon-navigation-expand-more"
+              showMenuIconButton={ false } 
+            />
+
+            <div className="app-container">
+              {this.props.children}
+            </div>
           </div>
         </div>
       </MuiThemeProvider>
@@ -36,4 +101,3 @@ class App extends Component {
   }
 }
 
-export default App;
