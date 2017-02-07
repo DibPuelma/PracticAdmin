@@ -7,6 +7,8 @@ export default class Home extends Component {
     return (
       <div>
         <Link to="/entrar"><RaisedButton>Entrar</RaisedButton></Link>
+        <Link to="/descargas"><RaisedButton>Descargas</RaisedButton></Link>
+
         <h2>Home</h2>
       </div>
     );
