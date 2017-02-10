@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import RaisedButton from 'material-ui/RaisedButton';
 
 import FileSaver from 'file-saver';
-export default class Home extends Component {
+export default class DumbExcel extends Component {
   render() {
     return (
       <div>
@@ -15,7 +15,6 @@ export default class Home extends Component {
     );
   }
   _download(filename, type){
-    console.log("alskjdnalksdn");
     fetch('http://www.localhost:3000/company/1/excel/' + type, {
       method: 'GET',
       headers: {
