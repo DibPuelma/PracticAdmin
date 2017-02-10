@@ -28,32 +28,23 @@ export default class BarChart extends Component {
     }
   }
 
-  _addGraph(id, data, xAxisLabel, yAxisLabel, xFormat, yFormat, options, xType){
+  _addGraph(id, data, xAxisLabel, yAxisLabel, valueFormat, options, xType){
     var chart;
+    console.log(valueFormat);
 
+    //Regular pie chart example
     nvd3.addGraph(function() {
-      var chart = nvd3.models.multiBarChart()
-      .reduceXTicks(false)   //If 'false', every single x-axis tick label will be rendered.
-      .rotateLabels(0)      //Angle to rotate x-axis labels.
-      .showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
-      .groupSpacing(0.1)    //Distance between each group of bars.
-      ;
+      chart = nvd3.models.pieChart()
+      .labelType("percent")
+      .x(function(d) { return d.label })
+      .y(function(d) { return d.value })
+      .showLabels(true)
+      .valueFormat(d3.format(valueFormat));
 
-      chart.xAxis
-      .tickFormat(d3.format(xFormat))
-      .axisLabel(xAxisLabel);
-      // .tickFormat(d3.format(',f'));
-
-      chart.yAxis
-      .tickFormat(d3.format(yFormat))
-      .axisLabel(yAxisLabel);
-      // .tickFormat(d3.format(',.1f'));
-
-      d3.select('#' + id)
+      d3.select("#" + id)
       .datum(data)
+      .transition().duration(350)
       .call(chart);
-
-      nvd3.utils.windowResize(chart.update);
 
       return chart;
     });
@@ -70,18 +61,10 @@ export default class BarChart extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       this.props.series.map((serie, i) => {
-        serie.objectValues = {};
-        serie.values = []
-        var firstValue = responseJson[0].age;
-        var lastValue = responseJson[responseJson.length - 1].age;
-        for (var j = firstValue; j <= lastValue; j++) {
-          serie.objectValues[j] = 0;
-        }
         responseJson.map((data, i) => {
           if (data[serie.identifierKey] === serie.identifierValue) {
-            var yValue = data[serie.yValue];
-            var xValue = this.props.xType === 'time' ? new Date(data[this.props.xValue]).getTime() : data[this.props.xValue];
-            serie.objectValues[xValue] = yValue;
+            serie.label = serie.key;
+            serie.value = data[serie.valueKey]
           }
         })
         for (var key in serie.objectValues) {
@@ -94,8 +77,8 @@ export default class BarChart extends Component {
       var data = [];
       this.props.series.map((serie, i) => {
         data.push({
-          values: serie.values,
-          key: serie.key,
+          value: serie.value,
+          label: serie.label,
           color: serie.color
         })
       })
@@ -105,8 +88,7 @@ export default class BarChart extends Component {
         data,
         this.props.graphCreator.xAxisLabel,
         this.props.graphCreator.yAxisLabel,
-        this.props.graphCreator.xFormat,
-        this.props.graphCreator.yFormat,
+        this.props.graphCreator.valueFormat,
         this.props.graphCreator.options,
         this.props.xType
       );

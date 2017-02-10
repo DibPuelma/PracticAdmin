@@ -37,7 +37,7 @@ export default class App extends Component {
               <h5>Practiweb</h5>
             </div>
 
-            <Link to="/panel" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/dashboard" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Inicio</MenuItem>
             </Link>
 

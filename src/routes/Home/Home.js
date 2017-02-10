@@ -95,7 +95,7 @@ export default class Home extends Component {
 
     promise.then(function(result) {
       console.log(result);
-      browserHistory.push('/panel');
+      browserHistory.push('/dashboard');
     }, function(err) {
       console.log(err);
     });
