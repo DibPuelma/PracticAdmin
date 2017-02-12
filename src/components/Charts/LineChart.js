@@ -77,7 +77,6 @@ export default class LineChart extends Component {
           serie.values.push({x: xValue, y: yValue});
         });
       });
-      console.log(this.props.series);
       var data = [];
       this.props.series.map((serie, i) => {
         data.push({

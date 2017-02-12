@@ -43,19 +43,19 @@ export default class App extends Component {
 
 
             <h4>Datos/Análisis</h4>
-            <Link to="/abc" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/stores" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por tienda</MenuItem>
             </Link>
 
-            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/polls" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por encuesta</MenuItem>
             </Link>
 
-            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/questions" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por pregunta</MenuItem>
             </Link>
 
-            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/advanced" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Avanzado/Personalizado</MenuItem>
             </Link>
 

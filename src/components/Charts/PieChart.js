@@ -30,7 +30,6 @@ export default class BarChart extends Component {
 
   _addGraph(id, data, xAxisLabel, yAxisLabel, valueFormat, options, xType){
     var chart;
-    console.log(valueFormat);
 
     //Regular pie chart example
     nvd3.addGraph(function() {
