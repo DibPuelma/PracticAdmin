@@ -12,154 +12,7 @@ var data = {
   ageDistributionData: null,
   genderDistributionData: null,
 }
-var showData = {
-  AVG: (() => {
-    if (data.averageData === null){
-      data.averageData = (
-        <div style={{height: '500px'}}>
-        <LineChart id="lineChart1"
-        uri='http://www.localhost:3000/company/1/sell_point/1/average_stars'
-        xValue='created_at'
-        xType='time'
-        series={[
-          {
-            yValue: 'avg',
-            key: 'Promedio del día',
-            color: '#ff7f0e'
-          },
-          {
-            yValue: 'acum_avg',
-            key: 'Promedio acumulado',
-            color: '#2ca02c'
-          }
-        ]}
-        graphCreator={{
-          xAxisLabel: 'Fecha',
-          yAxisLabel: 'Estrellas',
-          xFormat: '%b %d %y',
-          yFormat: ',.2f',
-          options: {
-            height: 450,
-            duration: 300,
-            useInteractiveGuideline: true
-          }
-        }}></LineChart>
-        </div>
-      )
-    }
-    return data.averageData;
-  }),
-  TOTAL: (() => {
-    if(data.totalAnswersData === null) {
-      data.totalAnswersData = (
-        <div style={{height: '500px'}}>
-        <LineChart id="lineChart2"
-        uri='http://www.localhost:3000/company/1/sell_point/1/total_responses'
-        xValue='created_at'
-        xType='time'
-        series={
-          [
-            {
-              yValue:'count',
-              key: 'Respuestas del día',
-              color: '#ff7f0e'
-            }
-          ]
-        }
-        graphCreator={{
-          xAxisLabel: 'Fecha',
-          yAxisLabel: 'Cantidad',
-          xFormat: '%b %d %y',
-          yFormat: ',.2f',
-          options: {
-            height: 450,
-            duration: 300,
-            useInteractiveGuideline: true
-          }
-        }}></LineChart>
-        </div>
-      )
-    }
-    return data.totalAnswersData;
-  }),
-  AGE: (() => {
-    if(data.ageDistributionData === null) {
-      data.ageDistributionData = (
-        <div style={{height: '500px'}}>
-        <BarChart id="barChart1"
-        uri='http://www.localhost:3000/company/1/sell_point/1/respondents_age'
-        xValue='age'
-        xType='integer'
-        series={[
-          {
-            yValue:'count',
-            identifierValue: 'm',
-            identifierKey: 'gender',
-            key: 'Hombres',
-            color: '#7CD8EA'
-          },
-          {
-            yValue:'count',
-            identifierValue: 'f',
-            identifierKey: 'gender',
-            key: 'Mujeres',
-            color: '#FFBAD2'
-          }
-        ]}
-        graphCreator={{
-          xAxisLabel: 'Edad',
-          yAxisLabel: 'Cantidad',
-          xFormat: 'd',
-          yFormat: 'd',
-          options: {
-            height: 450,
-            duration: 300,
-            useInteractiveGuideline: true
-          }
-        }}></BarChart>
-        </div>
-      )
-    }
-    return data.ageDistributionData;
-  }),
-  GENDER: (() => {
-    if(data.genderDistributionData === null) {
-      data.genderDistributionData = (
-        <div style={{height: '500px'}}>
-        <PieChart id="pieChart"
-        uri='http://www.localhost:3000/company/1/sell_point/1/respondents_gender'
-        series={[
-          {
-            valueKey:'count',
-            identifierValue: 'm',
-            identifierKey: 'gender',
-            key: 'Hombres',
-            color: '#7CD8EA'
-          },
-          {
-            valueKey:'count',
-            identifierValue: 'f',
-            identifierKey: 'gender',
-            key: 'Mujeres',
-            color: '#FFBAD2'
-          }
-        ]}
-        graphCreator={{
-          xAxisLabel: 'Edad',
-          yAxisLabel: 'Cantidad',
-          valueFormat: 'd',
-          options: {
-            height: 450,
-            duration: 300,
-            useInteractiveGuideline: true
-          }
-        }}></PieChart>
-        </div>
-      )
-    }
-    return data.genderDistributionData;
-  })
-}
+
 export default class CardControlled extends React.Component {
 
   constructor(props) {
@@ -167,7 +20,147 @@ export default class CardControlled extends React.Component {
     this.state = {
       ready: false,
       expanded: false,
-      showData: 'AVG'
+      showDataCurrent: 'AVG',
+      showDataFunctions: {
+        AVG: (() => {
+            return (
+              <div style={{height: '500px'}}>
+              <h3 style={{textAlign: 'center'}}>Promedio de la {props.type} en el tiempo</h3>
+              <LineChart id={"lineChart1" + props.diff}
+              uri={props.uris.avg}
+              xValue='created_at'
+              xType='time'
+              series={[
+                {
+                  yValue: 'avg',
+                  key: 'Promedio del día',
+                  color: '#ff7f0e'
+                },
+                {
+                  yValue: 'acum_avg',
+                  key: 'Promedio acumulado',
+                  color: '#2ca02c'
+                }
+              ]}
+              graphCreator={{
+                xAxisLabel: 'Fecha',
+                yAxisLabel: 'Estrellas',
+                xFormat: '%b %d %y',
+                yFormat: ',.2f',
+                options: {
+                  height: 450,
+                  duration: 300,
+                  useInteractiveGuideline: true
+                }
+              }}></LineChart>
+              </div>
+            )
+        }),
+        TOTAL: (() => {
+            return (
+              <div style={{height: '500px'}}>
+              <h3 style={{textAlign: 'center'}}>Respuestas totales de la {props.type} en el tiempo</h3>
+              <LineChart id={"lineChart2" + props.diff}
+              uri={props.uris.total}
+              xValue='created_at'
+              xType='time'
+              series={
+                [
+                  {
+                    yValue:'count',
+                    key: 'Respuestas del día',
+                    color: '#ff7f0e'
+                  }
+                ]
+              }
+              graphCreator={{
+                xAxisLabel: 'Fecha',
+                yAxisLabel: 'Cantidad',
+                xFormat: '%b %d %y',
+                yFormat: ',.2f',
+                options: {
+                  height: 450,
+                  duration: 300,
+                  useInteractiveGuideline: true
+                }
+              }}></LineChart>
+              </div>
+            )
+        }),
+        AGE: (() => {
+            return (
+              <div style={{height: '500px'}}>
+              <h3 style={{textAlign: 'center'}}>Distribución etaria de los encuestados de la {props.type}</h3>
+              <BarChart id={"barChart" + props.diff}
+              uri={props.uris.age}
+              xValue='age'
+              xType='integer'
+              series={[
+                {
+                  yValue:'count',
+                  identifierValue: 'm',
+                  identifierKey: 'gender',
+                  key: 'Hombres',
+                  color: '#7CD8EA'
+                },
+                {
+                  yValue:'count',
+                  identifierValue: 'f',
+                  identifierKey: 'gender',
+                  key: 'Mujeres',
+                  color: '#FFBAD2'
+                }
+              ]}
+              graphCreator={{
+                xAxisLabel: 'Edad',
+                yAxisLabel: 'Cantidad',
+                xFormat: 'd',
+                yFormat: 'd',
+                options: {
+                  height: 450,
+                  duration: 300,
+                  useInteractiveGuideline: true
+                }
+              }}></BarChart>
+              </div>
+            )
+        }),
+        GENDER: (() => {
+            return (
+              <div style={{height: '500px'}}>
+              <h3 style={{textAlign: 'center'}}>Distribución de géneros de los encuestados de la {props.type}</h3>
+              <PieChart id={"pieChart" + props.diff}
+              uri={props.uris.gender}
+              series={[
+                {
+                  valueKey:'count',
+                  identifierValue: 'm',
+                  identifierKey: 'gender',
+                  key: 'Hombres',
+                  color: '#7CD8EA'
+                },
+                {
+                  valueKey:'count',
+                  identifierValue: 'f',
+                  identifierKey: 'gender',
+                  key: 'Mujeres',
+                  color: '#FFBAD2'
+                }
+              ]}
+              graphCreator={{
+                xAxisLabel: 'Edad',
+                yAxisLabel: 'Cantidad',
+                valueFormat: 'd',
+                options: {
+                  height: 450,
+                  duration: 300,
+                  useInteractiveGuideline: true
+                }
+              }}></PieChart>
+              </div>
+            )
+        })
+      }
     };
   }
 
@@ -180,19 +173,19 @@ export default class CardControlled extends React.Component {
   };
 
   handleAverage = () => {
-    this.setState({showData: 'AVG'});
+    this.setState({showDataCurrent: 'AVG'});
   };
 
   handleTotal = () => {
-    this.setState({showData: 'TOTAL'});
+    this.setState({showDataCurrent: 'TOTAL'});
   };
 
   handleAge = () => {
-    this.setState({showData: 'AGE'});
+    this.setState({showDataCurrent: 'AGE'});
   };
 
   handleGender = () => {
-    this.setState({showData: 'GENDER'});
+    this.setState({showDataCurrent: 'GENDER'});
   };
 
   render() {
@@ -217,7 +210,7 @@ export default class CardControlled extends React.Component {
           style={{height: '500px'}}
           expandable={true}
         >
-          {showData[this.state.showData]()}
+          {this.state.showDataFunctions[this.state.showDataCurrent]()}
         </CardMedia>
         <CardActions expandable={true}>
           <FlatButton label="Promedio" onClick={this.handleAverage} />

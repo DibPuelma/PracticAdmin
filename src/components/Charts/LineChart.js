@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import nvd3 from 'nvd3';
+import CircularProgress from 'material-ui/CircularProgress';
 
+//TODO: Arreglar gráfico de count. agregarle mínimo y máximo valor
+//TODO: No se llama a did mount siempre. Por eso no funcionan los botones.
 export default class LineChart extends Component {
   constructor(props) {
     super(props);
@@ -11,13 +14,14 @@ export default class LineChart extends Component {
   }
 
   componentDidMount() {
+    console.log("did mount");
     this._getDataAndCreateGraph(this.props.uri);
   }
 
   render(){
     if(!this.state.ready) {
       return (
-        <h3> CARGANDO </h3>
+        <CircularProgress/>
       )
     }
     else {
@@ -49,7 +53,7 @@ export default class LineChart extends Component {
           return 'N/A';
         }
         return d3.format(yFormat)(d);
-      });
+      })
       d3.select('#' + id)
       .attr('display', 'inline')
       .datum(data)

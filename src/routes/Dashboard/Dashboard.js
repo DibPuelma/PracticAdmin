@@ -10,7 +10,7 @@ export default class Dashboard extends Component {
         <div style={styles.chartContainer}>
 
         <div style={styles.chart}>
-        <h3>Promedio de la empresa</h3>
+        <h3>Promedio de la empresa en el tiempo</h3>
         <LineChart id="lineChart0"
         uri='http://www.localhost:3000/company/1/average_stars'
         xValue='created_at'
@@ -41,7 +41,7 @@ export default class Dashboard extends Component {
         </div>
 
         <div style={styles.chart}>
-        <h3>Respuestas totales</h3>
+        <h3>Respuestas totales de la empresa en el tiempo</h3>
         <LineChart id="lineChart2"
         uri='http://www.localhost:3000/company/1/total_responses'
         xValue='created_at'
@@ -69,7 +69,7 @@ export default class Dashboard extends Component {
         </div>
 
         <div style={styles.chart}>
-        <h3>Rango etario de los encuestados</h3>
+        <h3>Distribución etaria de los encuestados de la compañía</h3>
         <BarChart id="barChart1"
         uri='http://www.localhost:3000/company/1/respondents_age'
         xValue='age'
@@ -104,7 +104,7 @@ export default class Dashboard extends Component {
         </div>
 
         <div style={styles.chart}>
-        <h3>Distribución de géneros</h3>
+        <h3>Distribución de géneros de los encuestados de la compañía</h3>
         <PieChart id="pieChart"
         uri='http://www.localhost:3000/company/1/respondents_gender'
         series={[

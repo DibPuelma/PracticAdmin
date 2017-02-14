@@ -4,6 +4,12 @@ import Avatar from 'material-ui/Avatar';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import CircularProgress from 'material-ui/CircularProgress';
 
+var translator = {
+  'number': 'estrellas',
+  'options': 'opciones',
+  'text': 'texto',
+  'boolean': 'sí o no'
+}
 export default class Panel extends Component {
   constructor(props){
     super(props);
@@ -13,7 +19,7 @@ export default class Panel extends Component {
   }
 
   componentDidMount() {
-    fetch('http://www.localhost:3000/company/1/poll', {
+    fetch('http://www.localhost:3000/company/1/question', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -38,16 +44,16 @@ export default class Panel extends Component {
         <div>
         {this.state.data.map((value, i) => (
           <CardControlled
-          title={value.name}
-          subtitle={value.description}
+          title={value.text}
+          subtitle={'Tipo: ' + translator[value.type]}
           avatar={<Avatar icon={<ActionHome />}/>}
           uris={{
-            avg: 'http://www.localhost:3000/company/1/poll/' + value.id + '/average_stars',
-            total: 'http://www.localhost:3000/company/1/poll/' + value.id + '/total_responses',
-            age: 'http://www.localhost:3000/company/1/poll/' + value.id + '/respondents_age',
-            gender: 'http://www.localhost:3000/company/1/poll/' + value.id + '/respondents_gender',
+            avg: 'http://www.localhost:3000/company/1/question/' + value.id + '/average_stars',
+            total: 'http://www.localhost:3000/company/1/question/' + value.id + '/total_responses',
+            age: 'http://www.localhost:3000/company/1/question/' + value.id + '/respondents_age',
+            gender: 'http://www.localhost:3000/company/1/question/' + value.id + '/respondents_gender',
           }}
-          type='encuesta'
+          type='pregunta'
           diff= {i}
           key={i}/>
         ))}

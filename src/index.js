@@ -13,6 +13,7 @@ import DumbExcel from './routes/DumbExcel/DumbExcel.js';
 import Dashboard from './routes/Dashboard/Dashboard.js';
 import Stores from './routes/Stores/Stores.js';
 import Polls from './routes/Polls/Polls.js';
+import Questions from './routes/Questions/Questions.js';
 
 export default class Abc extends Component {
   render() {
@@ -36,6 +37,7 @@ ReactDOM.render(
       <Route path="panel" component={Panel} />
       <Route path="stores" component={Stores} />
       <Route path="polls" component={Polls} />
+      <Route path="questions" component={Questions} />
       <Route path="dashboard" component={Dashboard} />
     </Route>
 

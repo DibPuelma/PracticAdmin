@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import nvd3 from 'nvd3';
+import CircularProgress from 'material-ui/CircularProgress';
 
 export default class BarChart extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ export default class BarChart extends Component {
   render(){
     if(!this.state.ready) {
       return (
-        <h3> CARGANDO </h3>
+        <CircularProgress />
       )
     }
     else {
