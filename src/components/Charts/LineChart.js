@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import nvd3 from 'nvd3';
 import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgressStyle from '../../styles/CircularProgress';
 
 //TODO: Arreglar gráfico de count. agregarle mínimo y máximo valor
-//TODO: No se llama a did mount siempre. Por eso no funcionan los botones.
 export default class LineChart extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +21,7 @@ export default class LineChart extends Component {
   render(){
     if(!this.state.ready) {
       return (
-        <CircularProgress/>
+        <CircularProgress style={CircularProgressStyle} size={80} thickness={5} />
       )
     }
     else {
@@ -36,16 +36,15 @@ export default class LineChart extends Component {
     var chart;
 
     nvd3.addGraph(() => {
-      chart = nvd3.models.lineChart()
-      .options(options);
+      chart = nvd3.models.lineWithFocusChart()
+      .options(options)
+      .noData("Aún no hay respuestas o lo que pides no existe")
       // chart sub-models (ie. xAxis, yAxis, etc) when accessed directly, return themselves, not the parent chart, so need to chain separately
       chart.xAxis
-      .axisLabel(xAxisLabel)
       .tickFormat(function(d) {
         return xType === 'time' ? d3.time.format(xFormat)(new Date(d)) : d3.format(xFormat)(d);
       })
-      .rotateLabels(-45)
-      .showMaxMin(false);
+
       chart.yAxis
       .axisLabel(yAxisLabel)
       .tickFormat(function(d) {
@@ -54,6 +53,16 @@ export default class LineChart extends Component {
         }
         return d3.format(yFormat)(d);
       })
+
+      chart.x2Axis
+      .rotateLabels(-45)
+      .tickFormat(function(d) {
+        return xType === 'time' ? d3.time.format(xFormat)(new Date(d)) : d3.format(xFormat)(d);
+      })
+
+      chart.lines.dispatch.on("elementClick", function(e) {
+        console.log(e);
+      });
       d3.select('#' + id)
       .attr('display', 'inline')
       .datum(data)
@@ -75,15 +84,15 @@ export default class LineChart extends Component {
     .then((responseJson) => {
       this.props.series.map((serie, i) => {
         serie.values = []
-        responseJson.map((data, i) => {
+        return responseJson.map((data, i) => {
           var yValue = data[serie.yValue];
           var xValue = this.props.xType === 'time' ? new Date(data[this.props.xValue]).getTime() : data[this.props.xValue];
-          serie.values.push({x: xValue, y: yValue});
+          return serie.values.push({x: xValue, y: yValue});
         });
       });
       var data = [];
       this.props.series.map((serie, i) => {
-        data.push({
+        return data.push({
           values: serie.values,
           key: serie.key,
           color: serie.color

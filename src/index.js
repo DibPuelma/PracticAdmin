@@ -14,6 +14,7 @@ import Dashboard from './routes/Dashboard/Dashboard.js';
 import Stores from './routes/Stores/Stores.js';
 import Polls from './routes/Polls/Polls.js';
 import Questions from './routes/Questions/Questions.js';
+import Company from './routes/Company/Company.js';
 
 export default class Abc extends Component {
   render() {
@@ -38,6 +39,7 @@ ReactDOM.render(
       <Route path="stores" component={Stores} />
       <Route path="polls" component={Polls} />
       <Route path="questions" component={Questions} />
+      <Route path="company" component={Company} />
       <Route path="dashboard" component={Dashboard} />
     </Route>
 

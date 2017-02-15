@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import nvd3 from 'nvd3';
 import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgressStyle from '../../styles/CircularProgress';
 
 export default class BarChart extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class BarChart extends Component {
   render(){
     if(!this.state.ready) {
       return (
-        <CircularProgress />
+        <CircularProgress style={CircularProgressStyle} size={80} thickness={5} />
       )
     }
     else {
@@ -39,7 +40,9 @@ export default class BarChart extends Component {
       .x(function(d) { return d.label })
       .y(function(d) { return d.value })
       .showLabels(true)
-      .valueFormat(d3.format(valueFormat));
+      .valueFormat(d3.format(valueFormat))
+      .noData("Aún no hay respuestas o lo que pides no existe")
+
 
       d3.select("#" + id)
       .datum(data)
@@ -60,32 +63,21 @@ export default class BarChart extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      this.props.series.map((serie, i) => {
+      var chartData = [];
+      if(responseJson.length !== 0){
         responseJson.map((data, i) => {
-          if (data[serie.identifierKey] === serie.identifierValue) {
-            serie.label = serie.key;
-            serie.value = data[serie.valueKey]
+          var serie = {};
+          for (var key in data) {
+            if (data.hasOwnProperty(key)) {
+              key === 'count' ? serie.value = data[key] : serie.label = this._getLabel(data[key])
+            }
           }
+          return chartData.push(serie);
         })
-        for (var key in serie.objectValues) {
-          if (serie.objectValues.hasOwnProperty(key)) {
-            serie.values.push({x: key, y: serie.objectValues[key]})
-          }
-        }
-      })
-
-      var data = [];
-      this.props.series.map((serie, i) => {
-        data.push({
-          value: serie.value,
-          label: serie.label,
-          color: serie.color
-        })
-      })
-
+      }
       this._addGraph(
         this.props.id,
-        data,
+        chartData,
         this.props.graphCreator.xAxisLabel,
         this.props.graphCreator.yAxisLabel,
         this.props.graphCreator.valueFormat,
@@ -97,5 +89,19 @@ export default class BarChart extends Component {
     .catch((error) => {
       console.error(error);
     });
+  }
+  _getLabel(unprocessedLabel){
+    switch (unprocessedLabel) {
+      case 'm':
+      return 'Hombres';
+      case 'f':
+      return 'Mujeres';
+      case true:
+      return 'Sí'
+      case false:
+      return 'No'
+      default:
+      return unprocessedLabel;
+    }
   }
 }

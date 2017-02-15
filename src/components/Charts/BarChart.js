@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import nvd3 from 'nvd3';
 import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgressStyle from '../../styles/CircularProgress';
 
 export default class BarChart extends Component {
   constructor(props) {
@@ -18,7 +19,7 @@ export default class BarChart extends Component {
   render(){
     if(!this.state.ready) {
       return (
-        <CircularProgress />
+        <CircularProgress style={CircularProgressStyle} size={80} thickness={5} />
       )
     }
     else {
@@ -34,14 +35,14 @@ export default class BarChart extends Component {
 
     nvd3.addGraph(function() {
       chart = nvd3.models.multiBarChart()
-      .reduceXTicks(false)   //If 'false', every single x-axis tick label will be rendered.
-      .rotateLabels(0)      //Angle to rotate x-axis labels.
-      .showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
-      .groupSpacing(0.1)    //Distance between each group of bars.
+      .options(options)
+      .noData("Aún no hay respuestas o lo que pides no existe")
       ;
 
       chart.xAxis
-      .tickFormat(d3.format(xFormat))
+      .tickFormat(function(d) {
+        return xType === 'time' ? d3.time.format(xFormat)(new Date(parseFloat(d))) : d3.format(xFormat)(d);
+      })
       .axisLabel(xAxisLabel);
 
       chart.yAxis
@@ -71,10 +72,12 @@ export default class BarChart extends Component {
       this.props.series.map((serie, i) => {
         serie.objectValues = {};
         serie.values = []
-        var firstValue = responseJson[0].age;
-        var lastValue = responseJson[responseJson.length - 1].age;
-        for (var j = firstValue; j <= lastValue; j++) {
-          serie.objectValues[j] = 0;
+        if(responseJson.length !== 0 && this.props.xType !== 'time'){
+          var firstValue = responseJson[0][this.props.xValue];
+          var lastValue = responseJson[responseJson.length - 1][this.props.xValue];
+          for (var j = firstValue; j <= lastValue; j++) {
+            serie.objectValues[j] = 0;
+          }
         }
         responseJson.map((data, i) => {
           if (data[serie.identifierKey] === serie.identifierValue) {

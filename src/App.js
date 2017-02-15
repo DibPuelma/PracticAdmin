@@ -10,6 +10,8 @@ import { Link } from 'react-router'
 import logo from './logo.svg';
 import './App.css';
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 var styles = {
   drawer: {
     backgroundColor: '#0000ff',
@@ -23,6 +25,8 @@ var styles = {
     paddingLeft: 10
   }
 }
+
+injectTapEventPlugin();
 
 export default class App extends Component {
   render() {
@@ -43,6 +47,10 @@ export default class App extends Component {
 
 
             <h4>Datos/Análisis</h4>
+            <Link to="/company" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Total Compañía</MenuItem>
+            </Link>
+
             <Link to="/stores" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por tienda</MenuItem>
             </Link>
@@ -85,12 +93,13 @@ export default class App extends Component {
 
           <div className="app">
             <AppBar
+            style={{position: 'fixed'}}
               title="Title"
               iconClassNameRight="muidocs-icon-navigation-expand-more"
               showMenuIconButton={ false }
             />
 
-            <div className="app-container">
+            <div className="app-container" style= {{paddingTop: '90', paddingLeft: '40', paddingRight: '40'}}>
               {this.props.children}
             </div>
           </div>
