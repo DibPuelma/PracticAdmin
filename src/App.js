@@ -4,9 +4,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
-import RaisedButton from 'material-ui/RaisedButton';
 
-import { Router, Link } from 'react-router'
+import { Link } from 'react-router'
 
 import logo from './logo.svg';
 import './App.css';
@@ -62,19 +61,19 @@ export default class App extends Component {
 
             
             <h4>Administración</h4>
-            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/encuestas" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Encuestas</MenuItem>
             </Link>
 
-            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/preguntas" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Preguntas</MenuItem>
             </Link>
 
-              <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+              <Link to="/opciones" className="menu-item-link" activeClassName="menu-item-link-active">
                 <MenuItem className="menu-item" style={ styles.nestedMenuItem }>Opciones</MenuItem>
               </Link>
 
-            <Link to="/abcd" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/empleados" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Empleados</MenuItem>
             </Link>
 

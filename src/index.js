@@ -9,6 +9,11 @@ import HomeApp from './HomeApp';
 import Home from './routes/Home/Home.js';
 import Panel from './routes/Panel/Panel.js';
 
+import Polls from './routes/Polls/Polls';
+import Questions from './routes/Questions/Questions';
+import OptionsContainers from './routes/OptionsContainers/OptionsContainers';
+import Employees from './routes/Employees/Employees';
+
 export default class Abc extends Component {
   render() {
     return (
@@ -29,6 +34,13 @@ ReactDOM.render(
     <Route path="/" component={App}>
       <Route path="panel" component={Panel} />
       <Route path="abc" component={Abc} />
+
+      { /* Admin */ }
+      <Route path="encuestas" component={Polls} />
+
+      <Route path="preguntas" component={Questions} />
+      <Route path="opciones" component={OptionsContainers} />
+      <Route path="empleados" component={Employees} />
     </Route>
   </Router>
   ,document.getElementById('root')
