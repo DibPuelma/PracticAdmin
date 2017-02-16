@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, CardActions, CardHeader, CardMedia, CardText} from 'material-ui/Card';
+import {Card, CardHeader, CardMedia, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Toggle from 'material-ui/Toggle';
 
@@ -9,14 +9,6 @@ import PieChart from '../Charts/PieChart.js';
 
 import {Tabs, Tab} from 'material-ui/Tabs';
 
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-};
 
 export default class CardControlled extends React.Component {
 

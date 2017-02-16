@@ -99,7 +99,7 @@ export default class App extends Component {
               showMenuIconButton={ false }
             />
 
-            <div className="app-container" style= {{paddingTop: '90', paddingLeft: '40', paddingRight: '40'}}>
+            <div className="app-container" style= {{paddingTop: '90px', paddingLeft: '40px', paddingRight: '40px'}}>
               {this.props.children}
             </div>
           </div>
