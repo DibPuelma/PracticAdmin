@@ -1,105 +1,72 @@
 import React, { Component } from 'react'
-import CardControlled from '../../components/Cards/CardControlled.js';
-import Avatar from 'material-ui/Avatar';
-import ActionQuestion from 'material-ui/svg-icons/action/question-answer';
-import CircularProgress from 'material-ui/CircularProgress';
-import CircularProgressStyle from '../../styles/CircularProgress';
+import FullPageLoading from '../../components/FullPageLoading/FullPageLoading.js';
+import Question from '../../components/Question/Question.js';
+import settings from '../../config/settings';
 
-var translator = {
-  'number': 'estrellas',
-  'options': 'opciones',
-  'text': 'texto',
-  'boolean': 'sí o no'
-}
+var QuestionsStatus = { LOADING: 'loading', READY: 'ready' };
 
-var uriGetter = {
-  'number':  '/average_stars',
-  'options':  '/options_answers',
-  'text':  '/text_answers',
-  'boolean': '/boolean_answers',
-}
-
-
-export default class Panel extends Component {
-  constructor(props){
+export default class Questions extends Component {
+  constructor(props) {
     super(props);
-    this.state = {
-      ready: false,
-      expanded: null,
-      doubleExpanded: false
-    }
+    this.state = { status: QuestionsStatus.LOADING };
   }
 
   componentDidMount() {
-    fetch('http://www.localhost:3000/company/1/question', {
+    this._load();
+  }
+
+  render() {
+    if (this.state.status === QuestionsStatus.LOADING) {
+      return (
+        <FullPageLoading />
+      );
+    }
+
+    return (
+      <div>
+        <div className="questions-container">
+          { this.state.questions.map((x, i) =>
+            <Question question={ x } optionsContainers={ this.state.optionsContainers }/>
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  _load() {
+    var self = this;
+
+    var company_id = 2;
+    var url = settings.COMPANY_QUESTIONS.replace(":company_id", company_id);
+    var promise = fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }
+      },
     })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      this.setState({data: responseJson});
-      this.setState({ready: true});
+    .then((response) => response.json());
+
+    promise.then(function(result) {
+      var url2 = settings.COMPANY_OPTIONS_CONTAINER.replace(":company_id", company_id);
+
+      var promise2 = fetch(url2, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => response.json());
+
+      promise2.then(function(result2) {
+        self.setState({ optionsContainers: result2 });
+        self.setState({ questions: result });
+        self.setState({ status: QuestionsStatus.READY });
+      });
+
+    }, function(err) {
+      console.log(err);
     });
   }
-
-  render() {
-    if(!this.state.ready) {
-      return(
-        <CircularProgress style={CircularProgressStyle} size={80} thickness={5} />
-      )
-    }
-    else {
-      return (
-        <div>
-        {this.state.data.map((value, i) => {
-          var uris = {
-            total: 'http://www.localhost:3000/company/1/question/' + value.id + '/total_responses',
-            age: 'http://www.localhost:3000/company/1/question/' + value.id + '/respondents_age',
-            gender: 'http://www.localhost:3000/company/1/question/' + value.id + '/respondents_gender',
-          };
-          uris[value.type] = 'http://www.localhost:3000/company/1/question/' + value.id + uriGetter[value.type];
-          return (
-            <CardControlled
-            expand={(id, toggle) => (this._expandListElement(id, toggle))}
-            title={value.text}
-            subtitle={'Tipo: ' + translator[value.type]}
-            avatar={<Avatar icon={<ActionQuestion />}/>}
-            uris={uris}
-            type='pregunta'
-            diff={value.id}
-            key={i}
-            ref={value.id}/>
-          )
-        })
-      }
-      </div>
-    );
-  }
-}
-_expandListElement = function(id, toggle) {
-  if (toggle) {
-    if(this.state.expanded === null){
-      this.setState({expanded: id})
-    }
-    else{
-      var ref = this.state.expanded;
-      this.setState({doubleExpanded: true})
-      this.setState({expanded: id}, () => {
-        console.log(this);
-        this.refs[ref].handleToggle(null, false);
-      })
-    }
-  }
-  else {
-    if(this.state.doubleExpanded){
-      this.setState({doubleExpanded: false})
-    }
-    else {
-      this.setState({expanded: null})
-    }
-  }
-}
 }

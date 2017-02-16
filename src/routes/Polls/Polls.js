@@ -1,87 +1,64 @@
 import React, { Component } from 'react'
-import CardControlled from '../../components/Cards/CardControlled.js';
-import Avatar from 'material-ui/Avatar';
-import SocialPoll from 'material-ui/svg-icons/social/poll';
-import CircularProgress from 'material-ui/CircularProgress';
-import CircularProgressStyle from '../../styles/CircularProgress';
+import FullPageLoading from '../../components/FullPageLoading/FullPageLoading.js';
+import Poll from '../../components/Poll/Poll.js';
+import settings from '../../config/settings';
 
+var PollsStatus = { LOADING: 'loading', READY: 'ready' };
 
-export default class Panel extends Component {
-  constructor(props){
+export default class Polls extends Component {
+  constructor(props) {
     super(props);
-    this.state = {
-      ready: false,
-      expanded: null,
-      doubleExpanded: false
-    }
+    this.state = { status: PollsStatus.LOADING };
   }
 
   componentDidMount() {
-    fetch('http://www.localhost:3000/company/1/poll', {
+    this._load();
+  }
+
+  render() {
+    if (this.state.status === PollsStatus.LOADING) {
+      return (
+        <FullPageLoading />
+      );
+    }
+
+    return (
+      <div>
+        <div className="polls-container">
+          { this.state.polls.map((x, i) =>
+            <Poll poll={ x } />
+          )}
+        </div>
+      </div>
+    );
+  }
+
+  _load() {
+    var polls = this;
+    /*var promise = new Promise(function(resolve, reject) {
+      setTimeout(function() { // Wait for api simulation
+        resolve("Stuff worked!");
+        //reject(Error("It broke"));
+      }, 2000);
+    });*/
+
+    var company_id = 2;
+    var url = settings.COMPANY_POLLS.replace(":id", company_id);
+    var promise = fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }
+      },
     })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      this.setState({data: responseJson});
-      this.setState({ready: true});
-    });
-  }
+    .then((response) => response.json());
 
-  render() {
-    if(!this.state.ready) {
-      return(
-        <CircularProgress style={CircularProgressStyle} size={80} thickness={5} />
-      )
-    }
-    else {
-      return (
-        <div>
-        {this.state.data.map((value, i) => (
-          <CardControlled
-          title={value.name}
-          subtitle={value.description}
-          avatar={<Avatar icon={<SocialPoll />}/>}
-          uris={{
-            total: 'http://www.localhost:3000/company/1/poll/' + value.id + '/total_responses',
-            age: 'http://www.localhost:3000/company/1/poll/' + value.id + '/respondents_age',
-            gender: 'http://www.localhost:3000/company/1/poll/' + value.id + '/respondents_gender',
-            number: 'http://www.localhost:3000/company/1/poll/' + value.id + '/average_stars'
-          }}
-          expand={(id, toggle) => (this._expandListElement(id, toggle))}
-          type='encuesta'
-          diff={value.id}
-          key={i}
-          ref={value.id}/>
-        ))}
-        </div>
-      );
-    }
-  }
-  _expandListElement = function(id, toggle) {
-    if (toggle) {
-      if(this.state.expanded === null){
-        this.setState({expanded: id})
-      }
-      else{
-        var ref = this.state.expanded;
-        this.setState({doubleExpanded: true})
-        this.setState({expanded: id}, () => {
-          console.log(this);
-          this.refs[ref].handleToggle(null, false);
-        })
-      }
-    }
-    else {
-      if(this.state.doubleExpanded){
-        this.setState({doubleExpanded: false})
-      }
-      else {
-        this.setState({expanded: null})
-      }
-    }
+
+    promise.then(function(result) {
+      polls.setState({ polls: result });
+      polls.setState({ status: PollsStatus.READY });
+    }, function(err) {
+      console.log(err);
+    });
   }
 }
