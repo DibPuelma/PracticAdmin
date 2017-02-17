@@ -16,6 +16,12 @@ export default class BarChart extends Component {
     this._getDataAndCreateGraph(this.props.uri);
   }
 
+  componentWillReceiveProps() {
+    this.setState({ready: false}, () => {
+      this._getDataAndCreateGraph(this.props.uri);
+    })
+  }
+
   render(){
     if(!this.state.ready) {
       return (

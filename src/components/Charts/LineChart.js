@@ -14,8 +14,13 @@ export default class LineChart extends Component {
   }
 
   componentDidMount() {
-    console.log("did mount");
     this._getDataAndCreateGraph(this.props.uri);
+  }
+
+  componentWillReceiveProps() {
+    this.setState({ready: false}, () => {
+      this._getDataAndCreateGraph(this.props.uri);
+    })
   }
 
   render(){

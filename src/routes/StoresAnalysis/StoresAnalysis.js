@@ -33,7 +33,6 @@ export default class Panel extends Component {
 
   render() {
     if(!this.state.ready) {
-      //TODO: Centrar el loader
       return(
         <CircularProgress style={CircularProgressStyle} size={80} thickness={5} />
       )
