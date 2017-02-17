@@ -47,23 +47,23 @@ export default class App extends Component {
 
 
             <h4>Datos/Análisis</h4>
-            <Link to="/company" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/analisis_compania" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Total Compañía</MenuItem>
             </Link>
 
-            <Link to="/stores" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/analisis_tiendas" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por tienda</MenuItem>
             </Link>
 
-            <Link to="/polls" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/analisis_encuestas" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por encuesta</MenuItem>
             </Link>
 
-            <Link to="/questions" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/analisis_preguntas" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por pregunta</MenuItem>
             </Link>
 
-            <Link to="/advanced" className="menu-item-link" activeClassName="menu-item-link-active">
+            <Link to="/analisis_avanzado" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Avanzado/Personalizado</MenuItem>
             </Link>
 
@@ -99,7 +99,7 @@ export default class App extends Component {
               showMenuIconButton={ false }
             />
 
-            <div className="app-container" style= {{paddingTop: '90px', paddingLeft: '40px', paddingRight: '40px'}}>
+            <div className="app-container" style= {{paddingTop: '90px', paddingLeft: '60px', paddingRight: '40px'}}>
               {this.props.children}
             </div>
           </div>

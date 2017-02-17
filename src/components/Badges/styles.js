@@ -1,46 +1,67 @@
 module.exports = {
-  paper: {
-    height: 250,
-    width: 250,
-    margin: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
+  paper:{
     flexDirection: 'column',
     backgroundColor: '#FAFAFA'
+  },
+  paperFour: {
+    height: 250,
+    width: 250,
+    margin: 20
+  },
+  paperThree: {
+    height: 250,
+    width: 347,
+    margin: 20
   },
   title: {
     fontSize: '20px',
     fontWeight: 'bold',
-    minHeight: 40,
     marginBottom: 5,
-    textAlign: 'center'
+    textAlign: 'center',
+    flex: '1 1'
   },
   data: {
     margin: 10,
     fontSize: '60px',
-    height: 130
+    flex: '2 2'
   },
   bottomRow: {
     width: '100%',
-    height: 70,
     display: 'flex',
     borderTopStyle: 'solid',
     borderTopColor: '#E6E6E6',
-    borderTopWidth: 1
+    borderTopWidth: 1,
+    flex: '2 2'
   },
-  bottomLeftBlock:{
+  blockOneTwo: {
     width: '100%',
+    fontSize: '17px',
+    textAlign: 'center'
+  },
+  leftBlockTwoThree: {
+    flex: '2 2',
+    textAlign: 'right',
+    paddingRight: '15px',
+    borderRightWidth: 3,
+    borderRightColor: '#E6E6E6',
+    borderRightStyle: 'solid'
+  },
+  rightBlockOneThree: {
+    flex: '1 1',
+    textAlign: 'center',
+    fontSize: '22px'
+  },
+  rowThree: {
+    width: '100%',
+    flexWrap: 'wrap',
+    flex: '2 2',
+    borderWidth: 1,
+    borderColor: '#E6E6E6',
+    borderStyle: 'solid'
+  },
+  flexCenterEverything: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#7CD8EA'
-  },
-  bottomRightBlock:{
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#FFBAD2'
   }
 }

@@ -4,7 +4,7 @@ import Avatar from 'material-ui/Avatar';
 import SocialPoll from 'material-ui/svg-icons/social/poll';
 import CircularProgress from 'material-ui/CircularProgress';
 import CircularProgressStyle from '../../styles/CircularProgress';
-
+import settings from '../../config/settings';
 
 export default class Panel extends Component {
   constructor(props){
@@ -17,7 +17,7 @@ export default class Panel extends Component {
   }
 
   componentDidMount() {
-    fetch('http://www.localhost:3000/company/1/poll', {
+    fetch(settings.POLLS.replace(':company_id', 1), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -46,10 +46,10 @@ export default class Panel extends Component {
           subtitle={value.description}
           avatar={<Avatar icon={<SocialPoll />}/>}
           uris={{
-            total: 'http://www.localhost:3000/company/1/poll/' + value.id + '/total_responses',
-            age: 'http://www.localhost:3000/company/1/poll/' + value.id + '/respondents_age',
-            gender: 'http://www.localhost:3000/company/1/poll/' + value.id + '/respondents_gender',
-            number: 'http://www.localhost:3000/company/1/poll/' + value.id + '/average_stars'
+            total: settings.POLL_TOTAL.replace(':company_id', 1).replace(':poll_id', value.id),
+            age: settings.POLL_AGE.replace(':company_id', 1).replace(':poll_id', value.id),
+            gender: settings.POLL_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
+            number: settings.POLL_AVG.replace(':company_id', 1).replace(':poll_id', value.id)
           }}
           expand={(id, toggle) => (this._expandListElement(id, toggle))}
           type='encuesta'

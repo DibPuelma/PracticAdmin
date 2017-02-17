@@ -39,7 +39,7 @@ export default class CardControlled extends React.Component {
       showDataFunctions: {
         AVG: (() => {
           return (
-            <div style={{height: '550'}}>
+            <div style={{height: '550px'}}>
             <h3 style={{textAlign: 'center'}}>Promedio de la {props.type} en el tiempo</h3>
             <LineChart
             id={"lineChart1" + props.diff}
@@ -75,7 +75,7 @@ export default class CardControlled extends React.Component {
         }),
         TOTAL: (() => {
           return (
-            <div style={{height: '550'}}>
+            <div style={{height: '550px'}}>
             <h3 style={{textAlign: 'center'}}>Respuestas totales de la {props.type} en el tiempo</h3>
             <BarChart
             id={"barChart1" + props.diff}
@@ -111,7 +111,7 @@ export default class CardControlled extends React.Component {
         }),
         AGE: (() => {
           return (
-            <div style={{height: '550'}}>
+            <div style={{height: '550px'}}>
             <h3 style={{textAlign: 'center'}}>Distribución etaria de los encuestados de la {props.type}</h3>
             <BarChart
             id={"barChart2" + props.diff}
@@ -151,7 +151,7 @@ export default class CardControlled extends React.Component {
         }),
         GENDER: (() => {
           return (
-            <div style={{height: '550'}}>
+            <div style={{height: '550px'}}>
             <h3 style={{textAlign: 'center'}}>Distribución de géneros de los encuestados de la {props.type}</h3>
             <PieChart
             id={"pieChart1" + props.diff}
@@ -172,7 +172,7 @@ export default class CardControlled extends React.Component {
         }),
         OPTIONS: (() => {
           return (
-            <div style={{height: '550'}}>
+            <div style={{height: '550px'}}>
             <h3 style={{textAlign: 'center'}}>Cantidad de respuestas por opción de la {props.type}</h3>
             <PieChart
             id={"pieChart2" + props.diff}
@@ -193,7 +193,7 @@ export default class CardControlled extends React.Component {
         }),
         BOOLEAN: (() => {
           return (
-            <div style={{height: '550'}}>
+            <div style={{height: '550px'}}>
             <h3 style={{textAlign: 'center'}}>Cantidad de respuestas de la {props.type}</h3>
             <PieChart
             id={"pieChart3" + props.diff}
@@ -214,7 +214,7 @@ export default class CardControlled extends React.Component {
         }),
         TEXT: (() => {
           return (
-            <div style={{height: '550', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <div style={{height: '550px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
             <h3 >Característica no disponible aun</h3>
             </div>
           )

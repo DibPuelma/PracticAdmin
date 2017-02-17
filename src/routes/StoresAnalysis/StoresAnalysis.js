@@ -4,6 +4,7 @@ import Avatar from 'material-ui/Avatar';
 import ActionHome from 'material-ui/svg-icons/action/home';
 import CircularProgress from 'material-ui/CircularProgress';
 import CircularProgressStyle from '../../styles/CircularProgress';
+import settings from '../../config/settings';
 
 export default class Panel extends Component {
   constructor(props){
@@ -16,7 +17,7 @@ export default class Panel extends Component {
   }
 
   componentDidMount() {
-    fetch('http://www.localhost:3000/company/1/sell_point', {
+    fetch(settings.STORES.replace(':company_id', 1), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -41,22 +42,23 @@ export default class Panel extends Component {
       return (
         <div>
         {this.state.data.map((value, i) => (
-          <CardControlled
-          uris={{
-            total: 'http://www.localhost:3000/company/1/sell_point/' + value.id + '/total_responses',
-            age: 'http://www.localhost:3000/company/1/sell_point/' + value.id + '/respondents_age',
-            gender: 'http://www.localhost:3000/company/1/sell_point/' + value.id + '/respondents_gender',
-            number: 'http://www.localhost:3000/company/1/sell_point/' + value.id + '/average_stars'
-          }}
-          expand={(id, toggle) => (this._expandListElement(id, toggle))}
-          type='tienda'
-          diff={value.id}
-          title="Local"
-          subtitle={value.location}
-          avatar={<Avatar icon={<ActionHome />}/>}
-          key={i}
-          ref={value.id}/>
-        ))}
+            <CardControlled
+            uris={{
+              total: settings.STORE_TOTAL.replace(':company_id', 1).replace(':sell_point_id', value.id),
+              age: settings.STORE_AGE.replace(':company_id', 1).replace(':sell_point_id', value.id),
+              gender: settings.STORE_GENDER.replace(':company_id', 1).replace(':sell_point_id', value.id),
+              number: settings.STORE_AVG.replace(':company_id', 1).replace(':sell_point_id', value.id)
+            }}
+            expand={(id, toggle) => (this._expandListElement(id, toggle))}
+            type='tienda'
+            diff={value.id}
+            title="Local"
+            subtitle={value.location}
+            avatar={<Avatar icon={<ActionHome />}/>}
+            key={i}
+            ref={value.id}/>
+          )
+        )}
         </div>
       );
     }

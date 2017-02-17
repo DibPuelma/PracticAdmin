@@ -12,6 +12,7 @@ export default class MainAndTwoSubDataBadge extends Component {
   }
 
   componentDidMount() {
+    console.log(this.props.uri);
     fetch(this.props.uri, {
       method: 'GET',
       headers: {
@@ -21,7 +22,6 @@ export default class MainAndTwoSubDataBadge extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log("ldjknldkfn");
       var labels = [];
       var counts = [];
       var avgs = [];
@@ -44,7 +44,6 @@ export default class MainAndTwoSubDataBadge extends Component {
         }
       })
       total_avg = (sum/total_count).toFixed(2);
-      console.log(total_avg);
       var newData = {
         totalValue: total_avg === '0.00' ? total_count : total_avg,
         subDataOneLabel: this._getLabel(labels[0]),
@@ -60,21 +59,21 @@ export default class MainAndTwoSubDataBadge extends Component {
   render() {
     if(!this.state.ready) {
       return (
-        <Paper style={styles.paper} zDepth={2} >
+        <Paper style={Object.assign(styles.paper, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
         <CircularProgress size={80} thickness={5} />
         </Paper>
       )
     }
     else {
       return (
-        <Paper style={styles.paper} zDepth={2} >
+        <Paper style={Object.assign(styles.paper, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
         <p style={styles.title}>{this.props.title}</p>
         <p style={styles.data}>{this.state.data.totalValue}</p>
         <div style={styles.bottomRow}>
-        <div style={styles.bottomLeftBlock}>
+        <div style={Object.assign({backgroundColor: this.props.leftColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
         {this.state.data.subDataOneLabel}: {this.state.data.subDataOneValue}
         </div>
-        <div style={styles.bottomRightBlock}>
+        <div style={Object.assign({backgroundColor: this.props.rightColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
         {this.state.data.subDataTwoLabel}: {this.state.data.subDataTwoValue}
         </div>
         </div>
