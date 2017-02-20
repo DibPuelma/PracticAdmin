@@ -40,3 +40,9 @@ exports.QUESTION_GENDER            = API_HOST + '/company/:company_id/question/:
 exports.QUESTION_BOOLEAN           = API_HOST + '/company/:company_id/question/:question_id/boolean_answers/:start_date/:end_date';
 exports.QUESTION_TEXT              = API_HOST + '/company/:company_id/question/:question_id/text_answers/:start_date/:end_date';
 exports.QUESTION_OPTIONS           = API_HOST + '/company/:company_id/question/:question_id/options_answers/:start_date/:end_date';
+
+exports.EMPLOYEES                      = API_HOST + '/company/:company_id/employee';
+exports.EMPLOYEE_AVG                   = API_HOST + '/company/:company_id/employee/:employee_id/average_stars/:start_date/:end_date';
+exports.EMPLOYEE_TOTAL                 = API_HOST + '/company/:company_id/employee/:employee_id/total_answers/:start_date/:end_date';
+exports.EMPLOYEE_AGE                   = API_HOST + '/company/:company_id/employee/:employee_id/respondents_age/:start_date/:end_date';
+exports.EMPLOYEE_GENDER                = API_HOST + '/company/:company_id/employee/:employee_id/respondents_gender/:start_date/:end_date';

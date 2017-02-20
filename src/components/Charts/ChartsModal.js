@@ -44,7 +44,7 @@ export default class ChartsModal extends React.Component {
         AVG: (() => {
           return (
             <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Promedio de la {props.type} en el tiempo</h3>
+            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Promedio {props.type} en el tiempo</h3>
             {this.datePicker}
             <LineChart
             id={"lineChart1" + props.diff}
@@ -82,7 +82,7 @@ export default class ChartsModal extends React.Component {
           console.log(this.state);
           return (
             <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Respuestas totales de la {props.type} en el tiempo</h3>
+            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Respuestas totales {props.type} en el tiempo</h3>
             {this.datePicker}
             <BarChart
             id={"barChart1" + props.diff}
@@ -119,7 +119,7 @@ export default class ChartsModal extends React.Component {
         AGE: (() => {
           return (
             <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Distribución etaria de los encuestados de la {props.type}</h3>
+            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Distribución etaria de los encuestados {props.type}</h3>
             {this.datePicker}
             <BarChart
             id={"barChart2" + props.diff}
@@ -160,7 +160,7 @@ export default class ChartsModal extends React.Component {
         GENDER: (() => {
           return (
             <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Distribución de géneros de los encuestados de la {props.type}</h3>
+            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Distribución de géneros de los encuestados {props.type}</h3>
             {this.datePicker}
             <PieChart
             id={"pieChart1" + props.diff}
@@ -182,7 +182,7 @@ export default class ChartsModal extends React.Component {
         OPTIONS: (() => {
           return (
             <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Cantidad de respuestas por opción de la {props.type}</h3>
+            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Cantidad de respuestas por opción {props.type}</h3>
             {this.datePicker}
             <PieChart
             id={"pieChart2" + props.diff}
@@ -204,7 +204,7 @@ export default class ChartsModal extends React.Component {
         BOOLEAN: (() => {
           return (
             <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Cantidad de respuestas de la {props.type}</h3>
+            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Cantidad de respuestas {props.type}</h3>
             {this.datePicker}
             <PieChart
             id={"pieChart3" + props.diff}
@@ -333,7 +333,7 @@ export default class ChartsModal extends React.Component {
       />
       <Dialog
       actions={actions}
-      modal={true}
+      onRequestClose={this.handleClose}
       open={this.state.open}
       contentStyle={customContentStyle}
       >
