@@ -47,9 +47,6 @@ export default class App extends Component {
 
 
             <h4>Datos/Análisis</h4>
-            <Link to="/analisis_compania" className="menu-item-link" activeClassName="menu-item-link-active">
-              <MenuItem className="menu-item" style={ styles.menuItem }>Total compañía</MenuItem>
-            </Link>
 
             <Link to="/analisis_tiendas" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Por tienda</MenuItem>

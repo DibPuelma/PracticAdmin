@@ -5,7 +5,7 @@ module.exports = {
     else if (avg < 3)
       return 'orange'
     else if (avg < 4)
-      return 'yellow'
+      return 'blue'
     else if (avg < 5)
       return 'green'
     return 'gold'
