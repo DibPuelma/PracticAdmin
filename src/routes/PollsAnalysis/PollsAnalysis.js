@@ -49,7 +49,10 @@ export default class Panel extends Component {
             total: settings.POLL_TOTAL.replace(':company_id', 1).replace(':poll_id', value.id),
             age: settings.POLL_AGE.replace(':company_id', 1).replace(':poll_id', value.id),
             gender: settings.POLL_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
-            number: settings.POLL_AVG.replace(':company_id', 1).replace(':poll_id', value.id)
+            number: settings.POLL_AVG.replace(':company_id', 1).replace(':poll_id', value.id),
+            avg_age: settings.POLL_AVG_AGE.replace(':company_id', 1).replace(':poll_id', value.id),
+            number_by_gender: settings.POLL_AVG_BY_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
+            total_by_gender: settings.POLL_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
           }}
           expand={(id, toggle) => (this._expandListElement(id, toggle))}
           type='encuesta'

@@ -31,14 +31,14 @@ export default class MainAndTwoSubDataBadge extends Component {
   render() {
     if(!this.state.ready) {
       return (
-        <Paper style={Object.assign(styles.paper, styles.paperThree, styles.flexCenterEverything)} zDepth={2} >
+        <Paper style={Object.assign(styles.paperColumn, styles.paperThree, styles.flexCenterEverything)} zDepth={2} >
         <CircularProgress size={80} thickness={5} />
         </Paper>
       )
     }
     else {
       return (
-        <Paper style={Object.assign(styles.paper, styles.paperThree, styles.flexCenterEverything)} zDepth={2} >
+        <Paper style={Object.assign(styles.paperColumn, styles.paperThree, styles.flexCenterEverything)} zDepth={2} >
         <p style={styles.title}>{this.props.title}</p>
         {this.state.data.map((object, i) => (
           <div style={Object.assign(styles.rowThree, styles.flexCenterEverything)} key={i}>

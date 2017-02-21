@@ -11,9 +11,42 @@ export default class MainAndTwoSubDataBadge extends Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    this._getData(props.uri);
+  }
+
   componentDidMount() {
-    console.log(this.props.uri);
-    fetch(this.props.uri, {
+    this._getData(this.props.uri);
+  }
+
+  render() {
+    if(!this.state.ready) {
+      return (
+        <Paper style={Object.assign(styles.paperColumn, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
+        <CircularProgress size={80} thickness={5} />
+        </Paper>
+      )
+    }
+    else {
+      return (
+        <Paper style={Object.assign(styles.paperColumn, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
+        <p style={styles.title}>{this.props.title}</p>
+        <p style={styles.data}>{this.state.data.totalValue !== 'NaN' ? this.state.data.totalValue : '0'}</p>
+        <div style={styles.bottomRow}>
+        <div style={Object.assign({backgroundColor: this.props.leftColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
+        {this.state.data.subDataOneLabel}: {this.state.data.subDataOneValue}
+        </div>
+        <div style={Object.assign({backgroundColor: this.props.rightColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
+        {this.state.data.subDataTwoLabel}: {this.state.data.subDataTwoValue}
+        </div>
+        </div>
+        </Paper>
+      );
+    }
+  }
+
+  _getData(uri){
+    fetch(uri, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -56,31 +89,6 @@ export default class MainAndTwoSubDataBadge extends Component {
     });
   }
 
-  render() {
-    if(!this.state.ready) {
-      return (
-        <Paper style={Object.assign(styles.paper, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
-        <CircularProgress size={80} thickness={5} />
-        </Paper>
-      )
-    }
-    else {
-      return (
-        <Paper style={Object.assign(styles.paper, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
-        <p style={styles.title}>{this.props.title}</p>
-        <p style={styles.data}>{this.state.data.totalValue}</p>
-        <div style={styles.bottomRow}>
-        <div style={Object.assign({backgroundColor: this.props.leftColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
-        {this.state.data.subDataOneLabel}: {this.state.data.subDataOneValue}
-        </div>
-        <div style={Object.assign({backgroundColor: this.props.rightColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
-        {this.state.data.subDataTwoLabel}: {this.state.data.subDataTwoValue}
-        </div>
-        </div>
-        </Paper>
-      );
-    }
-  }
   _getLabel(unprocessedLabel){
     switch (unprocessedLabel) {
       case 'm':

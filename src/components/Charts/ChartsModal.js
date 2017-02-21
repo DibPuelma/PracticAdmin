@@ -79,7 +79,6 @@ export default class ChartsModal extends React.Component {
           )
         }),
         TOTAL: (() => {
-          console.log(this.state);
           return (
             <div style={{height: '550px', marginBottom: '80px'}}>
             <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Respuestas totales {props.type} en el tiempo</h3>
@@ -349,7 +348,7 @@ export default class ChartsModal extends React.Component {
     );
   }
 
-  _getTabs = () => {
+  _getTabs() {
     var response = [];
     for (var key in this.props.uris) {
       if (this.props.uris.hasOwnProperty(key)) {

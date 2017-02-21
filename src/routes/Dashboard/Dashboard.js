@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import Paper from 'material-ui/Paper';
 import styles from './styles';
 import settings from '../../config/settings';
 import dateManager from '../../lib/dateManager';
 
 import MainAndTwoSubDataBadge from '../../components/Badges/MainAndTwoSubDataBadge';
-import OrderedListThree from '../../components/Badges/OrderedListThree';
+import OrderedListThreeBadge from '../../components/Badges/OrderedListThreeBadge';
 
 
 /*
@@ -90,63 +89,63 @@ export default class Dashboard extends Component {
       rightColor='#7CD8EA'
       />
 
-      <OrderedListThree title="Locales con mejor promedio (Mes)"
+      <OrderedListThreeBadge title="Locales con mejor promedio (Mes)"
       uri={settings.COMPANY_DATE_BEST_AVG_STORE.replace(':company_id', 1).replace(':gender', 'none').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='location'
       />
-      <OrderedListThree title="Locales con mejor promedio (Mes): mujeres"
+      <OrderedListThreeBadge title="Locales con mejor promedio (Mes): mujeres"
       uri={settings.COMPANY_DATE_BEST_AVG_STORE.replace(':company_id', 1).replace(':gender', 'f').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='location'
       />
-      <OrderedListThree title="Locales con mejor promedio (Mes): hombres"
+      <OrderedListThreeBadge title="Locales con mejor promedio (Mes): hombres"
       uri={settings.COMPANY_DATE_BEST_AVG_STORE.replace(':company_id', 1).replace(':gender', 'm').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='location'
       />
-      <OrderedListThree title="Preguntas con mejor promedio (Mes)"
+      <OrderedListThreeBadge title="Preguntas con mejor promedio (Mes)"
       uri={settings.COMPANY_DATE_BEST_AVG_QUESTION.replace(':company_id', 1).replace(':gender', 'none').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='text'
       />
-      <OrderedListThree title="Preguntas con mejor promedio (Mes): mujeres"
+      <OrderedListThreeBadge title="Preguntas con mejor promedio (Mes): mujeres"
       uri={settings.COMPANY_DATE_BEST_AVG_QUESTION.replace(':company_id', 1).replace(':gender', 'f').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='text'
       />
-      <OrderedListThree title="Preguntas con mejor promedio (Mes): hombres"
+      <OrderedListThreeBadge title="Preguntas con mejor promedio (Mes): hombres"
       uri={settings.COMPANY_DATE_BEST_AVG_QUESTION.replace(':company_id', 1).replace(':gender', 'm').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='text'
       />
-      <OrderedListThree title="Encuestas con mejor promedio (Mes)"
+      <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes)"
       uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'none').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='name'
       />
-      <OrderedListThree title="Encuestas con mejor promedio (Mes): mujeres"
+      <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes): mujeres"
       uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'f').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}
       valueKey='avg'
       labelKey='name'
       />
-      <OrderedListThree title="Encuestas con mejor promedio (Mes): hombres"
+      <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes): hombres"
       uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'm').
       replace(':start_date', dateManager.getMonthStart(Date.now())).
       replace(':end_date', dateManager.getString(Date.now()))}

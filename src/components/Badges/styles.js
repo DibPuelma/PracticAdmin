@@ -1,7 +1,16 @@
 module.exports = {
-  paper:{
+  paperColumn: {
     flexDirection: 'column',
     backgroundColor: '#FAFAFA'
+  },
+  paperRow: {
+    flexDirection: 'row',
+    backgroundColor: '#FAFAFA'
+  },
+  paperOne: {
+    height: 250,
+    width: 1040,
+    margin: 20
   },
   paperFour: {
     height: 250,

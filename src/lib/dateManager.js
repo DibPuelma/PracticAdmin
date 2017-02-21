@@ -7,6 +7,13 @@
 // var monthStart = getMonthStart(today);
 // var yearStart = getYearStart(today);
 
+var weekDays = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+
+var getDayOfWeek = function(date){
+  var _date = new Date(date);
+  return weekDays[_date.getDay()];
+}
+
 var getString = function(date){
   var _date = new Date(date);
   return _date.getFullYear() + '-' + (parseInt(_date.getMonth(), 10) + 1) + '-' + _date.getDate();
@@ -37,9 +44,10 @@ var getLastYear = function(date){
   return getString(new Date(_date.getFullYear() - 1, _date.getMonth(), _date.getDate()));
 }
 
+//TODO: hace más preciso. Que parta desde el 0 de la semana
 var getWeekStart = function(date){
   var _date = new Date(date);
-  return getString(new Date(_date - _date.getDay() * 24*60*60*1000));
+  return getString(new Date(_date - (_date.getDay() + 1) * 24*60*60*1000));
 }
 
 var getMonthStart = function(date){
@@ -86,6 +94,8 @@ var getYearStart = function(date){
 // }
 
 module.exports = {
+  getDayOfWeek: getDayOfWeek,
+  getString: getString,
   getYesterday: getYesterday,
   getLastWeek: getLastWeek,
   getLastMonth: getLastMonth,
@@ -99,6 +109,5 @@ module.exports = {
   getLastYearAsDate: getLastYear,
   getWeekStartAsDate: getWeekStart,
   getMonthStartAsDate: getMonthStart,
-  getYearStartAsDate: getYearStart,
-  getString: getString
+  getYearStartAsDate: getYearStart
 }

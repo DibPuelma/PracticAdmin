@@ -60,6 +60,9 @@ export default class Panel extends Component {
             total: settings.QUESTION_TOTAL.replace(':company_id', 1).replace(':question_id', value.id),
             age: settings.QUESTION_AGE.replace(':company_id', 1).replace(':question_id', value.id),
             gender: settings.QUESTION_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
+            avg_age: settings.QUESTION_AVG_AGE.replace(':company_id', 1).replace(':question_id', value.id),
+            number_by_gender: settings.QUESTION_AVG_BY_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
+            total_by_gender: settings.QUESTION_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
           };
           uris[value.type] = uriGetter[value.type].replace(':company_id', 1).replace(':question_id', value.id);
           return (

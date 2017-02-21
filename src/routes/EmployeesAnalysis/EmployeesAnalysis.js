@@ -46,7 +46,10 @@ export default class Panel extends Component {
               total: settings.EMPLOYEE_TOTAL.replace(':company_id', 1).replace(':employee_id', value.id),
               age: settings.EMPLOYEE_AGE.replace(':company_id', 1).replace(':employee_id', value.id),
               gender: settings.EMPLOYEE_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
-              number: settings.EMPLOYEE_AVG.replace(':company_id', 1).replace(':employee_id', value.id)
+              number: settings.EMPLOYEE_AVG.replace(':company_id', 1).replace(':employee_id', value.id),
+              avg_age: settings.EMPLOYEE_AVG_AGE.replace(':company_id', 1).replace(':employee_id', value.id),
+              number_by_gender: settings.EMPLOYEE_AVG_BY_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
+              total_by_gender: settings.EMPLOYEE_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
             }}
             expand={(id, toggle) => (this._expandListElement(id, toggle))}
             type='empleado'

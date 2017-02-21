@@ -46,7 +46,10 @@ export default class Panel extends Component {
               total: settings.STORE_TOTAL.replace(':company_id', 1).replace(':sell_point_id', value.id),
               age: settings.STORE_AGE.replace(':company_id', 1).replace(':sell_point_id', value.id),
               gender: settings.STORE_GENDER.replace(':company_id', 1).replace(':sell_point_id', value.id),
-              number: settings.STORE_AVG.replace(':company_id', 1).replace(':sell_point_id', value.id)
+              number: settings.STORE_AVG.replace(':company_id', 1).replace(':sell_point_id', value.id),
+              avg_age: settings.STORE_AVG_AGE.replace(':company_id', 1).replace(':sell_point_id', value.id),
+              number_by_gender: settings.STORE_AVG_BY_GENDER.replace(':company_id', 1).replace(':sell_point_id', value.id),
+              total_by_gender: settings.STORE_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':sell_point_id', value.id),
             }}
             expand={(id, toggle) => (this._expandListElement(id, toggle))}
             type='tienda'
