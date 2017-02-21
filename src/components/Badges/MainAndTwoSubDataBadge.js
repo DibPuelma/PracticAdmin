@@ -46,6 +46,7 @@ export default class MainAndTwoSubDataBadge extends Component {
   }
 
   _getData(uri){
+    console.log(uri);
     fetch(uri, {
       method: 'GET',
       headers: {

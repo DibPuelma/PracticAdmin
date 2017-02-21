@@ -13,8 +13,35 @@ export default class MainAndTwoSubDataBadge extends Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    this._getData(props.uri);
+  }
+
   componentDidMount() {
-    fetch(this.props.uri, {
+    this._getData(this.props.uri);
+  }
+
+  render() {
+    if(!this.state.ready) {
+      return (
+        <Paper style={Object.assign(styles.paperColumn, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
+        <CircularProgress size={80} thickness={5} />
+        </Paper>
+      )
+    }
+    else {
+      return (
+        <Paper style={Object.assign(styles.paperColumn, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
+        <p style={styles.title}>{this.props.title}</p>
+        {this._getList()}
+
+        </Paper>
+      );
+    }
+  }
+
+  _getData(uri){
+    fetch(uri, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -28,31 +55,22 @@ export default class MainAndTwoSubDataBadge extends Component {
     });
   }
 
-  render() {
-    if(!this.state.ready) {
-      return (
-        <Paper style={Object.assign(styles.paperColumn, styles.paperThree, styles.flexCenterEverything)} zDepth={2} >
-        <CircularProgress size={80} thickness={5} />
-        </Paper>
-      )
+  _getList(){
+    if(this.state.data.length > 0) {
+      return this.state.data.map((object, i) => (
+        <div style={Object.assign(styles.rowThree, styles.flexCenterEverything)} key={i}>
+        <div style={Object.assign(styles.leftBlockTwoThree, styles.flexCenterEverything)}>
+        {object[this.props.labelKey]}
+        </div>
+        <div style={Object.assign({color: colorLib.getColor(parseFloat(object[this.props.valueKey]))}, styles.rightBlockOneThree, styles.flexCenterEverything)}>
+        {parseFloat(object[this.props.valueKey]).toFixed(2)}
+        <ActionStarRate color={colorLib.getColor(parseFloat(object[this.props.valueKey]))}/>
+        </div>
+        </div>
+      ))
     }
     else {
-      return (
-        <Paper style={Object.assign(styles.paperColumn, styles.paperThree, styles.flexCenterEverything)} zDepth={2} >
-        <p style={styles.title}>{this.props.title}</p>
-        {this.state.data.map((object, i) => (
-          <div style={Object.assign(styles.rowThree, styles.flexCenterEverything)} key={i}>
-          <div style={Object.assign(styles.leftBlockTwoThree, styles.flexCenterEverything)}>
-          {object[this.props.labelKey]}
-          </div>
-          <div style={Object.assign({color: colorLib.getColor(parseFloat(object[this.props.valueKey]))}, styles.rightBlockOneThree, styles.flexCenterEverything)}>
-          {parseFloat(object[this.props.valueKey]).toFixed(2)}
-          <ActionStarRate color={colorLib.getColor(parseFloat(object[this.props.valueKey]))}/>
-          </div>
-          </div>
-        ))}
-        </Paper>
-      );
+      return (<p style={Object.assign(styles.data, {textAlign: 'center'})}> No hay datos </p>);
     }
   }
   _getLabel(unprocessedLabel){

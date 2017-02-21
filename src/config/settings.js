@@ -11,9 +11,10 @@ exports.COMPANY_EMPLOYEE           = API_HOST + '/company/:company_id/employee';
 
 exports.COMPANY_DATE_AGE                = API_HOST + '/company/:company_id/dashboard/respondents_age/:start_date/:end_date';
 exports.COMPANY_DATE_GENDER             = API_HOST + '/company/:company_id/dashboard/respondents_gender/:start_date/:end_date';
-exports.COMPANY_DATE_BEST_AVG_QUESTION  = API_HOST + '/company/:company_id/dashboard/:gender/best_average_question/:start_date/:end_date';
-exports.COMPANY_DATE_BEST_AVG_POLL      = API_HOST + '/company/:company_id/dashboard/:gender/best_average_poll/:start_date/:end_date';
-exports.COMPANY_DATE_BEST_AVG_STORE     = API_HOST + '/company/:company_id/dashboard/:gender/best_average_sell_point/:start_date/:end_date';
+exports.COMPANY_DATE_BEST_AVG_QUESTION  = API_HOST + '/company/:company_id/dashboard/:gender/question/best_average/:start_date/:end_date';
+exports.COMPANY_DATE_BEST_AVG_POLL      = API_HOST + '/company/:company_id/dashboard/:gender/poll/best_average/:start_date/:end_date';
+exports.COMPANY_DATE_BEST_AVG_STORE     = API_HOST + '/company/:company_id/dashboard/:gender/sell_point/best_average/:start_date/:end_date';
+exports.COMPANY_DATE_BEST_AVG_EMPLOYEE  = API_HOST + '/company/:company_id/dashboard/:gender/employee/best_average/:start_date/:end_date';
 exports.COMPANY_DATE_AGE_AVG            = API_HOST + '/company/:company_id/dashboard/average_age/:start_date/:end_date';
 
 //Fechas en formato dd-mm-aaaa

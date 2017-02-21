@@ -1,4 +1,15 @@
 module.exports = {
+  comparisonContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    paddingTop: '20px',
+    margin: '10px',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderColor: '#E6E6E6'
+  },
   paperColumn: {
     flexDirection: 'column',
     backgroundColor: '#FAFAFA'
@@ -13,9 +24,9 @@ module.exports = {
     margin: 20
   },
   paperFour: {
-    height: 250,
-    width: 250,
-    margin: 20
+    height: 290,
+    width: 290,
+    margin: 15
   },
   paperThree: {
     height: 250,

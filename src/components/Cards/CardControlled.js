@@ -5,7 +5,7 @@ import Toggle from 'material-ui/Toggle';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import ChartsModal from '../Charts/ChartsModal';
-import ComparisonBadge from '../Badges/ComparisonBadge';
+import DataComparisonBadge from '../Badges/DataComparisonBadge';
 
 export default class CardControlled extends React.Component {
 
@@ -39,17 +39,17 @@ export default class CardControlled extends React.Component {
       showDataFunctions: {
         AVG: (() => {
           return (
-            <ComparisonBadge uri={this.props.uris.number_by_gender} title='Promedio'/>
+            <DataComparisonBadge uri={this.props.uris.number_by_gender} title='Promedio'/>
           )
         }),
         TOTAL: (() => {
           return (
-            <ComparisonBadge uri={this.props.uris.total_by_gender} title='Respuestas'/>
+            <DataComparisonBadge uri={this.props.uris.total_by_gender} title='Respuestas'/>
           )
         }),
         AGE: (() => {
           return (
-            <ComparisonBadge uri={this.props.uris.avg_age} title='Edad promedio'/>
+            <DataComparisonBadge uri={this.props.uris.avg_age} title='Edad Promedio'/>
           )
         }),
         GENDER: (() => {
