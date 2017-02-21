@@ -54,22 +54,22 @@ export default class CardControlled extends React.Component {
         }),
         GENDER: (() => {
           return (
-            <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Distribución de géneros de los encuestados {props.type}</h3>
+            <div style={{height: '550px', marginBottom: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <h3 >Característica no disponible aun</h3>
             </div>
           )
         }),
         OPTIONS: (() => {
           return (
-            <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Cantidad de respuestas por opción {props.type}</h3>
+            <div style={{height: '550px', marginBottom: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <h3 >Característica no disponible aun</h3>
             </div>
           )
         }),
         BOOLEAN: (() => {
           return (
-            <div style={{height: '550px', marginBottom: '80px'}}>
-            <h3 style={{textAlign: 'center', marginBottom: '5px'}}>Cantidad de respuestas {props.type}</h3>
+            <div style={{height: '550px', marginBottom: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+            <h3 >Característica no disponible aun</h3>
             </div>
           )
         }),

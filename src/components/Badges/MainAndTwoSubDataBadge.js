@@ -16,7 +16,7 @@ export default class MainAndTwoSubDataBadge extends Component {
   }
 
   componentDidMount() {
-    this._getData(this.props.uri);
+    // this._getData(this.props.uri);
   }
 
   render() {
