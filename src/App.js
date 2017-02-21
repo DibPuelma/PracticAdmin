@@ -26,6 +26,16 @@ var styles = {
   }
 }
 
+var titleGetter = {
+  '/dashboard':'Dashboard',
+  '/analisis_tiendas':'Análisis por Local',
+  '/analisis_empleados':'Análisis por Empleado',
+  '/analisis_encuestas':'Análisis por Encuesta',
+  '/analisis_preguntas':'Análisis por Pregunta',
+  '/analisis_avanzado':'Análisis Personalizado'
+
+}
+
 injectTapEventPlugin();
 
 export default class App extends Component {
@@ -95,7 +105,7 @@ export default class App extends Component {
           <div className="app">
             <AppBar
             style={{position: 'fixed'}}
-              title="Title"
+              title={titleGetter[this.props.location.pathname]}
               iconClassNameRight="muidocs-icon-navigation-expand-more"
               showMenuIconButton={ false }
             />

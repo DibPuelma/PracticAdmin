@@ -59,3 +59,9 @@ exports.EMPLOYEE_TOTAL_BY_GENDER       = API_HOST + '/company/:company_id/employ
 exports.EMPLOYEE_AGE                   = API_HOST + '/company/:company_id/employee/:employee_id/respondents_age/:start_date/:end_date';
 exports.EMPLOYEE_AVG_AGE               = API_HOST + '/company/:company_id/employee/:employee_id/average_age/:start_date/:end_date';
 exports.EMPLOYEE_GENDER                = API_HOST + '/company/:company_id/employee/:employee_id/respondents_gender/:start_date/:end_date';
+
+exports.EXCEL_ALL               = API_HOST + '/company/:company_id/excel/answered_poll';
+exports.EXCEL_STORES         = API_HOST + '/company/:company_id/excel/sell_point';
+exports.EXCEL_POLLS         = API_HOST + '/company/:company_id/excel/poll';
+exports.EXCEL_QUESTIONS         = API_HOST + '/company/:company_id/excel/question';
+exports.EXCEL_EMPLOYEES         = API_HOST + '/company/:company_id/excel/employee';

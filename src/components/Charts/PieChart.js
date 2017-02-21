@@ -49,7 +49,7 @@ export default class BarChart extends Component {
       .valueFormat(d3.format(valueFormat))
       .noData("Aún no hay respuestas o lo que pides no existe")
 
-
+      console.log(data);
       d3.select("#" + id)
       .datum(data)
       .transition().duration(350)
@@ -60,6 +60,7 @@ export default class BarChart extends Component {
   }
 
   _getDataAndCreateGraph(uri) {
+    console.log(uri);
     fetch(uri, {
       method: 'GET',
       headers: {
@@ -73,12 +74,20 @@ export default class BarChart extends Component {
       if(responseJson.length !== 0){
         responseJson.map((data, i) => {
           var serie = {};
+          var label = '';
           for (var key in data) {
             if (data.hasOwnProperty(key)) {
-              key === 'count' ? serie.value = data[key] : serie.label = this._getLabel(data[key])
+              if(key === 'count'){
+                serie.value = data[key];
+              }
+              else {
+                label += this._getLabel(data[key]) + ' ';
+              }
             }
           }
+          serie.label = label;
           return chartData.push(serie);
+          label = '';
         })
       }
       this._addGraph(

@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
-import CardControlled from '../../components/Cards/CardControlled.js';
 import Avatar from 'material-ui/Avatar';
 import SocialPoll from 'material-ui/svg-icons/social/poll';
 import CircularProgress from 'material-ui/CircularProgress';
 import CircularProgressStyle from '../../styles/CircularProgress';
+
 import settings from '../../config/settings';
+
+import CardControlled from '../../components/Cards/CardControlled.js';
+import ExcelDownloadButton from '../../components/Buttons/ExcelDownloadButton';
+
 
 export default class Panel extends Component {
   constructor(props){
@@ -40,6 +44,11 @@ export default class Panel extends Component {
     else {
       return (
         <div>
+        <ExcelDownloadButton
+        uri={settings.EXCEL_POLLS.replace(':company_id', 1)}
+        fileName='reporte_encuestas.xlsx'
+        label='Descargar excel con los datos de las encuestas'
+        />
         {this.state.data.map((value, i) => (
           <CardControlled
           title={value.name}

@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
-import CardControlled from '../../components/Cards/CardControlled.js';
 import Avatar from 'material-ui/Avatar';
 import ActionQuestion from 'material-ui/svg-icons/action/question-answer';
 import CircularProgress from 'material-ui/CircularProgress';
 import CircularProgressStyle from '../../styles/CircularProgress';
+
 import settings from '../../config/settings';
+
+import CardControlled from '../../components/Cards/CardControlled.js';
+import ExcelDownloadButton from '../../components/Buttons/ExcelDownloadButton';
+
 
 var translator = {
   'number': 'estrellas',
@@ -55,6 +59,11 @@ export default class Panel extends Component {
     else {
       return (
         <div>
+        <ExcelDownloadButton
+        uri={settings.EXCEL_QUESTIONS.replace(':company_id', 1)}
+        fileName='reporte_preguntas.xlsx'
+        label='Descargar excel con los datos de las preguntas'
+        />
         {this.state.data.map((value, i) => {
           var uris = {
             total: settings.QUESTION_TOTAL.replace(':company_id', 1).replace(':question_id', value.id),

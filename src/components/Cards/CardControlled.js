@@ -6,6 +6,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 
 import ChartsModal from '../Charts/ChartsModal';
 import DataComparisonBadge from '../Badges/DataComparisonBadge';
+import PieComparisonBadge from '../Badges/PieComparisonBadge';
 
 export default class CardControlled extends React.Component {
 
@@ -61,16 +62,12 @@ export default class CardControlled extends React.Component {
         }),
         OPTIONS: (() => {
           return (
-            <div style={{height: '550px', marginBottom: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <h3 >Característica no disponible aun</h3>
-            </div>
+            <PieComparisonBadge uri={this.props.uris.options} title="Opciones Escogidas" />
           )
         }),
         BOOLEAN: (() => {
           return (
-            <div style={{height: '550px', marginBottom: '80px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <h3 >Característica no disponible aun</h3>
-            </div>
+            <PieComparisonBadge uri={this.props.uris.boolean} title="Respuestas" />
           )
         }),
         TEXT: (() => {

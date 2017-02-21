@@ -17,11 +17,11 @@ import QuestionsAnalysis from './routes/QuestionsAnalysis/QuestionsAnalysis.js';
 import EmployeesAnalysis from './routes/EmployeesAnalysis/EmployeesAnalysis.js';
 import CompanyAnalysis from './routes/CompanyAnalysis/CompanyAnalysis.js';
 
-export default class Abc extends Component {
+export default class NotImplemented extends Component {
   render() {
     return (
       <div>
-        <h2>Abc - ruta de ejemplo</h2>
+        <h2>Característica aún no implementada</h2>
       </div>
     );
   }
@@ -41,7 +41,10 @@ ReactDOM.render(
       <Route path="analisis_empleados" component={EmployeesAnalysis} />
       <Route path="analisis_encuestas" component={PollsAnalysis} />
       <Route path="analisis_preguntas" component={QuestionsAnalysis} />
-      <Route path="analisis_compania" component={CompanyAnalysis} />
+      <Route path="analisis_avanzado" component={NotImplemented} />
+      {
+        //<Route path="analisis_compania" component={CompanyAnalysis} />
+      }
       <Route path="dashboard" component={Dashboard} />
     </Route>
 

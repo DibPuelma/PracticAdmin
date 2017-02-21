@@ -8,6 +8,8 @@ import OrderedListThreeBadge from '../../components/Badges/OrderedListThreeBadge
 import DataComparisonBadge from '../../components/Badges/DataComparisonBadge';
 import ListComparisonBadge from '../../components/Badges/ListComparisonBadge';
 
+import ExcelDownloadButton from '../../components/Buttons/ExcelDownloadButton';
+
 
 /*
 Palabras más usadas por los clientes
@@ -26,6 +28,12 @@ Opciones más escogidas mujeres
 export default class Dashboard extends Component {
   render() {
     return (
+      <div>
+      <ExcelDownloadButton
+      uri={settings.EXCEL_ALL.replace(':company_id', 1)}
+      fileName='reporte_total.xlsx'
+      label='Descargar excel con los datos de la empresa'
+      />
       <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
       <DataComparisonBadge title='Respuestas'
       uri={settings.COMPANY_DATE_TOTAL.replace(':company_id', 1)}
@@ -65,42 +73,43 @@ export default class Dashboard extends Component {
       rightColor='#7CD8EA'
       />
       {
-      // <OrderedListThreeBadge title="Preguntas con mejor promedio (Mes): mujeres"
-      // uri={settings.COMPANY_DATE_BEST_AVG_QUESTION.replace(':company_id', 1).replace(':gender', 'f')
-      // .replace(':start_date', dateManager.getMonthStart(Date.now()))
-      // .replace(':end_date', dateManager.getString(Date.now()))}
-      // valueKey='avg'
-      // labelKey='text'
-      // />
-      // <OrderedListThreeBadge title="Preguntas con mejor promedio (Mes): hombres"
-      // uri={settings.COMPANY_DATE_BEST_AVG_QUESTION.replace(':company_id', 1).replace(':gender', 'm')
-      // .replace(':start_date', dateManager.getMonthStart(Date.now()))
-      // .replace(':end_date', dateManager.getString(Date.now()))}
-      // valueKey='avg'
-      // labelKey='text'
-      // />
-      // <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes)"
-      // uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'none')
-      // .replace(':start_date', dateManager.getMonthStart(Date.now()))
-      // .replace(':end_date', dateManager.getString(Date.now()))}
-      // valueKey='avg'
-      // labelKey='name'
-      // />
-      // <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes): mujeres"
-      // uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'f')
-      // .replace(':start_date', dateManager.getMonthStart(Date.now()))
-      // .replace(':end_date', dateManager.getString(Date.now()))}
-      // valueKey='avg'
-      // labelKey='name'
-      // />
-      // <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes): hombres"
-      // uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'm')
-      // .replace(':start_date', dateManager.getMonthStart(Date.now()))
-      // .replace(':end_date', dateManager.getString(Date.now()))}
-      // valueKey='avg'
-      // labelKey='name'
-      // />
-    }
+        // <OrderedListThreeBadge title="Preguntas con mejor promedio (Mes): mujeres"
+        // uri={settings.COMPANY_DATE_BEST_AVG_QUESTION.replace(':company_id', 1).replace(':gender', 'f')
+        // .replace(':start_date', dateManager.getMonthStart(Date.now()))
+        // .replace(':end_date', dateManager.getString(Date.now()))}
+        // valueKey='avg'
+        // labelKey='text'
+        // />
+        // <OrderedListThreeBadge title="Preguntas con mejor promedio (Mes): hombres"
+        // uri={settings.COMPANY_DATE_BEST_AVG_QUESTION.replace(':company_id', 1).replace(':gender', 'm')
+        // .replace(':start_date', dateManager.getMonthStart(Date.now()))
+        // .replace(':end_date', dateManager.getString(Date.now()))}
+        // valueKey='avg'
+        // labelKey='text'
+        // />
+        // <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes)"
+        // uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'none')
+        // .replace(':start_date', dateManager.getMonthStart(Date.now()))
+        // .replace(':end_date', dateManager.getString(Date.now()))}
+        // valueKey='avg'
+        // labelKey='name'
+        // />
+        // <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes): mujeres"
+        // uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'f')
+        // .replace(':start_date', dateManager.getMonthStart(Date.now()))
+        // .replace(':end_date', dateManager.getString(Date.now()))}
+        // valueKey='avg'
+        // labelKey='name'
+        // />
+        // <OrderedListThreeBadge title="Encuestas con mejor promedio (Mes): hombres"
+        // uri={settings.COMPANY_DATE_BEST_AVG_POLL.replace(':company_id', 1).replace(':gender', 'm')
+        // .replace(':start_date', dateManager.getMonthStart(Date.now()))
+        // .replace(':end_date', dateManager.getString(Date.now()))}
+        // valueKey='avg'
+        // labelKey='name'
+        // />
+      }
+      </div>
       </div>
     );
   }

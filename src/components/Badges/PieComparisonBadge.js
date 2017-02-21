@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import styles from './styles'
 import dateManager from '../../lib/dateManager';
-import MainAndTwoSubDataBadge from './MainAndTwoSubDataBadge';
+import PieChart from '../Charts/PieChart';
 
 import Paper from 'material-ui/Paper';
-import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class DataComparisonBadge extends Component {
+export default class PieComparisonBadge extends Component {
   constructor(props) {
     super(props);
     var _now = Date.now();
@@ -17,8 +16,6 @@ export default class DataComparisonBadge extends Component {
       open: false,
       menuValue: 1,
       uri: props.uri,
-      // firstReady: false,
-      // secondReady: false,
       nowStartDate: dateManager.getYesterday(_now),
       nowEndDate: dateManager.getString(_now),
       pastStartDate: dateManager.getYesterday(dateManager.getLastWeek(_now)),
@@ -33,28 +30,24 @@ export default class DataComparisonBadge extends Component {
       newState = {
         titleNow: props.title + ' de hoy',
         titlePast: props.title + ' del ' + dateManager.getDayOfWeek(Date.now()) + ' pasado',
-        uri: props.uri
       }
       break;
       case 2:
       newState = {
         titleNow: props.title + ' de esta semana',
         titlePast: props.title + ' de la semana pasada a la misma fecha',
-        uri: props.uri
       };
       break;
       case 3:
       newState = {
         titleNow: props.title + ' de este mes',
         titlePast: props.title + ' del mes pasado a la misma fecha',
-        uri: props.uri
       };
       break;
       case 4:
       newState = {
         titleNow: props.title + ' de este año',
         titlePast: props.title + ' del año pasado a la misma fecha',
-        uri: props.uri
       };
       break;
     }
@@ -127,7 +120,7 @@ export default class DataComparisonBadge extends Component {
       <div style={styles.comparisonContainer}>
       <DropDownMenu value={this.state.menuValue}
       onChange={this._handleChange}
-      style= {{fontSize: '25px'}}
+      style= {{fontSize: '25px', marginBottom: '20px'}}
       >
       <MenuItem value={1} primaryText={"Comparación Diaria de " + this.props.title} style= {{fontSize: '20px'}}/>
       <MenuItem value={2} primaryText={"Comparación Semanal de " + this.props.title} style= {{fontSize: '20px'}}/>
@@ -136,15 +129,36 @@ export default class DataComparisonBadge extends Component {
       </DropDownMenu>
 
       <div style={{justifyContent:'space-around', flexDirection: 'row', display: 'flex'}}>
-      <MainAndTwoSubDataBadge title={this.state.titleNow}
+      <div style={{height: '450px', width: '500px'}}>
+      <PieChart
+      id='Comparison1'
       uri={this.state.uri.replace(':start_date', this.state.nowStartDate).replace(':end_date', this.state.nowEndDate)}
-      leftColor='#FFBAD2'
-      rightColor='#7CD8EA'
-      />
-      <MainAndTwoSubDataBadge title={this.state.titlePast}
+      graphCreator={{
+        xAxisLabel: 'Opción',
+        yAxisLabel: 'Cantidad',
+        valueFormat: 'd',
+        options: {
+          height: 300,
+          duration: 300,
+          useInteractiveGuideline: true
+        }
+      }}></PieChart>
+      </div>
+      <div style={{height: '450px', width: '500px'}}>
+      <PieChart
+      id='Comparison2'
       uri={this.state.uri.replace(':start_date', this.state.pastStartDate).replace(':end_date', this.state.pastEndDate)}
-      leftColor='#FFBAD2'
-      rightColor='#7CD8EA'/>
+      graphCreator={{
+        xAxisLabel: 'Opción',
+        yAxisLabel: 'Cantidad',
+        valueFormat: 'd',
+        options: {
+          height: 300,
+          duration: 300,
+          useInteractiveGuideline: true
+        }
+      }}></PieChart>
+      </div>
       </div>
       </div>
     );

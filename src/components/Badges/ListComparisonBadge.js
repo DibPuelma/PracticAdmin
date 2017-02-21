@@ -9,7 +9,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
-export default class ComparisonBadge extends Component {
+export default class ListComparisonBadge extends Component {
   constructor(props) {
     super(props);
     var _now = Date.now();
