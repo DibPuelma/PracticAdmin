@@ -52,7 +52,6 @@ export default class Poll extends Component {
   }
 
   _showDialog = () => {
-    //this.setState({ showDialog: true });
     this.setState({ showDialog: true, 
       dialog: (<PollEditForm destroy={ this._hideDialog } poll={ this.props.poll } onSubmit={ this._updatePoll } />)
     });

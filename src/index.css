@@ -270,3 +270,14 @@ body {
   min-width: 140px !important;
 }
 
+/* Employee */
+.dialog .add-wrapper  {
+  display: flex;
+  flex-direction: row;
+}
+
+.dialog .add-button {
+  min-width: 140px !important;
+  height: 48px;
+}
+

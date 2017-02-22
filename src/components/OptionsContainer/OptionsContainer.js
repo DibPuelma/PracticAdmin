@@ -70,7 +70,8 @@ export default class OptionsContainer extends Component {
                 optionsContainer={ this.props.optionsContainer } 
                 allOptions={ this.state.allOptions } 
                 onCancel={ this._cancel }
-                refresh={ this.props.refresh } />
+                onSubmit={ this.props.updateSubmit } 
+                />
             </div>
           }
         </Paper>

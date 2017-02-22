@@ -4,19 +4,11 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Chip from 'material-ui/Chip';
-
 import ContentCreate from 'material-ui/svg-icons/content/create';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 
-const iconProps = {
-  style: {
-    marginRight: 0,
-    marginTop: 4,
-    marginLeft: 0
-  },
-  color: "#999",
-  viewBox: '0 0 30 30'
-}
+import settings from '../../config/settings';
+import EmployeeEditForm from '../../components/EmployeeEditForm/EmployeeEditForm.js';
 
 const styles = {
   chip: {
@@ -29,9 +21,25 @@ const styles = {
   },
 };
 
+const iconProps = {
+  style: {
+    marginRight: 0,
+    marginTop: 4,
+    marginLeft: 0
+  },
+  color: "#999",
+  viewBox: '0 0 30 30'
+}
+
 export default class Employee extends Component {
   constructor(props) {
     super(props);
+
+    this.state = { 
+      showEditDialog: false, 
+      editDialog: null, 
+      employee: this.props.employee 
+    };
   }
 
   render() {
@@ -53,12 +61,60 @@ export default class Employee extends Component {
           <Divider />
           <FlatButton className="option" label="Editar" 
             icon={ <ContentCreate {...iconProps}/> }
-            onClick={ this._onEdit }
+            onClick={ this._edit }
             />
           <FlatButton className="option" label="Eliminar" 
             icon={ <ActionDelete {...iconProps}/> } />
         </Paper>
+
+        { this.state.showEditDialog && 
+          this.state.editDialog
+        }
+
       </div>
     );
+  }
+
+  _edit = () => {
+    this.setState({ 
+      showEditDialog: true, 
+      editDialog:     (<EmployeeEditForm 
+                        employee={ this.props.employee } 
+                        onDestroy={ this._hideDialog } 
+                        onSubmit={ this._update } 
+                        allSellpoints={ this.props.allSellpoints }
+                        />)
+    });
+  }
+
+  _hideDialog = () => {
+    this.setState({ showEditDialog: false, editDialog: null });
+  }
+
+  _update = (body) => {
+    var self = this;
+    var company_id = 2;
+    var employee_id = this.props.employee.id;
+    var url = settings.COMPANY_EMPLOYEE.replace(":company_id", company_id);
+    url = url.replace(":id", employee_id);
+
+    var promise = fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify(body)
+    })
+    .then((response) => response.json());
+
+    promise.then(function(result) {
+      self._hideDialog();
+      self.props.updateEmployees();
+    }, function(err) {
+      self._hideDialog();
+      console.log(err);
+      // TODO: show error on dialog
+    });
   }
 }

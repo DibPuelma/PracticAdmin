@@ -41,14 +41,23 @@ var OptionsContainerEditStatus = { WAITING: 'waiting', SAVING: 'saving' };
 
 export default class OptionsContainerEdit extends Component {
   constructor(props) { 
+    var optionsContainer = props.optionsContainer;
+    if (optionsContainer == null) {
+      optionsContainer = {
+        name: '',
+        PossibleOptions: []
+      }
+    }
+
     super(props);
     this.state = { status: OptionsContainerEditStatus.WAITING,
-                   name: props.optionsContainer.name,
-                   possibleOptions: props.optionsContainer.PossibleOptions.slice(0), // Create a copy
+                   optionsContainer: optionsContainer,
+                   name: optionsContainer.name,
+                   possibleOptions: optionsContainer.PossibleOptions.slice(0), // Create a copy
                    allOptions: props.allOptions,
                    newValue: '',
                    company_id: props.allOptions[0].company_id
-                    };
+                 };
   }
 
   render() {
@@ -58,7 +67,7 @@ export default class OptionsContainerEdit extends Component {
           floatingLabelText="Nombre:"
           fullWidth={ true }
           multiLine={ true }
-          defaultValue={ this.props.optionsContainer.name }
+          defaultValue={ this.state.optionsContainer.name }
           onChange={ (event) => this.setState({ name: event.target.value}) }
           />
 
@@ -181,9 +190,9 @@ export default class OptionsContainerEdit extends Component {
     }
 
     // Check for deleted options, loop over the original container
-    for (var i = 0; i < this.props.optionsContainer.PossibleOptions.length; i++) {
-      var option = { id: this.props.optionsContainer.PossibleOptions[i].id,
-                     value: this.props.optionsContainer.PossibleOptions[i].value, 
+    for (var i = 0; i < this.state.optionsContainer.PossibleOptions.length; i++) {
+      var option = { id: this.state.optionsContainer.PossibleOptions[i].id,
+                     value: this.state.optionsContainer.PossibleOptions[i].value, 
                      company_id: company_id
                    };
       if (!this._isContained(option)) {
@@ -191,42 +200,19 @@ export default class OptionsContainerEdit extends Component {
       }
     }
 
-    console.log("new");
-    console.log(JSON.stringify(newOptions));
-    console.log("existing");
-    console.log(JSON.stringify(existingOptions));
-    console.log("deleted");
-    console.log(JSON.stringify(deletedOptions));
-    console.log(this.state.name);
+    // console.log(JSON.stringify(newOptions));
+    // console.log(JSON.stringify(existingOptions));
+    // console.log(JSON.stringify(deletedOptions));
+    // console.log(this.state.name);
 
-    // Make request
-    var self = this;
-    var container_id = this.props.optionsContainer.id;
-    var url = settings.COMPANY_OPTIONS_CONTAINER.replace(":company_id", company_id);
-    url = url.replace(":id", container_id);
+    var body = {
+      name            : this.state.name,
+      newOptions      : newOptions,
+      existingOptions : existingOptions,
+      deletedOptions  : deletedOptions
+    };
 
-    var promise = fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      'body': JSON.stringify({
-        name            : this.state.name,
-        newOptions      : newOptions,
-        existingOptions : existingOptions,
-        deletedOptions  : deletedOptions
-
-      })
-    })
-    .then((response) => response.json());
-
-    promise.then(function(result) {
-      self.props.refresh();
-    }, function(err) {
-      self.setState({ status: OptionsContainerEditStatus.WAITING });
-      console.log(err);
-    });
+    this.props.onSubmit(this.state.optionsContainer.id, body);
   }
 }
 

@@ -17,10 +17,11 @@ const styles = {
   },
 };
 
-export default class PollEditForm extends Component {
+export default class QuestionEdit extends Component {
   constructor(props) {
     super(props);
-    if (props.question.type === 'options') {
+
+    if (props.question.OptionsContainer && props.question.OptionsContainer.PossibleOptions) { //;props.question.type === 'options') {
       this.state = {
         question: props.question,
         optionsContainer: props.question.options_container_id,
@@ -58,7 +59,7 @@ export default class PollEditForm extends Component {
 
             <div>Opciones</div>
             <div style={styles.wrapper}>
-              { this.state.options.map((x, i) =>
+              {  this.state.options && this.state.options.map((x, i) =>
                  <Chip style={styles.chip} className="chip">{ x.value }</Chip>
               )}
             </div>

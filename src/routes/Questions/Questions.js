@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 
-import FullPageLoading from '../../components/FullPageLoading/FullPageLoading.js';
-import Employee from '../../components/Employee/Employee.js';
-import settings from '../../config/settings';
-import EmployeeEditForm from '../../components/EmployeeEditForm/EmployeeEditForm.js';
 import RaisedButton from 'material-ui/RaisedButton';
 
-var EmployeesStatus = { LOADING: 'loading', READY: 'ready' };
+import FullPageLoading from '../../components/FullPageLoading/FullPageLoading.js';
+import Question from '../../components/Question/Question.js';
+import QuestionDialog from '../../components/QuestionDialog/QuestionDialog.js';
 
-export default class Employees extends Component {
+import settings from '../../config/settings';
+
+var QuestionsStatus = { LOADING: 'loading', READY: 'ready' };
+
+export default class Questions extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      status: EmployeesStatus.LOADING,
+      status: QuestionsStatus.LOADING ,
       showCreateDialog: false, 
       createDialog: null, 
     };
@@ -23,7 +25,7 @@ export default class Employees extends Component {
   }
 
   render() {
-    if (this.state.status === EmployeesStatus.LOADING) {
+    if (this.state.status === QuestionsStatus.LOADING) {
       return (
         <FullPageLoading />
       );
@@ -35,9 +37,9 @@ export default class Employees extends Component {
           <RaisedButton onClick={ this._create } primary={ true } label="Crear" />
         </div>
 
-        <div className="employees-container">
-          { this.state.employees.map((x, i) =>
-            <Employee employee={ x } allSellpoints={ this.state.allSellpoints } updateEmployees={ this._load } />
+        <div className="questions-container">
+          { this.state.questions.map((x, i) =>
+            <Question question={ x } optionsContainers={ this.state.optionsContainers } />
           )}
         </div>
 
@@ -49,39 +51,39 @@ export default class Employees extends Component {
     );
   }
 
-  _load = () => {
-    this.setState({ status: EmployeesStatus.LOADING });
+  _load() {
+    this.setState({ status: QuestionsStatus.LOADING });
     var self = this;
 
     var company_id = 2;
-    var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
+    var url = settings.COMPANY_QUESTIONS.replace(":company_id", company_id);
     var promise = fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
     })
     .then((response) => response.json());
 
     promise.then(function(result) {
-      var url2 = settings.COMPANY_SELLPOINTS.replace(":company_id", company_id);
+      var url2 = settings.COMPANY_OPTIONS_CONTAINERS.replace(":company_id", company_id);
+
       var promise2 = fetch(url2, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        }, 
+        },
       })
       .then((response) => response.json());
 
       promise2.then(function(result2) {
-        self.setState({ allSellpoints: result2 });
-        self.setState({ employees: result });
-        self.setState({ status: EmployeesStatus.READY });
-      }, function(err) {
-        console.log(err);
+        self.setState({ optionsContainers: result2 });
+        self.setState({ questions: result });
+        self.setState({ status: QuestionsStatus.READY });
       });
+
     }, function(err) {
       console.log(err);
     });
@@ -90,11 +92,11 @@ export default class Employees extends Component {
   _create = () => {
     this.setState({ 
       showCreateDialog: true, 
-      createDialog:     (<EmployeeEditForm 
+      createDialog:     (<QuestionDialog 
                           onDestroy={ this._hideDialog }
                           onSubmit={ this._createSubmit }
-                          allSellpoints={ this.state.allSellpoints }
-                        />)
+                          optionsContainers={ this.state.optionsContainers }
+                          />)
     });
   }
 
@@ -105,7 +107,7 @@ export default class Employees extends Component {
   _createSubmit = (body) => {
     var self = this;
     var company_id = 2;
-    var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
+    var url = settings.COMPANY_QUESTIONS.replace(":company_id", company_id);
 
     var promise = fetch(url, {
       method: 'POST',
@@ -126,4 +128,5 @@ export default class Employees extends Component {
       // TODO: show error on dialog
     });
   }
+
 }

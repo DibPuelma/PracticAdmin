@@ -1,21 +1,23 @@
 import React, { Component } from 'react'
 
 import FullPageLoading from '../../components/FullPageLoading/FullPageLoading.js';
-import Employee from '../../components/Employee/Employee.js';
-import settings from '../../config/settings';
-import EmployeeEditForm from '../../components/EmployeeEditForm/EmployeeEditForm.js';
 import RaisedButton from 'material-ui/RaisedButton';
 
-var EmployeesStatus = { LOADING: 'loading', READY: 'ready' };
+import Poll from '../../components/Poll/Poll.js';
+import PollDialog from '../../components/PollDialog/PollDialog.js';
 
-export default class Employees extends Component {
+import settings from '../../config/settings';
+
+var PollsStatus = { LOADING: 'loading', READY: 'ready' };
+
+export default class Polls extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      status: EmployeesStatus.LOADING,
+      status: PollsStatus.LOADING,
       showCreateDialog: false, 
-      createDialog: null, 
-    };
+      createDialog: null
+      };
   }
 
   componentDidMount() {
@@ -23,7 +25,7 @@ export default class Employees extends Component {
   }
 
   render() {
-    if (this.state.status === EmployeesStatus.LOADING) {
+    if (this.state.status === PollsStatus.LOADING) {
       return (
         <FullPageLoading />
       );
@@ -31,13 +33,14 @@ export default class Employees extends Component {
 
     return (
       <div>
+        <div>{ JSON.stringify(this.props) }</div>
         <div>
           <RaisedButton onClick={ this._create } primary={ true } label="Crear" />
         </div>
 
-        <div className="employees-container">
-          { this.state.employees.map((x, i) =>
-            <Employee employee={ x } allSellpoints={ this.state.allSellpoints } updateEmployees={ this._load } />
+        <div className="polls-container">
+          { this.state.polls.map((x, i) =>
+            <Poll poll={ x } />
           )}
         </div>
 
@@ -49,63 +52,48 @@ export default class Employees extends Component {
     );
   }
 
-  _load = () => {
-    this.setState({ status: EmployeesStatus.LOADING });
-    var self = this;
+  _load() {
+    this.setState({ status: PollsStatus.LOADING });
+    var polls = this;
 
     var company_id = 2;
-    var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
+    var url = settings.COMPANY_POLLS.replace(":id", company_id);
     var promise = fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
     })
     .then((response) => response.json());
 
     promise.then(function(result) {
-      var url2 = settings.COMPANY_SELLPOINTS.replace(":company_id", company_id);
-      var promise2 = fetch(url2, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }, 
-      })
-      .then((response) => response.json());
-
-      promise2.then(function(result2) {
-        self.setState({ allSellpoints: result2 });
-        self.setState({ employees: result });
-        self.setState({ status: EmployeesStatus.READY });
-      }, function(err) {
-        console.log(err);
-      });
+      polls.setState({ polls: result });
+      polls.setState({ status: PollsStatus.READY });
     }, function(err) {
       console.log(err);
     });
   }
 
-  _create = () => {
-    this.setState({ 
-      showCreateDialog: true, 
-      createDialog:     (<EmployeeEditForm 
-                          onDestroy={ this._hideDialog }
-                          onSubmit={ this._createSubmit }
-                          allSellpoints={ this.state.allSellpoints }
-                        />)
-    });
-  }
 
   _hideDialog = () => {
     this.setState({ showCreateDialog: false, createDialog: null });
   }
 
+  _create = () => {
+    this.setState({ 
+      showCreateDialog: true, 
+      createDialog:     (<PollDialog 
+                          onDestroy={ this._hideDialog }
+                          onSubmit={ this._createSubmit }
+                          />)
+    });
+  }
+
   _createSubmit = (body) => {
     var self = this;
     var company_id = 2;
-    var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
+    var url = settings.COMPANY_POLLS.replace(":id", company_id);
 
     var promise = fetch(url, {
       method: 'POST',
@@ -126,4 +114,5 @@ export default class Employees extends Component {
       // TODO: show error on dialog
     });
   }
+
 }
