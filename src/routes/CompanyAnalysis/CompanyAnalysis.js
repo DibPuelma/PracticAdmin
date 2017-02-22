@@ -4,6 +4,7 @@ import LineChart from '../../components/Charts/LineChart.js';
 import BarChart from '../../components/Charts/BarChart.js';
 import PieChart from '../../components/Charts/PieChart.js';
 import Paper from 'material-ui/Paper';
+import settings from '../../config/settings';
 
 export default class Dashboard extends Component {
   render() {
@@ -13,7 +14,7 @@ export default class Dashboard extends Component {
         <Paper style={styles.chart} zDepth={2}>
         <h3 style={{textAlign: 'center'}}>Promedio de la empresa en el tiempo</h3>
         <LineChart id="lineChart0"
-        uri='http://www.localhost:3000/company/1/average_stars'
+        uri= {settings.COMPANY_DATE_AVG.replace(':company_id', 1)}
         xValue='created_at'
         xType='time'
         series={[
@@ -44,7 +45,7 @@ export default class Dashboard extends Component {
         <Paper style={styles.chart} zDepth={2}>
         <h3 style={{textAlign: 'center'}}>Respuestas totales de la empresa en el tiempo</h3>
         <BarChart id="barChart1"
-        uri='http://www.localhost:3000/company/1/total_responses'
+        uri={settings.COMPANY_DATE_TOTAL.replace(':company_id', 1)}
         xValue='created_at'
         xType='time'
         series={
@@ -60,7 +61,7 @@ export default class Dashboard extends Component {
           xAxisLabel: 'Fecha',
           yAxisLabel: 'Cantidad',
           xFormat: '%b %d %y',
-          yFormat: ',.2f',
+          yFormat: 'd',
           options: {
             height: 550,
             duration: 300,
@@ -71,7 +72,7 @@ export default class Dashboard extends Component {
         <Paper style={styles.chart} zDepth={2}>
         <h3 style={{textAlign: 'center'}}>Distribución etaria de los encuestados de la compañía</h3>
         <BarChart id="barChart2"
-        uri='http://www.localhost:3000/company/1/respondents_age'
+        uri={settings.COMPANY_DATE_AGE.replace(':company_id', 1)}
         xValue='age'
         xType='integer'
         series={[
@@ -105,7 +106,7 @@ export default class Dashboard extends Component {
         <Paper style={styles.chart} zDepth={2}>
         <h3 style={{textAlign: 'center'}}>Distribución de géneros de los encuestados de la compañía</h3>
         <PieChart id="pieChart"
-        uri='http://www.localhost:3000/company/1/respondents_gender'
+        uri={settings.COMPANY_DATE_GENDER.replace(':company_id', 1)}
         series={[
           {
             valueKey:'count',

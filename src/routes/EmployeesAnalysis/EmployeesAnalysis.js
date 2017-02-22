@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Avatar from 'material-ui/Avatar';
-import SocialPoll from 'material-ui/svg-icons/social/poll';
+import UserIcon from 'material-ui/svg-icons/social/person';
 import CircularProgress from 'material-ui/CircularProgress';
 import CircularProgressStyle from '../../styles/CircularProgress';
 
@@ -21,7 +21,7 @@ export default class Panel extends Component {
   }
 
   componentDidMount() {
-    fetch(settings.POLLS.replace(':company_id', 1), {
+    fetch(settings.EMPLOYEES.replace(':company_id', 1), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -45,30 +45,31 @@ export default class Panel extends Component {
       return (
         <div>
         <ExcelDownloadButton
-        uri={settings.EXCEL_POLLS.replace(':company_id', 1)}
-        fileName='reporte_encuestas.xlsx'
-        label='Descargar excel con los datos de las encuestas'
+        uri={settings.EXCEL_EMPLOYEES.replace(':company_id', 1)}
+        fileName='reporte_empleados.xlsx'
+        label='Descargar excel con los datos de los empleados'
         />
         {this.state.data.map((value, i) => (
-          <CardControlled
-          title={value.name}
-          subtitle={value.description}
-          avatar={<Avatar icon={<SocialPoll />}/>}
-          uris={{
-            total: settings.POLL_TOTAL.replace(':company_id', 1).replace(':poll_id', value.id),
-            age: settings.POLL_AGE.replace(':company_id', 1).replace(':poll_id', value.id),
-            gender: settings.POLL_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
-            number: settings.POLL_AVG.replace(':company_id', 1).replace(':poll_id', value.id),
-            avg_age: settings.POLL_AVG_AGE.replace(':company_id', 1).replace(':poll_id', value.id),
-            number_by_gender: settings.POLL_AVG_BY_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
-            total_by_gender: settings.POLL_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
-          }}
-          expand={(id, toggle) => (this._expandListElement(id, toggle))}
-          type='encuesta'
-          diff={value.id}
-          key={i}
-          ref={value.id}/>
-        ))}
+            <CardControlled
+            uris={{
+              total: settings.EMPLOYEE_TOTAL.replace(':company_id', 1).replace(':employee_id', value.id),
+              age: settings.EMPLOYEE_AGE.replace(':company_id', 1).replace(':employee_id', value.id),
+              gender: settings.EMPLOYEE_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
+              number: settings.EMPLOYEE_AVG.replace(':company_id', 1).replace(':employee_id', value.id),
+              avg_age: settings.EMPLOYEE_AVG_AGE.replace(':company_id', 1).replace(':employee_id', value.id),
+              number_by_gender: settings.EMPLOYEE_AVG_BY_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
+              total_by_gender: settings.EMPLOYEE_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
+            }}
+            expand={(id, toggle) => (this._expandListElement(id, toggle))}
+            type='empleado'
+            diff={value.id}
+            title={value.name + ' ' + value.last_name}
+            subtitle="Empleado"
+            avatar={<Avatar icon={<UserIcon />}/>}
+            key={i}
+            ref={value.id}/>
+          )
+        )}
         </div>
       );
     }
@@ -81,7 +82,7 @@ export default class Panel extends Component {
       else{
         var ref = this.state.expanded;
         this.setState({doubleExpanded: true})
-        this.setState({expanded: id}, () => {
+        this.setState({expanded: id}, () => {
           console.log(this);
           this.refs[ref].handleToggle(null, false);
         })
