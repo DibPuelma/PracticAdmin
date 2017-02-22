@@ -10,7 +10,7 @@ import Divider from 'material-ui/Divider';
 import QuestionEdit from '../../components/QuestionEdit/QuestionEdit.js';
 
 const customContentStyle = {
-  maxWidth: 500,
+  maxWidth: 700,
 };
 
 const styles = {
@@ -34,10 +34,10 @@ var PollEditFormStatus = { LOADING: 'loading', READY: 'ready', SAVING: 'saving' 
 export default class PollEditForm extends Component {
   constructor(props) {
     super(props);
-    this.state = 
-      { status: PollEditFormStatus.LOADING, 
-        open: true,
-        name: this.props.poll.name,
+    this.state = {
+        status     : PollEditFormStatus.LOADING, 
+        open       : true,
+        name       : this.props.poll.name,
         description: this.props.poll.description
       };
   }

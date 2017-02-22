@@ -7,6 +7,8 @@ import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 import './../../index.css';
 
+import settings from '../../config/settings';
+
 const customContentStyle = {
   maxWidth: '360px',
 };
@@ -54,8 +56,27 @@ export default class Home extends Component {
           contentStyle={customContentStyle}
         >
           Ingresa como administrador<br />
-          <TextField hintText="Usuario" style={ styles.loginInput }/><br />
-          <TextField hintText="Contraseña" type="password" style={ styles.loginInput } /><br />
+          <TextField 
+            hintText="Correo" 
+            style={ styles.loginInput }
+            onChange={ (event) => this.setState({ email: event.target.value}) }
+            />
+
+          <br />
+
+          <TextField 
+            hintText="Contraseña" 
+            type="password" 
+            style={ styles.loginInput }
+            onChange={ (event) => this.setState({ password: event.target.value}) }
+            />
+
+          <br />
+
+          { this.state.error &&
+            <div>{ this.state.error }</div>
+          }
+
           { this.state.status === LoginStatus.WAITING &&
             <div style={ styles.loginButtonsContainer }>
               <RaisedButton primary={ true } style={ styles.loginSubmit } label="Entrar" onClick={ this._login } />
@@ -85,17 +106,39 @@ export default class Home extends Component {
   _login = () => {
     this.setState({ status: LoginStatus.LOGGING_IN });
 
-    //var home = this;
-    var promise = new Promise(function(resolve, reject) {
-      setTimeout(function() { // Wait for api simulation
-        resolve("Stuff worked!");
-        //reject(Error("It broke"));
-      }, 2000);
-    });
+    var body = { email: this.state.email , password: this.state.password };
+
+    var self = this;
+    var url = settings.MANAGER_LOGIN;
+
+    var promise = fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify(body)
+    })
+    .then((response) => response.json());
 
     promise.then(function(result) {
-      console.log(result);
-      browserHistory.push('/dashboard');
+      switch(result.code) {
+        case 'OK':
+          console.log("logged in");
+          self.props.route.onLogin(result.manager);
+          browserHistory.push('/dashboard');
+          return;
+        case 'WRONG_PASSWORD':
+          self.setState({ error: 'Contraseña incorrecta' });
+          self.setState({ status: LoginStatus.WAITING });
+          return;
+        case 'MANAGER_DOES_NOT_EXIT':
+          self.setState({ error: 'El usuario no existe' });
+          self.setState({ status: LoginStatus.WAITING });
+          return;
+      }
+      self.setState({ error: 'Error interno' });
+      self.setState({ status: LoginStatus.WAITING });
     }, function(err) {
       console.log(err);
     });

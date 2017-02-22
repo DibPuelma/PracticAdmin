@@ -30,28 +30,39 @@ export default class Abc extends Component {
   }
 }
 
+var user = null;
+console.log("???");
+function _login(u) {
+  user = u;
+  console.log(user);
+}
+
+function _getUser() {
+  return user;
+}
 
 ReactDOM.render(
   <Router history={browserHistory}>
+    {console.log("hola")}
     <Route path="/" component={HomeApp}>
-      <IndexRoute component={Home} />
+      <IndexRoute component={Home} onLogin={ _login } />
       <Route path="descargas" component={DumbExcel} />
     </Route>
 
     <Route path="/" component={App}>
       { /* Análisis */ }
-      <Route path="analisis_tiendas" component={StoresAnalysis} />
-      <Route path="analisis_encuestas" component={PollsAnalysis} />
-      <Route path="analisis_preguntas" component={QuestionsAnalysis} />
-      <Route path="analisis_compania" component={CompanyAnalysis} />
-      <Route path="analisis_avanzado" component={Abc} />
-      <Route path="dashboard" component={Dashboard} />
+      <Route path="analisis_tiendas" component={StoresAnalysis} user={ user }/>
+      <Route path="analisis_encuestas" component={PollsAnalysis} user={ user } />
+      <Route path="analisis_preguntas" component={QuestionsAnalysis} user={ user } />
+      <Route path="analisis_compania" component={CompanyAnalysis} user={ user } />
+      <Route path="analisis_avanzado" component={Abc} user={ user } />
+      <Route path="dashboard" component={Dashboard} user={ user }/>
 
       { /* Admin */ }
-      <Route path="encuestas" component={Polls} />
-      <Route path="preguntas" component={Questions} />
-      <Route path="opciones" component={OptionsContainers} />
-      <Route path="empleados" component={Employees} />
+      <Route path="encuestas" component={Polls} user={ _getUser } />
+      <Route path="preguntas" component={Questions} user={ user } />
+      <Route path="opciones" component={OptionsContainers} user={ user } />
+      <Route path="empleados" component={Employees} user={ user } />
     </Route>
 
   </Router>

@@ -41,6 +41,8 @@ export default class App extends Component {
               <h5>Practiweb</h5>
             </div>
 
+            <h1>??{ JSON.stringify(this.props.route.user) }??</h1>
+
             <Link to="/dashboard" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Inicio</MenuItem>
             </Link>

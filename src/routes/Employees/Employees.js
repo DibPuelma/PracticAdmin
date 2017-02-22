@@ -3,13 +3,19 @@ import React, { Component } from 'react'
 import FullPageLoading from '../../components/FullPageLoading/FullPageLoading.js';
 import Employee from '../../components/Employee/Employee.js';
 import settings from '../../config/settings';
+import EmployeeEditForm from '../../components/EmployeeEditForm/EmployeeEditForm.js';
+import RaisedButton from 'material-ui/RaisedButton';
 
 var EmployeesStatus = { LOADING: 'loading', READY: 'ready' };
 
 export default class Employees extends Component {
   constructor(props) {
     super(props);
-    this.state = { status: EmployeesStatus.LOADING };
+    this.state = { 
+      status: EmployeesStatus.LOADING,
+      showCreateDialog: false, 
+      createDialog: null, 
+    };
   }
 
   componentDidMount() {
@@ -25,20 +31,30 @@ export default class Employees extends Component {
 
     return (
       <div>
+        <div>
+          <RaisedButton onClick={ this._create } primary={ true } label="Crear" />
+        </div>
+
         <div className="employees-container">
           { this.state.employees.map((x, i) =>
-            <Employee employee={ x } />
+            <Employee employee={ x } allSellpoints={ this.state.allSellpoints } updateEmployees={ this._load } />
           )}
         </div>
+
+        { this.state.showCreateDialog && 
+          this.state.createDialog
+        }
+
       </div>
     );
   }
 
-  _load() {
+  _load = () => {
+    this.setState({ status: EmployeesStatus.LOADING });
     var self = this;
 
     var company_id = 2;
-    var url = settings.COMPANY_EMPLOYEE.replace(":company_id", company_id);
+    var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
     var promise = fetch(url, {
       method: 'GET',
       headers: {
@@ -49,10 +65,65 @@ export default class Employees extends Component {
     .then((response) => response.json());
 
     promise.then(function(result) {
-      self.setState({ employees: result });
-      self.setState({ status: EmployeesStatus.READY });
+      var url2 = settings.COMPANY_SELLPOINTS.replace(":company_id", company_id);
+      var promise2 = fetch(url2, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }, 
+      })
+      .then((response) => response.json());
+
+      promise2.then(function(result2) {
+        self.setState({ allSellpoints: result2 });
+        self.setState({ employees: result });
+        self.setState({ status: EmployeesStatus.READY });
+      }, function(err) {
+        console.log(err);
+      });
     }, function(err) {
       console.log(err);
+    });
+  }
+
+  _create = () => {
+    this.setState({ 
+      showCreateDialog: true, 
+      createDialog:     (<EmployeeEditForm 
+                          onDestroy={ this._hideDialog }
+                          onSubmit={ this._createSubmit }
+                          allSellpoints={ this.state.allSellpoints }
+                        />)
+    });
+  }
+
+  _hideDialog = () => {
+    this.setState({ showCreateDialog: false, createDialog: null });
+  }
+
+  _createSubmit = (body) => {
+    var self = this;
+    var company_id = 2;
+    var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
+
+    var promise = fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }, 
+      body: JSON.stringify(body)
+    })
+    .then((response) => response.json());
+
+    promise.then(function(result) {
+      self._hideDialog();
+      self._load();
+    }, function(err) {
+      self._hideDialog();
+      console.log(err);
+      // TODO: show error on dialog
     });
   }
 }
