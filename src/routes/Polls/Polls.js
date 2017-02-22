@@ -16,8 +16,9 @@ export default class Polls extends Component {
     this.state = { 
       status: PollsStatus.LOADING,
       showCreateDialog: false, 
-      createDialog: null
-      };
+      createDialog: null,
+      user: this.props.user
+    };
   }
 
   componentDidMount() {
@@ -33,7 +34,7 @@ export default class Polls extends Component {
 
     return (
       <div>
-        <div>{ JSON.stringify(this.props) }</div>
+        <div>{ JSON.stringify(this.state.user) }</div>
         <div>
           <RaisedButton onClick={ this._create } primary={ true } label="Crear" />
         </div>

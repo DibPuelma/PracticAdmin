@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import './index.css';
 import './nv.d3.min.css';
+import cookie from 'react-cookie';
 
 import App from './App';
 import HomeApp from './HomeApp';
@@ -20,7 +21,7 @@ import Questions from './routes/Questions/Questions';
 import OptionsContainers from './routes/OptionsContainers/OptionsContainers';
 import Employees from './routes/Employees/Employees';
 
-export default class Abc extends Component {
+class Abc extends Component {
   render() {
     return (
       <div>
@@ -30,41 +31,69 @@ export default class Abc extends Component {
   }
 }
 
-var user = null;
-console.log("???");
-function _login(u) {
-  user = u;
-  console.log(user);
-}
+class Application extends Component {
+  constructor(props) {
+    super(props);
+    
+    var user = cookie.load('user');
+    if (user !== null) {
+      this.state = { user: user };
+    } else {
+      this.state = {};
+    }
+  }
 
-function _getUser() {
-  return user;
+  render() {
+    return (
+      <Router history={browserHistory}>
+        <Route path="/" component={HomeApp}>
+          <IndexRoute component={Home} onLogin={ this._login } />
+          <Route path="descargas" component={DumbExcel} />
+        </Route>
+
+        <div>Hola</div>
+        <Route path="/" component={App} getUser={ this._getUser } logout={ this._logout } onEnter={ this.requireAuth }>
+          { /* Análisis */ }
+          <Route path="analisis_tiendas" component={StoresAnalysis} user={ this.state.user }/>
+          <Route path="analisis_encuestas" component={PollsAnalysis} user={ this.state.user } />
+          <Route path="analisis_preguntas" component={QuestionsAnalysis} user={ this.state.user } />
+          <Route path="analisis_compania" component={CompanyAnalysis} user={ this.state.user } />
+          <Route path="analisis_avanzado" component={Abc} user={ this.state.user } />
+          <Route path="dashboard" component={Dashboard} user={ this.state.user }/>
+
+          { /* Admin */ }
+          <Route path="encuestas" component={Polls} user={ this.state.user }/>
+          <Route path="preguntas" component={Questions} user={ this.state.user } />
+          <Route path="opciones" component={OptionsContainers} user={ this.state.user } />
+          <Route path="empleados" component={Employees} user={ this.state.user } />
+        </Route>
+
+      </Router>
+    );
+  }
+  
+  requireAuth = (nextState, replace) => {
+    var user = this.state.user;
+    if (typeof user === 'undefined') {
+      replace({ pathname: '/', state: { } });
+    }
+  }
+
+  _getUser = () => {
+    return(this.state.user);
+  }
+
+  _login = (user) => {
+    cookie.save('user', JSON.stringify(user), { path: '/' });
+    this.setState({ user: user });
+  }
+
+  _logout = () => {
+    cookie.remove('user', { path: '/' });
+  }
 }
 
 ReactDOM.render(
-  <Router history={browserHistory}>
-    {console.log("hola")}
-    <Route path="/" component={HomeApp}>
-      <IndexRoute component={Home} onLogin={ _login } />
-      <Route path="descargas" component={DumbExcel} />
-    </Route>
-
-    <Route path="/" component={App}>
-      { /* Análisis */ }
-      <Route path="analisis_tiendas" component={StoresAnalysis} user={ user }/>
-      <Route path="analisis_encuestas" component={PollsAnalysis} user={ user } />
-      <Route path="analisis_preguntas" component={QuestionsAnalysis} user={ user } />
-      <Route path="analisis_compania" component={CompanyAnalysis} user={ user } />
-      <Route path="analisis_avanzado" component={Abc} user={ user } />
-      <Route path="dashboard" component={Dashboard} user={ user }/>
-
-      { /* Admin */ }
-      <Route path="encuestas" component={Polls} user={ _getUser } />
-      <Route path="preguntas" component={Questions} user={ user } />
-      <Route path="opciones" component={OptionsContainers} user={ user } />
-      <Route path="empleados" component={Employees} user={ user } />
-    </Route>
-
-  </Router>
+  <Application />
   ,document.getElementById('root')
 );
