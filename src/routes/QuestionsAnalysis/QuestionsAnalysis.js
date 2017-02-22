@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
-import CardControlled from '../../components/Cards/CardControlled.js';
 import Avatar from 'material-ui/Avatar';
 import ActionQuestion from 'material-ui/svg-icons/action/question-answer';
 import CircularProgress from 'material-ui/CircularProgress';
 import CircularProgressStyle from '../../styles/CircularProgress';
+
+import settings from '../../config/settings';
+
+import CardControlled from '../../components/Cards/CardControlled.js';
+import ExcelDownloadButton from '../../components/Buttons/ExcelDownloadButton';
+
 
 var translator = {
   'number': 'estrellas',
@@ -13,10 +18,10 @@ var translator = {
 }
 
 var uriGetter = {
-  'number':  '/average_stars',
-  'options':  '/options_answers',
-  'text':  '/text_answers',
-  'boolean': '/boolean_answers',
+  'number':  settings.QUESTION_AVG,
+  'options':  settings.QUESTION_OPTIONS,
+  'text':  settings.QUESTION_TEXT,
+  'boolean': settings.QUESTION_BOOLEAN
 }
 
 
@@ -31,7 +36,7 @@ export default class Panel extends Component {
   }
 
   componentDidMount() {
-    fetch('http://www.localhost:3000/company/1/question', {
+    fetch(settings.QUESTIONS.replace(':company_id', 1), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -54,13 +59,21 @@ export default class Panel extends Component {
     else {
       return (
         <div>
+        <ExcelDownloadButton
+        uri={settings.EXCEL_QUESTIONS.replace(':company_id', 1)}
+        fileName='reporte_preguntas.xlsx'
+        label='Descargar excel con los datos de las preguntas'
+        />
         {this.state.data.map((value, i) => {
           var uris = {
-            total: 'http://www.localhost:3000/company/1/question/' + value.id + '/total_responses',
-            age: 'http://www.localhost:3000/company/1/question/' + value.id + '/respondents_age',
-            gender: 'http://www.localhost:3000/company/1/question/' + value.id + '/respondents_gender',
+            total: settings.QUESTION_TOTAL.replace(':company_id', 1).replace(':question_id', value.id),
+            age: settings.QUESTION_AGE.replace(':company_id', 1).replace(':question_id', value.id),
+            gender: settings.QUESTION_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
+            avg_age: settings.QUESTION_AVG_AGE.replace(':company_id', 1).replace(':question_id', value.id),
+            number_by_gender: settings.QUESTION_AVG_BY_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
+            total_by_gender: settings.QUESTION_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
           };
-          uris[value.type] = 'http://www.localhost:3000/company/1/question/' + value.id + uriGetter[value.type];
+          uris[value.type] = uriGetter[value.type].replace(':company_id', 1).replace(':question_id', value.id);
           return (
             <CardControlled
             expand={(id, toggle) => (this._expandListElement(id, toggle))}
@@ -87,7 +100,7 @@ _expandListElement = function(id, toggle) {
     else{
       var ref = this.state.expanded;
       this.setState({doubleExpanded: true})
-      this.setState({expanded: id}, () => {
+      this.setState({expanded: id}, () => {
         console.log(this);
         this.refs[ref].handleToggle(null, false);
       })

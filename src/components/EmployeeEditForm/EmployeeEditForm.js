@@ -11,8 +11,6 @@ import MenuItem from 'material-ui/MenuItem';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FlatButton from 'material-ui/FlatButton';
 
-import settings from '../../config/settings';
-
 const iconProps = {
   style: {
     marginRight: 0,
@@ -60,9 +58,9 @@ var EmployeeEditFormStatus = { READY: 'ready', SAVING: 'saving' };
 export default class EmployeeEditForm extends Component {
   constructor(props) {
     super(props);
-    
+
     var employee = this.props.employee;
-    if (this.props.employee == null) {
+    if (this.props.employee === null) {
       employee = {
         name: '',
         last_name: '',
@@ -70,7 +68,7 @@ export default class EmployeeEditForm extends Component {
         SellPoints: [],
         freeSellPoints: []
       }
-    } 
+    }
 
     var allSellpointsIds  = this._toIdArray(this.props.allSellpoints);
     var sellpointsIds     = this._toIdArray(employee.SellPoints);
@@ -140,9 +138,9 @@ export default class EmployeeEditForm extends Component {
               )}
             </DropDownMenu>
 
-            <FlatButton 
-              className="add-button" 
-              label="Añadir" 
+            <FlatButton
+              className="add-button"
+              label="Añadir"
               icon={ <ContentAdd {...iconProps}/> }
               onClick={ this._addSellpoint }
               />
@@ -150,8 +148,8 @@ export default class EmployeeEditForm extends Component {
 
           <p>Puntos de ventas actuales:</p>
           <div style={styles.wrapper}>
-            { this.state.sellpoints.map((x, i) => 
-               <Chip style={styles.chip} className="chip" 
+            { this.state.sellpoints.map((x, i) =>
+               <Chip style={styles.chip} className="chip"
                 onRequestDelete={ () => this._deleteOption(x) }>{ this._getSellPointsById(x).location }</Chip>
             )}
           </div>
@@ -195,7 +193,7 @@ export default class EmployeeEditForm extends Component {
 
   _getSellPointsById = (id) => {
     for (var i = 0; i < this.props.allSellpoints.length; i++) {
-      if (this.props.allSellpoints[i].id == id)
+      if (this.props.allSellpoints[i].id === id)
         return this.props.allSellpoints[i];
     }
     return { location: '' };
@@ -220,7 +218,7 @@ export default class EmployeeEditForm extends Component {
     var index = freeSellPoints.indexOf(value);
 
     if (index === -1) return;
-    
+
     sellpoints.push(value);
     freeSellPoints.splice(index, 1);
 
@@ -241,7 +239,7 @@ export default class EmployeeEditForm extends Component {
 
     this.setState({ sellpoints: sellpoints });
     this.setState({ freeSellPoints: freeSellPoints });
-    if (freeSellPoints.length == 1) this.setState({ newValue: freeSellPoints[0] });
+    if (freeSellPoints.length === 1) this.setState({ newValue: freeSellPoints[0] });
   }
 
   _save = () => {
@@ -257,9 +255,9 @@ export default class EmployeeEditForm extends Component {
     for (var i = 0; i < allSellpoints.length; i++) {
       var id = allSellpointsIds[i];
 
-      if (originalSellpoints.indexOf(id) === -1 && selectedSellpoints.indexOf(id) != -1) {
+      if (originalSellpoints.indexOf(id) === -1 && selectedSellpoints.indexOf(id) !== -1) {
         newSellpoints.push(id);
-      } else if (originalSellpoints.indexOf(id) != -1 && selectedSellpoints.indexOf(id) === -1) {
+      } else if (originalSellpoints.indexOf(id) !== -1 && selectedSellpoints.indexOf(id) === -1) {
         deletedSellpoints.push(id);
       }
     }

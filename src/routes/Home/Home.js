@@ -56,17 +56,17 @@ export default class Home extends Component {
           contentStyle={customContentStyle}
         >
           Ingresa como administrador<br />
-          <TextField 
-            hintText="Correo" 
+          <TextField
+            hintText="Correo"
             style={ styles.loginInput }
             onChange={ (event) => this.setState({ email: event.target.value}) }
             />
 
           <br />
 
-          <TextField 
-            hintText="Contraseña" 
-            type="password" 
+          <TextField
+            hintText="Contraseña"
+            type="password"
             style={ styles.loginInput }
             onChange={ (event) => this.setState({ password: event.target.value}) }
             />
@@ -116,7 +116,7 @@ export default class Home extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
       body: JSON.stringify(body)
     })
     .then((response) => response.json());
@@ -136,6 +136,7 @@ export default class Home extends Component {
           self.setState({ error: 'El usuario no existe' });
           self.setState({ status: LoginStatus.WAITING });
           return;
+        default:
       }
       self.setState({ error: 'Error interno' });
       self.setState({ status: LoginStatus.WAITING });

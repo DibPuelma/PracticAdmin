@@ -15,7 +15,7 @@ export default class DumbExcel extends Component {
     );
   }
   _download(filename, type){
-    fetch('http://www.localhost:3000/company/1/excel/' + type, {
+    fetch('http://www.localhost:8000/company/1/excel/' + type, {
       method: 'GET',
       headers: {
         'Accept': 'application/vnd.ms-excel',

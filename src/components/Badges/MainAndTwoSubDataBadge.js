@@ -11,8 +11,43 @@ export default class MainAndTwoSubDataBadge extends Component {
     }
   }
 
+  componentWillReceiveProps(props) {
+    this._getData(props.uri);
+  }
+
   componentDidMount() {
-    fetch(this.props.uri, {
+    // this._getData(this.props.uri);
+  }
+
+  render() {
+    if(!this.state.ready) {
+      return (
+        <Paper style={Object.assign(styles.paperColumn, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
+        <CircularProgress size={80} thickness={5} />
+        </Paper>
+      )
+    }
+    else {
+      return (
+        <Paper style={Object.assign(styles.paperColumn, styles.paperFour, styles.flexCenterEverything)} zDepth={2} >
+        <p style={styles.title}>{this.props.title}</p>
+        <p style={styles.data}>{this.state.data.totalValue !== 'NaN' ? this.state.data.totalValue : '0'}</p>
+        <div style={styles.bottomRow}>
+        <div style={Object.assign({backgroundColor: this.props.leftColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
+        {this.state.data.subDataOneLabel}: {this.state.data.subDataOneValue}
+        </div>
+        <div style={Object.assign({backgroundColor: this.props.rightColor}, styles.blockOneTwo, styles.flexCenterEverything)}>
+        {this.state.data.subDataTwoLabel}: {this.state.data.subDataTwoValue}
+        </div>
+        </div>
+        </Paper>
+      );
+    }
+  }
+
+  _getData(uri){
+    console.log(uri);
+    fetch(uri, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -21,7 +56,6 @@ export default class MainAndTwoSubDataBadge extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log("ldjknldkfn");
       var labels = [];
       var counts = [];
       var avgs = [];
@@ -44,7 +78,6 @@ export default class MainAndTwoSubDataBadge extends Component {
         }
       })
       total_avg = (sum/total_count).toFixed(2);
-      console.log(total_avg);
       var newData = {
         totalValue: total_avg === '0.00' ? total_count : total_avg,
         subDataOneLabel: this._getLabel(labels[0]),
@@ -57,31 +90,6 @@ export default class MainAndTwoSubDataBadge extends Component {
     });
   }
 
-  render() {
-    if(!this.state.ready) {
-      return (
-        <Paper style={styles.paper} zDepth={2} >
-        <CircularProgress size={80} thickness={5} />
-        </Paper>
-      )
-    }
-    else {
-      return (
-        <Paper style={styles.paper} zDepth={2} >
-        <p style={styles.title}>{this.props.title}</p>
-        <p style={styles.data}>{this.state.data.totalValue}</p>
-        <div style={styles.bottomRow}>
-        <div style={styles.bottomLeftBlock}>
-        {this.state.data.subDataOneLabel}: {this.state.data.subDataOneValue}
-        </div>
-        <div style={styles.bottomRightBlock}>
-        {this.state.data.subDataTwoLabel}: {this.state.data.subDataTwoValue}
-        </div>
-        </div>
-        </Paper>
-      );
-    }
-  }
   _getLabel(unprocessedLabel){
     switch (unprocessedLabel) {
       case 'm':

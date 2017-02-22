@@ -14,18 +14,18 @@ import Dashboard from './routes/Dashboard/Dashboard.js';
 import StoresAnalysis from './routes/StoresAnalysis/StoresAnalysis.js';
 import PollsAnalysis from './routes/PollsAnalysis/PollsAnalysis.js';
 import QuestionsAnalysis from './routes/QuestionsAnalysis/QuestionsAnalysis.js';
-import CompanyAnalysis from './routes/CompanyAnalysis/CompanyAnalysis.js';
+import EmployeesAnalysis from './routes/EmployeesAnalysis/EmployeesAnalysis.js';
 
 import Polls from './routes/Polls/Polls';
 import Questions from './routes/Questions/Questions';
 import OptionsContainers from './routes/OptionsContainers/OptionsContainers';
 import Employees from './routes/Employees/Employees';
 
-class Abc extends Component {
+export default class NotImplemented extends Component {
   render() {
     return (
       <div>
-        <h2>Está característica se implementará en el futuro</h2>
+        <h2>Característica aún no implementada</h2>
       </div>
     );
   }
@@ -54,12 +54,15 @@ class Application extends Component {
         <div>Hola</div>
         <Route path="/" component={App} getUser={ this._getUser } logout={ this._logout } onEnter={ this.requireAuth }>
           { /* Análisis */ }
-          <Route path="analisis_tiendas" component={StoresAnalysis} user={ this.state.user }/>
-          <Route path="analisis_encuestas" component={PollsAnalysis} user={ this.state.user } />
-          <Route path="analisis_preguntas" component={QuestionsAnalysis} user={ this.state.user } />
-          <Route path="analisis_compania" component={CompanyAnalysis} user={ this.state.user } />
-          <Route path="analisis_avanzado" component={Abc} user={ this.state.user } />
-          <Route path="dashboard" component={Dashboard} user={ this.state.user }/>
+            <Route path="analisis_tiendas" component={StoresAnalysis} />
+            <Route path="analisis_empleados" component={EmployeesAnalysis} />
+            <Route path="analisis_encuestas" component={PollsAnalysis} />
+            <Route path="analisis_preguntas" component={QuestionsAnalysis} />
+            <Route path="analisis_avanzado" component={NotImplemented} />
+            <Route path="dashboard" component={Dashboard} />
+            {
+              //<Route path="analisis_compania" component={CompanyAnalysis} />
+            }
 
           { /* Admin */ }
           <Route path="encuestas" component={Polls} user={ this.state.user }/>
@@ -67,7 +70,6 @@ class Application extends Component {
           <Route path="opciones" component={OptionsContainers} user={ this.state.user } />
           <Route path="empleados" component={Employees} user={ this.state.user } />
         </Route>
-
       </Router>
     );
   }
