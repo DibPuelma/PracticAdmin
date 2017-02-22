@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import styles from './styles';
 import settings from '../../config/settings';
-import dateManager from '../../lib/dateManager';
 
-import MainAndTwoSubDataBadge from '../../components/Badges/MainAndTwoSubDataBadge';
-import OrderedListThreeBadge from '../../components/Badges/OrderedListThreeBadge';
 import DataComparisonBadge from '../../components/Badges/DataComparisonBadge';
 import ListComparisonBadge from '../../components/Badges/ListComparisonBadge';
 

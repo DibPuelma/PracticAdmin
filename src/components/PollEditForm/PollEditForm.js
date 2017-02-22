@@ -35,7 +35,7 @@ export default class PollEditForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        status     : PollEditFormStatus.LOADING, 
+        status     : PollEditFormStatus.LOADING,
         open       : true,
         name       : this.props.poll.name,
         description: this.props.poll.description
@@ -50,7 +50,7 @@ export default class PollEditForm extends Component {
     return (
       <div>
         <Dialog
-          title={ 'Editar - ' + this.props.poll.name } 
+          title={ 'Editar - ' + this.props.poll.name }
           actions={ [] }
           modal={ true }
           open={ this.state.open }
@@ -92,10 +92,10 @@ export default class PollEditForm extends Component {
 
               <div>
                 { this.state.poll.Questions.map((x, i) =>
-                  <QuestionEdit 
-                    question={ x } 
-                    onChangeText={ this._onChangeText } 
-                    onChangeOptCont={ this._onChangeOptCont } 
+                  <QuestionEdit
+                    question={ x }
+                    onChangeText={ this._onChangeText }
+                    onChangeOptCont={ this._onChangeOptCont }
                     optionsContainers={ this.state.optionsContainers }
                   />
                 )}
@@ -144,10 +144,10 @@ export default class PollEditForm extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
     })
     .then((response) => response.json());
-    
+
     promise.then(function(result) {
       var url2 = settings.COMPANY_OPTIONS_CONTAINERS.replace(":company_id", company_id);
 
@@ -156,7 +156,7 @@ export default class PollEditForm extends Component {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        }, 
+        },
       })
       .then((response) => response.json());
 
@@ -173,7 +173,7 @@ export default class PollEditForm extends Component {
   _onChangeText = (question_id, text) => {
     var k = this._findQuestionById(question_id);
     var poll = this.state.poll;
-    
+
     poll.Questions[k].text = text;
     poll.Questions[k].changed = true;
     this.setState({ poll: poll });
@@ -182,7 +182,7 @@ export default class PollEditForm extends Component {
   _onChangeOptCont = (question_id, optionsContainer) => {
     var k = this._findQuestionById(question_id);
     var poll = this.state.poll;
-    
+
     poll.Questions[k].optionsContainer = optionsContainer;
     poll.Questions[k].changed = true;
     this.setState({ poll: poll })
@@ -190,7 +190,7 @@ export default class PollEditForm extends Component {
 
   _findQuestionById = (id) => {
     for(var k = 0; k < this.state.poll.Questions.length; k++) {
-      if (this.state.poll.Questions[k].id == id) {
+      if (this.state.poll.Questions[k].id === id) {
         return k;
       }
     }
@@ -256,7 +256,7 @@ export default class PollEditForm extends Component {
           'body': JSON.stringify(body)
         })
         .then((response) => response.json());
-        
+
         var p = promise.then(function(result) {
 
         }, function(err) {
@@ -270,12 +270,11 @@ export default class PollEditForm extends Component {
     Promise.all(requests).then(function() {
       self._hide();
       if (self.state.updated) {
-        self.props.onSubmit({ name: self.state.name, description: self.state.description })  
+        self.props.onSubmit({ name: self.state.name, description: self.state.description })
       }
-      
+
     });
 
 
   }
 }
-

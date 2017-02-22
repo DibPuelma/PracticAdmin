@@ -5,7 +5,6 @@ import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
-import settings from '../../config/settings';
 
 const styles = {
   customWidth: {
@@ -40,7 +39,7 @@ const iconProps = {
 var OptionsContainerEditStatus = { WAITING: 'waiting', SAVING: 'saving' };
 
 export default class OptionsContainerEdit extends Component {
-  constructor(props) { 
+  constructor(props) {
     var optionsContainer = props.optionsContainer;
     if (optionsContainer == null) {
       optionsContainer = {
@@ -83,7 +82,7 @@ export default class OptionsContainerEdit extends Component {
             onChange={ (event) => this.setState({ newValue: event.target.value}) }
             />
 
-          <FlatButton className="add-button" label="Añadir" 
+          <FlatButton className="add-button" label="Añadir"
             icon={ <ContentAdd {...iconProps}/> }
             onClick={ this._addOption }
             />
@@ -91,7 +90,7 @@ export default class OptionsContainerEdit extends Component {
 
         <div style={styles.wrapper}>
           { this.state.possibleOptions.map((x, i) =>
-             <Chip style={styles.chip} className="chip" 
+             <Chip style={styles.chip} className="chip"
               onRequestDelete={ () => this._deleteOption(x) }>{ x.value }</Chip>
           )}
         </div>
@@ -182,7 +181,7 @@ export default class OptionsContainerEdit extends Component {
       var new_ = this.state.possibleOptions[i].new;
 
       if (new_) {
-        newOptions.push(option);  
+        newOptions.push(option);
       } else {
         option.id = this.state.possibleOptions[i].id;
         existingOptions.push(option);
@@ -190,9 +189,9 @@ export default class OptionsContainerEdit extends Component {
     }
 
     // Check for deleted options, loop over the original container
-    for (var i = 0; i < this.state.optionsContainer.PossibleOptions.length; i++) {
-      var option = { id: this.state.optionsContainer.PossibleOptions[i].id,
-                     value: this.state.optionsContainer.PossibleOptions[i].value, 
+    for (i = 0; i < this.state.optionsContainer.PossibleOptions.length; i++) {
+      option = { id: this.state.optionsContainer.PossibleOptions[i].id,
+                     value: this.state.optionsContainer.PossibleOptions[i].value,
                      company_id: company_id
                    };
       if (!this._isContained(option)) {
@@ -215,5 +214,3 @@ export default class OptionsContainerEdit extends Component {
     this.props.onSubmit(this.state.optionsContainer.id, body);
   }
 }
-
-

@@ -3,9 +3,6 @@ import styles from './styles'
 import dateManager from '../../lib/dateManager';
 import OrderedListThreeBadge from './OrderedListThreeBadge';
 
-import Paper from 'material-ui/Paper';
-import CircularProgress from 'material-ui/CircularProgress';
-import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -53,6 +50,7 @@ export default class ListComparisonBadge extends Component {
         titlePast: props.title + ' del año pasado a la misma fecha',
       };
       break;
+      default:
     }
     this.setState(newState);
   }
@@ -114,6 +112,7 @@ export default class ListComparisonBadge extends Component {
         pastEndDate: dateManager.getLastYear(_now)
       };
       break;
+      default:
     }
     this.setState(newState);
   }
@@ -123,12 +122,12 @@ export default class ListComparisonBadge extends Component {
       <div style={styles.comparisonContainer}>
       <DropDownMenu value={this.state.menuValue}
       onChange={this._handleChange}
-      style= {{fontSize: '25px'}}
+      style={{fontSize: '25px'}}
       >
-      <MenuItem value={1} primaryText={"Comparación Diaria de " + this.props.title} style= {{fontSize: '20px'}}/>
-      <MenuItem value={2} primaryText={"Comparación Semanal de " + this.props.title} style= {{fontSize: '20px'}}/>
-      <MenuItem value={3} primaryText={"Comparación Mensual de " + this.props.title} style= {{fontSize: '20px'}}/>
-      <MenuItem value={4} primaryText={"Comparación Anual de " + this.props.title} style= {{fontSize: '20px'}}/>
+      <MenuItem value={1} primaryText={"Comparación Diaria de " + this.props.title} style={{fontSize: '20px'}}/>
+      <MenuItem value={2} primaryText={"Comparación Semanal de " + this.props.title} style={{fontSize: '20px'}}/>
+      <MenuItem value={3} primaryText={"Comparación Mensual de " + this.props.title} style={{fontSize: '20px'}}/>
+      <MenuItem value={4} primaryText={"Comparación Anual de " + this.props.title} style={{fontSize: '20px'}}/>
       </DropDownMenu>
 
       <div style={{justifyContent:'space-around', flexDirection: 'row', display: 'flex'}}>

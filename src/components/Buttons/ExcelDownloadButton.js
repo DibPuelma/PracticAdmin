@@ -3,7 +3,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DownloadIcon from 'material-ui/svg-icons/file/file-download';
 import downloader from '../../lib/downloader';
 
-import FileSaver from 'file-saver';
 export default class ExcelDownloadButton extends Component {
   render() {
     return (

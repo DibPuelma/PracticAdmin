@@ -87,7 +87,7 @@ export default class BarChart extends Component {
         }
         responseJson.map((data, i) => {
           if (data[serie.identifierKey] === serie.identifierValue) {
-            var yValue = parseInt(data[serie.yValue]);
+            var yValue = parseInt(data[serie.yValue], 10);
             var xValue = this.props.xType === 'time' ? new Date(data[this.props.xValue]).getTime() : data[this.props.xValue];
             serie.objectValues[xValue] = yValue;
           }

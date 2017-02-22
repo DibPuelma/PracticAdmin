@@ -87,7 +87,6 @@ export default class BarChart extends Component {
           }
           serie.label = label;
           return chartData.push(serie);
-          label = '';
         })
       }
       this._addGraph(
