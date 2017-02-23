@@ -14,14 +14,15 @@ export default class Panel extends Component {
   constructor(props){
     super(props);
     this.state = {
-      ready: false,
-      expanded: null,
-      doubleExpanded: false
+      ready         : false,
+      expanded      : null,
+      doubleExpanded: false,
+      user          : this.props.route.getUser()
     }
   }
 
   componentDidMount() {
-    fetch(settings.POLLS.replace(':company_id', 1), {
+    fetch(settings.POLLS.replace(':company_id', this.state.user.company_id), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -45,7 +46,7 @@ export default class Panel extends Component {
       return (
         <div>
         <ExcelDownloadButton
-        uri={settings.EXCEL_POLLS.replace(':company_id', 1)}
+        uri={settings.EXCEL_POLLS.replace(':company_id', this.state.user.company_id)}
         fileName='reporte_encuestas.xlsx'
         label='Descargar excel con los datos de las encuestas'
         />
@@ -55,13 +56,13 @@ export default class Panel extends Component {
           subtitle={value.description}
           avatar={<Avatar icon={<SocialPoll />}/>}
           uris={{
-            total: settings.POLL_TOTAL.replace(':company_id', 1).replace(':poll_id', value.id),
-            age: settings.POLL_AGE.replace(':company_id', 1).replace(':poll_id', value.id),
-            gender: settings.POLL_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
-            number: settings.POLL_AVG.replace(':company_id', 1).replace(':poll_id', value.id),
-            avg_age: settings.POLL_AVG_AGE.replace(':company_id', 1).replace(':poll_id', value.id),
-            number_by_gender: settings.POLL_AVG_BY_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
-            total_by_gender: settings.POLL_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':poll_id', value.id),
+            total           : settings.POLL_TOTAL.replace(':company_id',           this.state.user.company_id).replace(':poll_id', value.id),
+            age             : settings.POLL_AGE.replace(':company_id',             this.state.user.company_id).replace(':poll_id', value.id),
+            gender          : settings.POLL_GENDER.replace(':company_id',          this.state.user.company_id).replace(':poll_id', value.id),
+            number          : settings.POLL_AVG.replace(':company_id',             this.state.user.company_id).replace(':poll_id', value.id),
+            avg_age         : settings.POLL_AVG_AGE.replace(':company_id',         this.state.user.company_id).replace(':poll_id', value.id),
+            number_by_gender: settings.POLL_AVG_BY_GENDER.replace(':company_id',   this.state.user.company_id).replace(':poll_id', value.id),
+            total_by_gender : settings.POLL_TOTAL_BY_GENDER.replace(':company_id', this.state.user.company_id).replace(':poll_id', value.id),
           }}
           expand={(id, toggle) => (this._expandListElement(id, toggle))}
           type='encuesta'

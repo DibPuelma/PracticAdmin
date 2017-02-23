@@ -14,14 +14,15 @@ export default class Panel extends Component {
   constructor(props){
     super(props);
     this.state = {
-      ready: false,
-      expanded: null,
-      doubleExpanded: false
+      ready         : false,
+      expanded      : null,
+      doubleExpanded: false,
+      user          : this.props.route.getUser()
     }
   }
 
   componentDidMount() {
-    fetch(settings.EMPLOYEES.replace(':company_id', 1), {
+    fetch(settings.EMPLOYEES.replace(':company_id', this.state.user.company_id), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -45,20 +46,20 @@ export default class Panel extends Component {
       return (
         <div>
         <ExcelDownloadButton
-        uri={settings.EXCEL_EMPLOYEES.replace(':company_id', 1)}
+        uri={settings.EXCEL_EMPLOYEES.replace(':company_id', this.state.user.company_id)}
         fileName='reporte_empleados.xlsx'
         label='Descargar excel con los datos de los empleados'
         />
         {this.state.data.map((value, i) => (
             <CardControlled
             uris={{
-              total: settings.EMPLOYEE_TOTAL.replace(':company_id', 1).replace(':employee_id', value.id),
-              age: settings.EMPLOYEE_AGE.replace(':company_id', 1).replace(':employee_id', value.id),
-              gender: settings.EMPLOYEE_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
-              number: settings.EMPLOYEE_AVG.replace(':company_id', 1).replace(':employee_id', value.id),
-              avg_age: settings.EMPLOYEE_AVG_AGE.replace(':company_id', 1).replace(':employee_id', value.id),
-              number_by_gender: settings.EMPLOYEE_AVG_BY_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
-              total_by_gender: settings.EMPLOYEE_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':employee_id', value.id),
+              total           : settings.EMPLOYEE_TOTAL.replace(':company_id',           this.state.user.company_id).replace(':employee_id', value.id),
+              age             : settings.EMPLOYEE_AGE.replace(':company_id',             this.state.user.company_id).replace(':employee_id', value.id),
+              gender          : settings.EMPLOYEE_GENDER.replace(':company_id',          this.state.user.company_id).replace(':employee_id', value.id),
+              number          : settings.EMPLOYEE_AVG.replace(':company_id',             this.state.user.company_id).replace(':employee_id', value.id),
+              avg_age         : settings.EMPLOYEE_AVG_AGE.replace(':company_id',         this.state.user.company_id).replace(':employee_id', value.id),
+              number_by_gender: settings.EMPLOYEE_AVG_BY_GENDER.replace(':company_id',   this.state.user.company_id).replace(':employee_id', value.id),
+              total_by_gender : settings.EMPLOYEE_TOTAL_BY_GENDER.replace(':company_id', this.state.user.company_id).replace(':employee_id', value.id),
             }}
             expand={(id, toggle) => (this._expandListElement(id, toggle))}
             type='empleado'

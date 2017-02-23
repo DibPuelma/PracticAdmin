@@ -12,9 +12,10 @@ export default class Employees extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      status: EmployeesStatus.LOADING,
+      status          : EmployeesStatus.LOADING,
       showCreateDialog: false, 
-      createDialog: null, 
+      createDialog    : null, 
+      user            : this.props.route.getUser()
     };
   }
 
@@ -37,7 +38,12 @@ export default class Employees extends Component {
 
         <div className="employees-container">
           { this.state.employees.map((x, i) =>
-            <Employee employee={ x } allSellpoints={ this.state.allSellpoints } updateEmployees={ this._load } />
+            <Employee 
+              employee={ x }
+              allSellpoints={ this.state.allSellpoints }
+              updateEmployees={ this._load }
+              user={ this.state.user }
+              />
           )}
         </div>
 
@@ -53,7 +59,7 @@ export default class Employees extends Component {
     this.setState({ status: EmployeesStatus.LOADING });
     var self = this;
 
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
     var promise = fetch(url, {
       method: 'GET',
@@ -94,6 +100,7 @@ export default class Employees extends Component {
                           onDestroy={ this._hideDialog }
                           onSubmit={ this._createSubmit }
                           allSellpoints={ this.state.allSellpoints }
+                          user={ this.state.user }
                         />)
     });
   }
@@ -104,7 +111,7 @@ export default class Employees extends Component {
 
   _createSubmit = (body) => {
     var self = this;
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
 
     var promise = fetch(url, {

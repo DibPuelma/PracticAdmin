@@ -60,7 +60,7 @@ export default class EmployeeEditForm extends Component {
     super(props);
 
     var employee = this.props.employee;
-    if (this.props.employee === null) {
+    if (typeof this.props.employee === 'undefined') {
       employee = {
         name: '',
         last_name: '',

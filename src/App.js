@@ -27,13 +27,16 @@ var styles = {
 }
 
 var titleGetter = {
-  '/dashboard':'Dashboard',
-  '/analisis_tiendas':'Análisis por Local',
-  '/analisis_empleados':'Análisis por Empleado',
-  '/analisis_encuestas':'Análisis por Encuesta',
-  '/analisis_preguntas':'Análisis por Pregunta',
-  '/analisis_avanzado':'Análisis Personalizado'
-
+  '/dashboard'         : 'Dashboard',
+  '/analisis_tiendas'  : 'Análisis por Local',
+  '/analisis_empleados': 'Análisis por Empleado',
+  '/analisis_encuestas': 'Análisis por Encuesta',
+  '/analisis_preguntas': 'Análisis por Pregunta',
+  '/analisis_avanzado' : 'Análisis Personalizado',
+  '/encuestas'         : 'Encuestas',
+  '/preguntas'         : 'Preguntas',
+  '/opciones'          : 'Opciones',
+  '/empleados'         : 'Empleados'
 }
 
 injectTapEventPlugin();
@@ -42,8 +45,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    var user = this.props.route.getUser();
-    this.state = { user: user };
+    this.state = { user: this.props.route.getUser()};
   }
 
   render() {
@@ -131,6 +133,6 @@ export default class App extends Component {
 
   _exit = () => {
     this.props.route.logout();
-    this.props.router.push('/')
+    this.props.router.push('/');
   }
 }

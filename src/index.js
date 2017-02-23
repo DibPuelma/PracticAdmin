@@ -37,7 +37,7 @@ class Application extends Component {
     
     var user = cookie.load('user');
     if (user !== null) {
-      this.state = { user: user };
+      this.state = { user: user, leaving: false };
     } else {
       this.state = {};
     }
@@ -54,21 +54,19 @@ class Application extends Component {
         <div>Hola</div>
         <Route path="/" component={App} getUser={ this._getUser } logout={ this._logout } onEnter={ this.requireAuth }>
           { /* Análisis */ }
-            <Route path="analisis_tiendas" component={StoresAnalysis} />
-            <Route path="analisis_empleados" component={EmployeesAnalysis} />
-            <Route path="analisis_encuestas" component={PollsAnalysis} />
-            <Route path="analisis_preguntas" component={QuestionsAnalysis} />
-            <Route path="analisis_avanzado" component={NotImplemented} />
-            <Route path="dashboard" component={Dashboard} />
-            {
-              //<Route path="analisis_compania" component={CompanyAnalysis} />
-            }
+          <Route path="analisis_tiendas" component={StoresAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_empleados" component={EmployeesAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_encuestas" component={PollsAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_preguntas" component={QuestionsAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_avanzado" component={NotImplemented} getUser={ this._getUser } />
+          <Route path="dashboard" component={Dashboard} />
+          { /* <Route path="analisis_compania" component={CompanyAnalysis} /> */ }
 
           { /* Admin */ }
-          <Route path="encuestas" component={Polls} user={ this.state.user }/>
-          <Route path="preguntas" component={Questions} user={ this.state.user } />
-          <Route path="opciones" component={OptionsContainers} user={ this.state.user } />
-          <Route path="empleados" component={Employees} user={ this.state.user } />
+          <Route path="encuestas" component={Polls} getUser={ this._getUser }/>
+          <Route path="preguntas" component={Questions} getUser={ this._getUser } />
+          <Route path="opciones" component={OptionsContainers} getUser={ this._getUser } />
+          <Route path="empleados" component={Employees} getUser={ this._getUser } />
         </Route>
       </Router>
     );

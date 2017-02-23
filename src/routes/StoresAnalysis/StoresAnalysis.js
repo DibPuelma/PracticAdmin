@@ -13,14 +13,15 @@ export default class Panel extends Component {
   constructor(props){
     super(props);
     this.state = {
-      ready: false,
-      expanded: null,
-      doubleExpanded: false
+      ready         : false,
+      expanded      : null,
+      doubleExpanded: false,
+      user          : this.props.route.getUser()
     }
   }
 
   componentDidMount() {
-    fetch(settings.STORES.replace(':company_id', 1), {
+    fetch(settings.STORES.replace(':company_id', this.state.user.company_id), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -44,20 +45,20 @@ export default class Panel extends Component {
       return (
         <div>
         <ExcelDownloadButton
-        uri={settings.EXCEL_STORES.replace(':company_id', 1)}
+        uri={settings.EXCEL_STORES.replace(':company_id', this.state.user.company_id)}
         fileName='reporte_locales.xlsx'
         label='Descargar excel con los datos de los locales'
         />
         {this.state.data.map((value, i) => (
             <CardControlled
             uris={{
-              total: settings.STORE_TOTAL.replace(':company_id', 1).replace(':sell_point_id', value.id),
-              age: settings.STORE_AGE.replace(':company_id', 1).replace(':sell_point_id', value.id),
-              gender: settings.STORE_GENDER.replace(':company_id', 1).replace(':sell_point_id', value.id),
-              number: settings.STORE_AVG.replace(':company_id', 1).replace(':sell_point_id', value.id),
-              avg_age: settings.STORE_AVG_AGE.replace(':company_id', 1).replace(':sell_point_id', value.id),
-              number_by_gender: settings.STORE_AVG_BY_GENDER.replace(':company_id', 1).replace(':sell_point_id', value.id),
-              total_by_gender: settings.STORE_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':sell_point_id', value.id),
+              total           : settings.STORE_TOTAL.replace(':company_id',           this.state.user.company_id).replace(':sell_point_id', value.id),
+              age             : settings.STORE_AGE.replace(':company_id',             this.state.user.company_id).replace(':sell_point_id', value.id),
+              gender          : settings.STORE_GENDER.replace(':company_id',          this.state.user.company_id).replace(':sell_point_id', value.id),
+              number          : settings.STORE_AVG.replace(':company_id',             this.state.user.company_id).replace(':sell_point_id', value.id),
+              avg_age         : settings.STORE_AVG_AGE.replace(':company_id',         this.state.user.company_id).replace(':sell_point_id', value.id),
+              number_by_gender: settings.STORE_AVG_BY_GENDER.replace(':company_id',   this.state.user.company_id).replace(':sell_point_id', value.id),
+              total_by_gender : settings.STORE_TOTAL_BY_GENDER.replace(':company_id', this.state.user.company_id).replace(':sell_point_id', value.id),
             }}
             expand={(id, toggle) => (this._expandListElement(id, toggle))}
             type='tienda'

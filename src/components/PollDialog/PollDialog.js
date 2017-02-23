@@ -171,7 +171,7 @@ export default class PollDialog extends Component {
   _load = () => {
     var self = this;
 
-    var company_id = 2;
+    var company_id = this.props.user.company_id;
     var url = settings.COMPANY_OPTIONS_CONTAINERS.replace(":company_id", company_id);
 
     var promise = fetch(url, {
