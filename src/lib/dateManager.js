@@ -8,10 +8,32 @@
 // var yearStart = getYearStart(today);
 
 var weekDays = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+var months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
 
+var getMonthName = function(i){
+  if(typeof(i) === typeof('0')){
+    return(months[parseInt(i, 10) - 1]);
+  }
+  return(months[i] - 1);
+}
 var getDayOfWeek = function(date){
   var _date = new Date(date);
   return weekDays[_date.getDay()];
+}
+
+var getStringFromZDate = function(date){
+  var day = date.substring(8,10)
+  var month = this.getMonthName(date.substring(5,7))
+  var year = date.substring(0,4)
+  return 'Fecha sorteo ' + day + ' de ' + month + ' de ' + year;
+}
+
+var getDateFromZDate = function(date){
+  var _date = date.split('-');
+  var day = parseInt(_date[2], 10);
+  var month = parseInt(_date[1], 10) - 1;
+  var year = parseInt(_date[0], 10);
+  return getString(new Date(year, month, day));
 }
 
 var getString = function(date){
@@ -94,6 +116,9 @@ var getYearStart = function(date){
 // }
 
 module.exports = {
+  getStringFromZDate: getStringFromZDate,
+  getDateFromZDate: getDateFromZDate,
+  getMonthName: getMonthName,
   getDayOfWeek: getDayOfWeek,
   getString: getString,
   getYesterday: getYesterday,

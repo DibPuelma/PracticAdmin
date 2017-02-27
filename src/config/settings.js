@@ -11,6 +11,9 @@ exports.COMPANY_POSSIBLE_OPTIONS   = API_HOST + "/company/:company_id/possible_o
 exports.COMPANY_EMPLOYEES          = API_HOST + "/company/:company_id/employee";
 exports.COMPANY_EMPLOYEE           = API_HOST + "/company/:company_id/employee/:id";
 exports.COMPANY_SELLPOINTS         = API_HOST + "/company/:company_id/sell_point";
+exports.COMPANY_CONTESTS           = API_HOST + "/company/:company_id/contest";
+exports.COMPANY_CONTEST            = API_HOST + "/company/:company_id/contest/:id";
+
 
 exports.MANAGER_LOGIN              = API_HOST + "/manager/login";
 

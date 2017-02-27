@@ -19,6 +19,8 @@ import Polls from './routes/Polls/Polls';
 import Questions from './routes/Questions/Questions';
 import OptionsContainers from './routes/OptionsContainers/OptionsContainers';
 import Employees from './routes/Employees/Employees';
+import Contests from './routes/Contests/Contests';
+// import Prizes from './routes/Prizes/Prizes';
 
 export default class NotImplemented extends Component {
   render() {
@@ -65,6 +67,8 @@ ReactDOM.render(
       <Route path="preguntas" component={Questions} user={ user } />
       <Route path="opciones" component={OptionsContainers} user={ user } />
       <Route path="empleados" component={Employees} user={ user } />
+      <Route path="concursos" component={Contests} user={ user } />
+      <Route path="premios" component={NotImplemented} user={ user } />
     </Route>
 
   </Router>

@@ -32,7 +32,13 @@ var titleGetter = {
   '/analisis_empleados':'Análisis por Empleado',
   '/analisis_encuestas':'Análisis por Encuesta',
   '/analisis_preguntas':'Análisis por Pregunta',
-  '/analisis_avanzado':'Análisis Personalizado'
+  '/analisis_avanzado':'Análisis Personalizado',
+  '/encuestas':'Administración de encuestas',
+  '/preguntas':'Administración de preguntas',
+  '/opciones':'Administración de opciones',
+  '/empleados':'Administración de empleados',
+  '/concursos':'Administración de concursos',
+  '/premios':'Administración de premios',
 
 }
 
@@ -100,6 +106,14 @@ export default class App extends Component {
 
             <Link to="/empleados" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Empleados</MenuItem>
+            </Link>
+
+            <Link to="/concursos" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Concursos</MenuItem>
+            </Link>
+
+            <Link to="/premios" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Premios</MenuItem>
             </Link>
 
             <h4>Cuenta</h4>
