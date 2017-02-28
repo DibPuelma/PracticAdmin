@@ -71,8 +71,8 @@ class Application extends Component {
           <Route path="empleados" component={Employees} getUser={ this._getUser } />
 
           { /* Super Admin */}
-          <Route path="administracion_companias" component={CompaniesAdministration} user={_getUser} />
-          <Route path="administracion_administradores" component={NotImplemented} user={_getUser} />
+          <Route path="administracion_companias" component={CompaniesAdministration} user={this._getUser} />
+          <Route path="administracion_administradores" component={NotImplemented} user={this._getUser} />
 
         </Route>
       </Router>
