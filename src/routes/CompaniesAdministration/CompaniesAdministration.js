@@ -149,8 +149,10 @@ export default class CompaniesAdministration extends Component {
     })
     .then((response) => response.json())
     .then((result) => {
-      this.setState({companies: result});
-      this.setState({status: CompaniesStatus.READY})
+      this.setState({
+        companies: result,
+        status: CompaniesStatus.READY
+      })
     })
     .catch((error) => {
       console.log(error);

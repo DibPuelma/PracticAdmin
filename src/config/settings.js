@@ -14,8 +14,11 @@ exports.COMPANY_POSSIBLE_OPTIONS   = API_HOST + "/company/:company_id/possible_o
 exports.COMPANY_EMPLOYEES          = API_HOST + "/company/:company_id/employee";
 exports.COMPANY_EMPLOYEE           = API_HOST + "/company/:company_id/employee/:id";
 exports.COMPANY_SELLPOINTS         = API_HOST + "/company/:company_id/sell_point";
+exports.COMPANY_MANAGERS           = API_HOST + "/company/:company_id/manager";
 
 exports.MANAGER_LOGIN              = API_HOST + "/manager/login";
+exports.MANAGERS                   = API_HOST + "/manager";
+exports.MANAGER                    = API_HOST + "/manager/:manager_id";
 
 exports.COMPANY_DATE_AGE                = API_HOST + '/company/:company_id/dashboard/respondents_age/:start_date/:end_date';
 exports.COMPANY_DATE_GENDER             = API_HOST + '/company/:company_id/dashboard/respondents_gender/:start_date/:end_date';

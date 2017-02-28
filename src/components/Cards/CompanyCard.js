@@ -5,11 +5,14 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import EditIcon from 'material-ui/svg-icons/content/create';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
+import Divider from 'material-ui/Divider';
 
 import FullPageLoading from '../FullPageLoading/FullPageLoading';
 import StoreCard from './StoreCard';
+import ManagerCard from './ManagerCard';
 import CompanyEditForm from '../Forms/CompanyEditForm';
 import StoreEditForm from '../Forms/StoreEditForm';
+import ManagerEditForm from '../Forms/ManagerEditForm';
 
 import settings from '../../config/settings';
 
@@ -23,16 +26,19 @@ export default class CardControlled extends React.Component {
     super(props);
 
     this.state = {
-      ready: false,
+      managersReady: false,
+      sellPointsReady: false,
       expanded: false,
       editOpen: false,
       alertOpen: false,
-      createStoreOpen: false
+      createStoreOpen: false,
+      createManagerOpen: false
     }
   }
 
   componentDidMount(){
     this._getSellPoints();
+    this._getManagers();
   }
 
   _handleCreateStoreOpen = () => {
@@ -41,6 +47,14 @@ export default class CardControlled extends React.Component {
 
   _handleCreateStoreClose = () => {
     this.setState({createStoreOpen: false});
+  };
+
+  _handleCreateManagerOpen = () => {
+    this.setState({createManagerOpen: true});
+  };
+
+  _handleCreateManagerClose = () => {
+    this.setState({createManagerOpen: false});
   };
 
   _handleEditOpen = () => {
@@ -95,13 +109,32 @@ export default class CardControlled extends React.Component {
       toggled={this.state.expanded}
       onToggle={this._handleToggle}
       labelPosition="right"
-      label="Mostrar tiendas"
+      label="Mostrar información"
       />
       </CardText>
 
       <CardMedia
       expandable={true}
       >
+
+      <div style={{fontSize: '24px', margin: '10px'}}> Managers </div>
+      <div>
+      <Divider />
+      </div>
+      <div>
+      <FlatButton label="Crear nuevo manager"
+      icon={<AddIcon />}
+      onClick={this._handleCreateManagerOpen}
+      />
+      </div>
+      <div style={{justifyContent: 'center', display: 'flex', flexWrap: 'wrap'}}>
+      {this._getManagersContent()}
+      </div>
+
+      <div style={{fontSize: '24px', margin: '10px'}}> Tiendas </div>
+      <div>
+      <Divider />
+      </div>
       <div>
       <FlatButton label="Crear nueva tienda"
       icon={<AddIcon />}
@@ -109,8 +142,9 @@ export default class CardControlled extends React.Component {
       />
       </div>
       <div style={{justifyContent: 'center', display: 'flex', flexWrap: 'wrap'}}>
-      {this._getContent()}
+      {this._getSellPointsContent()}
       </div>
+
       </CardMedia>
       <CardActions>
       <FlatButton label="Editar"
@@ -123,13 +157,26 @@ export default class CardControlled extends React.Component {
         />
       </CardActions>
       <Dialog
+          title="Creación de manager"
+          modal={false}
+          open={this.state.createManagerOpen}
+          onRequestClose={this._handleCreateManagerClose}
+          autoScrollBodyContent={true}
+        >
+        <ManagerEditForm reload={this._reloadManagers}
+        handleSnackbarOpen={this.props.handleSnackbarOpen}
+        company={this.props.company}
+        handleClose={this._handleCreateManagerClose}
+        />
+      </Dialog>
+      <Dialog
           title="Creación de local"
           modal={false}
           open={this.state.createStoreOpen}
           onRequestClose={this._handleCreateStoreClose}
           autoScrollBodyContent={true}
         >
-        <StoreEditForm reload={this._reload} handleSnackbarOpen={this.props.handleSnackbarOpen} company={this.props.company} handleClose={this._handleCreateStoreClose}/>
+        <StoreEditForm reload={this._reloadSellPoints} handleSnackbarOpen={this.props.handleSnackbarOpen} company={this.props.company} handleClose={this._handleCreateStoreClose}/>
       </Dialog>
       <Dialog
           title="Edición de empresa"
@@ -179,8 +226,8 @@ export default class CardControlled extends React.Component {
     })
   }
 
-  _getContent = () => {
-    if(!this.state.ready){
+  _getSellPointsContent = () => {
+    if(!this.state.sellPointsReady){
       return (
         <FullPageLoading />
       );
@@ -190,7 +237,7 @@ export default class CardControlled extends React.Component {
       this.state.sellPoints.map((sellPoint, i) => {
         sellPoints.push(
           <div key={i}>
-          <StoreCard reload={this._reload} handleSnackbarOpen={this.props.handleSnackbarOpen} sellPoint={sellPoint} company={this.props.company}/>
+          <StoreCard reload={this._reloadSellPoints} handleSnackbarOpen={this.props.handleSnackbarOpen} sellPoint={sellPoint} company={this.props.company}/>
           </div>
         );
       })
@@ -198,9 +245,55 @@ export default class CardControlled extends React.Component {
     }
   }
 
-  _reload = () => {
-    this.setState({ready: false}, () => {
+  _getManagersContent = () => {
+    if(!this.state.managersReady){
+      return (
+        <FullPageLoading />
+      );
+    }
+    else {
+      var managers = [];
+      this.state.managers.map((manager, i) => {
+        managers.push(
+          <div key={i}>
+          <ManagerCard reload={this._reloadManagers} handleSnackbarOpen={this.props.handleSnackbarOpen} manager={manager} company={this.props.company}/>
+          </div>
+        );
+      })
+      return managers;
+    }
+  }
+
+  _reloadSellPoints = () => {
+    this.setState({sellPointsReady: false}, () => {
       this._getSellPoints();
+    })
+  }
+
+  _reloadManagers = () => {
+    this.setState({managersReady: false}, () => {
+      this._getManagers();
+    })
+  }
+
+  _getManagers = () => {
+    var url = settings.COMPANY_MANAGERS.replace(':company_id', this.props.company.id);
+    fetch(url, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      this.setState({
+        managers: result,
+        managersReady: true
+       });
+    })
+    .catch((error) => {
+      console.log(error);
     })
   }
 
@@ -217,7 +310,7 @@ export default class CardControlled extends React.Component {
     .then((result) => {
       this.setState({
         sellPoints: result,
-        ready: true
+        sellPointsReady: true
        });
     })
     .catch((error) => {

@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import EditIcon from 'material-ui/svg-icons/content/create';
 import Dialog from 'material-ui/Dialog';
+import Divider from 'material-ui/Divider';
 
 import StoreEditForm from '../Forms/StoreEditForm';
 
@@ -52,10 +53,14 @@ export default class StoreCard extends Component {
     return (
       <Paper style={styles.storePaper} zDepth={2}>
         <h3 style={{textAlign: 'center'}}>{this.props.sellPoint.location} </h3>
-        <div style={styles.storeData}>Código: {this.props.sellPoint.code !== null ? this.props.sellPoint.code : 'No asignado'} </div>
-        <div style={styles.storeData}>Encuesta para atendidos: {this.props.sellPoint.AttendedPoll !== null ? this.props.sellPoint.AttendedPoll.name : 'No asignado'} </div>
-        <div style={styles.storeData}>Encuesta para no atendidos: {this.props.sellPoint.UnattendedPoll !== null ? this.props.sellPoint.UnattendedPoll.name : 'No asignado'} </div>
-        <div style={styles.storeData}>Concurso actual: {this.props.sellPoint.Contest !== null ? this.props.sellPoint.Contest.name : 'No asignado'} </div>
+        <Divider/>
+        <div style={styles.data}>Código: {this.props.sellPoint.code !== null ? this.props.sellPoint.code : 'No asignado'} </div>
+        <Divider/>
+        <div style={styles.data}>Encuesta para atendidos: {this.props.sellPoint.AttendedPoll !== null ? this.props.sellPoint.AttendedPoll.name : 'No asignado'} </div>
+        <Divider/>
+        <div style={styles.data}>Encuesta para no atendidos: {this.props.sellPoint.UnattendedPoll !== null ? this.props.sellPoint.UnattendedPoll.name : 'No asignado'} </div>
+        <Divider/>
+        <div style={styles.data}>Concurso actual: {this.props.sellPoint.Contest !== null ? this.props.sellPoint.Contest.name : 'No asignado'} </div>
         <div style={styles.buttonContainer}>
         <FlatButton label="Editar"
           icon={<EditIcon />}
