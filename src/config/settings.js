@@ -30,6 +30,7 @@ exports.COMPANY_DATE_TOTAL        = API_HOST + '/company/:company_id/dashboard/t
 exports.COMPANY_DATE_AVG          = API_HOST + '/company/:company_id/dashboard/average/:start_date/:end_date';
 
 exports.STORES                     = API_HOST + '/company/:company_id/sell_point';
+exports.STORE                      = API_HOST + '/company/:company_id/sell_point/:sell_point_id';
 exports.STORE_AVG                  = API_HOST + '/company/:company_id/sell_point/:sell_point_id/average_stars/:start_date/:end_date';
 exports.STORE_AVG_BY_GENDER        = API_HOST + '/company/:company_id/sell_point/:sell_point_id/average_stars_by_gender/:start_date/:end_date';
 exports.STORE_TOTAL                = API_HOST + '/company/:company_id/sell_point/:sell_point_id/total_answers/:start_date/:end_date';

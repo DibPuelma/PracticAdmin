@@ -9,6 +9,7 @@ import Dialog from 'material-ui/Dialog';
 import FullPageLoading from '../FullPageLoading/FullPageLoading';
 import StoreCard from './StoreCard';
 import CompanyEditForm from '../Forms/CompanyEditForm';
+import StoreEditForm from '../Forms/StoreEditForm';
 
 import settings from '../../config/settings';
 
@@ -25,7 +26,8 @@ export default class CardControlled extends React.Component {
       ready: false,
       expanded: false,
       editOpen: false,
-      alertOpen: false
+      alertOpen: false,
+      createStoreOpen: false
     }
   }
 
@@ -33,11 +35,19 @@ export default class CardControlled extends React.Component {
     this._getSellPoints();
   }
 
-  _handleOpen = () => {
+  _handleCreateStoreOpen = () => {
+    this.setState({createStoreOpen: true});
+  };
+
+  _handleCreateStoreClose = () => {
+    this.setState({createStoreOpen: false});
+  };
+
+  _handleEditOpen = () => {
     this.setState({editOpen: true});
   };
 
-  _handleClose = () => {
+  _handleEditClose = () => {
     this.setState({editOpen: false});
   };
 
@@ -71,7 +81,6 @@ export default class CardControlled extends React.Component {
         onTouchTap={this._handleAlertClose}
       />
     ];
-    console.log(this.props.company);
     return (
       <Card expanded={this.state.expanded} onExpandChange={this._handleExpandChange}>
       <CardHeader
@@ -96,7 +105,7 @@ export default class CardControlled extends React.Component {
       <div>
       <FlatButton label="Crear nueva tienda"
       icon={<AddIcon />}
-      onClick={this._createStore}
+      onClick={this._handleCreateStoreOpen}
       />
       </div>
       <div style={{justifyContent: 'center', display: 'flex', flexWrap: 'wrap'}}>
@@ -106,7 +115,7 @@ export default class CardControlled extends React.Component {
       <CardActions>
       <FlatButton label="Editar"
         icon={<EditIcon />}
-        onTouchTap={this._handleOpen}
+        onTouchTap={this._handleEditOpen}
         />
       <FlatButton label="Eliminar"
         icon={<DeleteIcon />}
@@ -114,13 +123,22 @@ export default class CardControlled extends React.Component {
         />
       </CardActions>
       <Dialog
+          title="Creación de local"
+          modal={false}
+          open={this.state.createStoreOpen}
+          onRequestClose={this._handleCreateStoreClose}
+          autoScrollBodyContent={true}
+        >
+        <StoreEditForm company={this.props.company} handleClose={this._handleCreateStoreClose}/>
+      </Dialog>
+      <Dialog
           title="Edición de empresa"
           modal={false}
           open={this.state.editOpen}
-          onRequestClose={this._handleClose}
+          onRequestClose={this._handleEditClose}
           autoScrollBodyContent={true}
         >
-          <CompanyEditForm company={this.props.company} handleClose={this._handleClose}/>
+          <CompanyEditForm company={this.props.company} handleClose={this._handleEditClose}/>
         </Dialog>
         <Dialog
           modal={false}
@@ -164,7 +182,7 @@ export default class CardControlled extends React.Component {
       this.state.sellPoints.map((sellPoint, i) => {
         sellPoints.push(
           <div key={i}>
-          <StoreCard sellPoint={sellPoint} />
+          <StoreCard sellPoint={sellPoint} company={this.props.company}/>
           </div>
         );
       })
