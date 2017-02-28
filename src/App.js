@@ -102,6 +102,20 @@ export default class App extends Component {
               <MenuItem className="menu-item" style={ styles.menuItem }>Empleados</MenuItem>
             </Link>
 
+            <h4>Super Administración</h4>
+            <Link to="/administracion_companias" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Compañías</MenuItem>
+            </Link>
+
+            <Link to="/administracion_puntos_de_venta" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Puntos de venta</MenuItem>
+            </Link>
+
+            <Link to="/administracion_administradores" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Administradores</MenuItem>
+            </Link>
+
+
             <h4>Cuenta</h4>
             <Link to="/" className="menu-item-link">
               <MenuItem className="menu-item" style={ styles.menuItem }>Salir</MenuItem>

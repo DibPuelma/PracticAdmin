@@ -1,5 +1,8 @@
 var API_HOST = 'http://localhost:8000';
 
+exports.COMPANIES                  = API_HOST + "/company";
+exports.COMPANY                    = API_HOST + "/company/:id";
+
 
 exports.COMPANY_POLLS              = API_HOST + "/company/:id/poll";
 exports.COMPANY_POLL               = API_HOST + "/company/:company_id/poll/:poll_id";

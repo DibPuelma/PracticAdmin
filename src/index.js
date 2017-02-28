@@ -20,6 +20,8 @@ import Questions from './routes/Questions/Questions';
 import OptionsContainers from './routes/OptionsContainers/OptionsContainers';
 import Employees from './routes/Employees/Employees';
 
+import CompaniesAdministration from './routes/CompaniesAdministration/CompaniesAdministration';
+
 export default class NotImplemented extends Component {
   render() {
     return (
@@ -65,6 +67,11 @@ ReactDOM.render(
       <Route path="preguntas" component={Questions} user={ user } />
       <Route path="opciones" component={OptionsContainers} user={ user } />
       <Route path="empleados" component={Employees} user={ user } />
+
+      { /* Super Admin */}
+      <Route path="administracion_companias" component={CompaniesAdministration} user={_getUser} />
+      <Route path="administracion_puntos_de_venta" component={CompaniesAdministration} user={_getUser} />
+      <Route path="administracion_administradores" component={CompaniesAdministration} user={_getUser} />
     </Route>
 
   </Router>
