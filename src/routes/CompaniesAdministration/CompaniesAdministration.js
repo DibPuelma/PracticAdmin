@@ -7,6 +7,7 @@ import EmployeeEditForm from '../../components/EmployeeEditForm/EmployeeEditForm
 
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 
 import CompanyCard from '../../components/Cards/CompanyCard';
 import CompanyEditForm from '../../components/Forms/CompanyEditForm';
@@ -19,11 +20,13 @@ export default class CompaniesAdministration extends Component {
     super(props);
     this.state = {
       status: CompaniesStatus.LOADING,
+      snackbarOpen: false,
       showCreateDialog: false,
       createDialog: null,
       expanded: null,
       doubleExpanded: false,
-      open: false
+      open: false,
+      message: ''
     };
   }
 
@@ -57,6 +60,8 @@ export default class CompaniesAdministration extends Component {
         expand={(id, toggle) => (this._expandListElement(id, toggle))}
         ref={company.id}
         diff={company.id}
+        handleSnackbarOpen={this._handleSnackbarOpen}
+        reload={this._reload}
         />
       )}
       </div>
@@ -67,12 +72,34 @@ export default class CompaniesAdministration extends Component {
           onRequestClose={this._handleClose}
           autoScrollBodyContent={true}
         >
-          <CompanyEditForm handleClose={this._handleClose}/>
+          <CompanyEditForm handleSnackbarOpen={this._handleSnackbarOpen}
+          reload={this._reload}
+          handleClose={this._handleClose}
+          />
         </Dialog>
-
+        <Snackbar
+          open={this.state.snackbarOpen}
+          message={this.state.message}
+          autoHideDuration={2000}
+          onRequestClose={this._handleSnackbarClose}
+          style={{textAlign: 'center'}}
+        />
       </div>
     );
   }
+
+
+  _handleSnackbarOpen = (message) => {
+    this.setState({message: message}, () => {
+      this.setState({
+        snackbarOpen: true
+      });
+    })
+  };
+
+  _handleSnackbarClose = () => {
+    this.setState({snackbarOpen: false});
+  };
 
   _handleOpen = () => {
     this.setState({open: true});
@@ -105,6 +132,12 @@ export default class CompaniesAdministration extends Component {
     }
   }
 
+  _reload = () => {
+    this.setState({status: CompaniesStatus.LOADING}, () => {
+      this._load();
+    })
+  }
+
   _load = () => {
     var url = settings.COMPANIES;
     fetch(url, {
@@ -116,7 +149,7 @@ export default class CompaniesAdministration extends Component {
     })
     .then((response) => response.json())
     .then((result) => {
-      this.setState({ companies: result });
+      this.setState({companies: result});
       this.setState({status: CompaniesStatus.READY})
     })
     .catch((error) => {

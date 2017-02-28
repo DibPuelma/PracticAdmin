@@ -129,7 +129,7 @@ export default class CardControlled extends React.Component {
           onRequestClose={this._handleCreateStoreClose}
           autoScrollBodyContent={true}
         >
-        <StoreEditForm company={this.props.company} handleClose={this._handleCreateStoreClose}/>
+        <StoreEditForm reload={this._reload} handleSnackbarOpen={this.props.handleSnackbarOpen} company={this.props.company} handleClose={this._handleCreateStoreClose}/>
       </Dialog>
       <Dialog
           title="Edición de empresa"
@@ -138,7 +138,12 @@ export default class CardControlled extends React.Component {
           onRequestClose={this._handleEditClose}
           autoScrollBodyContent={true}
         >
-          <CompanyEditForm company={this.props.company} handleClose={this._handleEditClose}/>
+          <CompanyEditForm
+          handleSnackbarOpen={this.props.handleSnackbarOpen}
+          reload={this.props.reload}
+          company={this.props.company}
+          handleClose={this._handleEditClose}
+          />
         </Dialog>
         <Dialog
           modal={false}
@@ -164,7 +169,10 @@ export default class CardControlled extends React.Component {
     .then((response) => response.json())
     .then((result) => {
       console.log(result);
-      this.setState({alertOpen: false});
+      this.setState({alertOpen: false}, () => {
+        this.props.handleSnackbarOpen('Compañía eliminada');
+        this.props.reload();
+      });
     })
     .catch((error) => {
       console.log(error);
@@ -182,12 +190,18 @@ export default class CardControlled extends React.Component {
       this.state.sellPoints.map((sellPoint, i) => {
         sellPoints.push(
           <div key={i}>
-          <StoreCard sellPoint={sellPoint} company={this.props.company}/>
+          <StoreCard reload={this._reload} handleSnackbarOpen={this.props.handleSnackbarOpen} sellPoint={sellPoint} company={this.props.company}/>
           </div>
         );
       })
       return sellPoints;
     }
+  }
+
+  _reload = () => {
+    this.setState({ready: false}, () => {
+      this._getSellPoints();
+    })
   }
 
   _getSellPoints = () => {

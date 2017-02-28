@@ -32,8 +32,13 @@ var titleGetter = {
   '/analisis_empleados':'Análisis por Empleado',
   '/analisis_encuestas':'Análisis por Encuesta',
   '/analisis_preguntas':'Análisis por Pregunta',
-  '/analisis_avanzado':'Análisis Personalizado'
-
+  '/analisis_avanzado':'Análisis Personalizado',
+  '/encuestas': 'Administración de encuestas',
+  '/preguntas': 'Administración de preguntas',
+  '/opciones': 'Administración de opciones para las preguntas',
+  '/empleados': 'Administración de empleados',
+  '/administracion_companias': 'Administración de compañías',
+  '/administracion_administradores': 'Administración de usuarios administradores'
 }
 
 injectTapEventPlugin();
@@ -105,10 +110,6 @@ export default class App extends Component {
             <h4>Super Administración</h4>
             <Link to="/administracion_companias" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Compañías</MenuItem>
-            </Link>
-
-            <Link to="/administracion_puntos_de_venta" className="menu-item-link" activeClassName="menu-item-link-active">
-              <MenuItem className="menu-item" style={ styles.menuItem }>Puntos de venta</MenuItem>
             </Link>
 
             <Link to="/administracion_administradores" className="menu-item-link" activeClassName="menu-item-link-active">

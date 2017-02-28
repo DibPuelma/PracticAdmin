@@ -71,13 +71,18 @@ export default class CompanyEditForm extends Component {
   _submit = () => {
     var url = '';
     var method = '';
+    var message = '';
     if (this.props.company){
       url = settings.COMPANY.replace(':id', this.props.company.id);
       method = 'PUT';
+      message = 'Compañía Modificada';
+
     }
     else {
-      url = settings.COMPANIES
-      method = 'POST'
+      url = settings.COMPANIES;
+      method = 'POST';
+      message = 'Compañía Creada';
+
     }
     fetch(url, {
       method: method,
@@ -89,9 +94,12 @@ export default class CompanyEditForm extends Component {
     })
     .then((response) => response.json())
     .then((result) => {
-      //HACER RELOAD DE LOS DATOS
+      this.props.handleSnackbarOpen(message);
+      this.props.handleClose();
+      this.props.reload();
     })
     .catch((error) => {
+      this.props.handleSnackbarOpen('Hubo un error, algún campo está malo');
       console.log(error);
     })
   }

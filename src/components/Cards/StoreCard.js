@@ -75,7 +75,7 @@ export default class StoreCard extends Component {
             onRequestClose={this._handleEditClose}
             autoScrollBodyContent={true}
           >
-            <StoreEditForm sellPoint={this.props.sellPoint}
+            <StoreEditForm reload={this.props.reload} handleSnackbarOpen={this.props.handleSnackbarOpen} sellPoint={this.props.sellPoint}
             company={this.props.company}
             handleClose={this._handleEditClose}
             />
@@ -86,7 +86,7 @@ export default class StoreCard extends Component {
             open={this.state.alertOpen}
             onRequestClose={this._handleAlertClose}
           >
-            Estás seguro que quieres eliminar esta compañía?
+            Estás seguro que quieres eliminar esta tienda?
           </Dialog>
        </Paper>
     );
@@ -104,7 +104,10 @@ export default class StoreCard extends Component {
     .then((response) => response.json())
     .then((result) => {
       console.log(result);
-      this.setState({alertOpen: false});
+      this.setState({alertOpen: false}, () => {
+        this.props.handleSnackbarOpen('Tienda eliminada');
+        this.props.reload();
+      });
     })
     .catch((error) => {
       console.log(error);
