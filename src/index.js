@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import './index.css';
 import './nv.d3.min.css';
+import cookie from 'react-cookie';
 
 import App from './App';
 import HomeApp from './HomeApp';
@@ -32,47 +33,74 @@ export default class NotImplemented extends Component {
   }
 }
 
-var user = null;
-console.log("???");
-function _login(u) {
-  user = u;
-  console.log(user);
-}
+class Application extends Component {
+  constructor(props) {
+    super(props);
 
-function _getUser() {
-  return user;
+    var user = cookie.load('user');
+    if (user !== null) {
+      this.state = { user: user, leaving: false };
+    } else {
+      this.state = {};
+    }
+  }
+
+  render() {
+    return (
+      <Router history={browserHistory}>
+        <Route path="/" component={HomeApp}>
+          <IndexRoute component={Home} onLogin={ this._login } />
+          <Route path="descargas" component={DumbExcel} />
+        </Route>
+
+        <div>Hola</div>
+        <Route path="/" component={App} getUser={ this._getUser } logout={ this._logout } onEnter={ this.requireAuth }>
+          { /* Análisis */ }
+          <Route path="analisis_tiendas" component={StoresAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_empleados" component={EmployeesAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_encuestas" component={PollsAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_preguntas" component={QuestionsAnalysis} getUser={ this._getUser } />
+          <Route path="analisis_avanzado" component={NotImplemented} getUser={ this._getUser } />
+          <Route path="dashboard" component={Dashboard} />
+          { /* <Route path="analisis_compania" component={CompanyAnalysis} /> */ }
+
+          { /* Admin */ }
+          <Route path="encuestas" component={Polls} getUser={ this._getUser }/>
+          <Route path="preguntas" component={Questions} getUser={ this._getUser } />
+          <Route path="opciones" component={OptionsContainers} getUser={ this._getUser } />
+          <Route path="empleados" component={Employees} getUser={ this._getUser } />
+
+          { /* Super Admin */}
+          <Route path="administracion_companias" component={CompaniesAdministration} user={_getUser} />
+          <Route path="administracion_administradores" component={NotImplemented} user={_getUser} />
+
+        </Route>
+      </Router>
+    );
+  }
+
+  requireAuth = (nextState, replace) => {
+    var user = this.state.user;
+    if (typeof user === 'undefined') {
+      replace({ pathname: '/', state: { } });
+    }
+  }
+
+  _getUser = () => {
+    return(this.state.user);
+  }
+
+  _login = (user) => {
+    cookie.save('user', JSON.stringify(user), { path: '/' });
+    this.setState({ user: user });
+  }
+
+  _logout = () => {
+    cookie.remove('user', { path: '/' });
+  }
 }
 
 ReactDOM.render(
-  <Router history={browserHistory}>
-    {console.log("hola")}
-    <Route path="/" component={HomeApp}>
-      <IndexRoute component={Home} onLogin={ _login } />
-      <Route path="descargas" component={DumbExcel} />
-    </Route>
-
-    <Route path="/" component={App}>
-      <Route path="analisis_tiendas" component={StoresAnalysis} />
-      <Route path="analisis_empleados" component={EmployeesAnalysis} />
-      <Route path="analisis_encuestas" component={PollsAnalysis} />
-      <Route path="analisis_preguntas" component={QuestionsAnalysis} />
-      <Route path="analisis_avanzado" component={NotImplemented} />
-      <Route path="dashboard" component={Dashboard} />
-      {
-        //<Route path="analisis_compania" component={CompanyAnalysis} />
-      }
-
-      { /* Admin */ }
-      <Route path="encuestas" component={Polls} user={ _getUser } />
-      <Route path="preguntas" component={Questions} user={ user } />
-      <Route path="opciones" component={OptionsContainers} user={ user } />
-      <Route path="empleados" component={Employees} user={ user } />
-
-      { /* Super Admin */}
-      <Route path="administracion_companias" component={CompaniesAdministration} user={_getUser} />
-      <Route path="administracion_administradores" component={NotImplemented} user={_getUser} />
-    </Route>
-
-  </Router>
+  <Application />
   ,document.getElementById('root')
 );

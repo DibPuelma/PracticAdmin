@@ -14,9 +14,10 @@ export default class Questions extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      status: QuestionsStatus.LOADING ,
+      status          : QuestionsStatus.LOADING ,
       showCreateDialog: false, 
-      createDialog: null, 
+      createDialog    : null,
+      user            : this.props.route.getUser()
     };
   }
 
@@ -55,7 +56,7 @@ export default class Questions extends Component {
     this.setState({ status: QuestionsStatus.LOADING });
     var self = this;
 
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var url = settings.COMPANY_QUESTIONS.replace(":company_id", company_id);
     var promise = fetch(url, {
       method: 'GET',
@@ -106,7 +107,7 @@ export default class Questions extends Component {
 
   _createSubmit = (body) => {
     var self = this;
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var url = settings.COMPANY_QUESTIONS.replace(":company_id", company_id);
 
     var promise = fetch(url, {

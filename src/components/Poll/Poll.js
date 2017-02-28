@@ -23,7 +23,11 @@ const iconProps = {
 export default class Poll extends Component {
   constructor(props) {
     super(props);
-    this.state = { showDialog: false, dialog: false, poll: this.props.poll };
+    this.state = { 
+      showDialog: false, 
+      dialog    : false, 
+      poll      : this.props.poll 
+    };
   }
 
   render() {
@@ -53,7 +57,12 @@ export default class Poll extends Component {
 
   _showDialog = () => {
     this.setState({ showDialog: true, 
-      dialog: (<PollEditForm destroy={ this._hideDialog } poll={ this.props.poll } onSubmit={ this._updatePoll } />)
+      dialog: (<PollEditForm 
+                destroy={ this._hideDialog } 
+                poll={ this.props.poll } 
+                onSubmit={ this._updatePoll }
+                user={ this.props.user }
+                />)
     });
   }
 

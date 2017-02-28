@@ -14,10 +14,11 @@ export default class Polls extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      status: PollsStatus.LOADING,
+      status          : PollsStatus.LOADING,
       showCreateDialog: false, 
-      createDialog: null
-      };
+      createDialog    : null,
+      user            : this.props.route.getUser()
+    };
   }
 
   componentDidMount() {
@@ -33,14 +34,13 @@ export default class Polls extends Component {
 
     return (
       <div>
-        <div>{ JSON.stringify(this.props) }</div>
         <div>
           <RaisedButton onClick={ this._create } primary={ true } label="Crear" />
         </div>
 
         <div className="polls-container">
           { this.state.polls.map((x, i) =>
-            <Poll poll={ x } />
+            <Poll poll={ x } user={ this.state.user } />
           )}
         </div>
 
@@ -56,7 +56,7 @@ export default class Polls extends Component {
     this.setState({ status: PollsStatus.LOADING });
     var polls = this;
 
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var url = settings.COMPANY_POLLS.replace(":id", company_id);
     var promise = fetch(url, {
       method: 'GET',
@@ -86,13 +86,14 @@ export default class Polls extends Component {
       createDialog:     (<PollDialog 
                           onDestroy={ this._hideDialog }
                           onSubmit={ this._createSubmit }
+                          user={ this.state.user }
                           />)
     });
   }
 
   _createSubmit = (body) => {
     var self = this;
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var url = settings.COMPANY_POLLS.replace(":id", company_id);
 
     var promise = fetch(url, {

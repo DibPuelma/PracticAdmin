@@ -83,6 +83,7 @@ export default class Employee extends Component {
                         onDestroy={ this._hideDialog } 
                         onSubmit={ this._update } 
                         allSellpoints={ this.props.allSellpoints }
+                        user={ this.props.user }
                         />)
     });
   }
@@ -93,7 +94,7 @@ export default class Employee extends Component {
 
   _update = (body) => {
     var self = this;
-    var company_id = 2;
+    var company_id = this.props.user.company_id;
     var employee_id = this.props.employee.id;
     var url = settings.COMPANY_EMPLOYEE.replace(":company_id", company_id);
     url = url.replace(":id", employee_id);

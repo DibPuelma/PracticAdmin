@@ -29,14 +29,15 @@ export default class Panel extends Component {
   constructor(props){
     super(props);
     this.state = {
-      ready: false,
-      expanded: null,
-      doubleExpanded: false
+      ready         : false,
+      expanded      : null,
+      doubleExpanded: false,
+      user          : this.props.route.getUser()
     }
   }
 
   componentDidMount() {
-    fetch(settings.QUESTIONS.replace(':company_id', 1), {
+    fetch(settings.QUESTIONS.replace(':company_id', this.state.user.company_id), {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -60,20 +61,20 @@ export default class Panel extends Component {
       return (
         <div>
         <ExcelDownloadButton
-        uri={settings.EXCEL_QUESTIONS.replace(':company_id', 1)}
+        uri={settings.EXCEL_QUESTIONS.replace(':company_id', this.state.user.company_id)}
         fileName='reporte_preguntas.xlsx'
         label='Descargar excel con los datos de las preguntas'
         />
         {this.state.data.map((value, i) => {
           var uris = {
-            total: settings.QUESTION_TOTAL.replace(':company_id', 1).replace(':question_id', value.id),
-            age: settings.QUESTION_AGE.replace(':company_id', 1).replace(':question_id', value.id),
-            gender: settings.QUESTION_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
-            avg_age: settings.QUESTION_AVG_AGE.replace(':company_id', 1).replace(':question_id', value.id),
-            number_by_gender: settings.QUESTION_AVG_BY_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
-            total_by_gender: settings.QUESTION_TOTAL_BY_GENDER.replace(':company_id', 1).replace(':question_id', value.id),
+            total           : settings.QUESTION_TOTAL.replace(':company_id',           this.state.user.company_id).replace(':question_id', value.id),
+            age             : settings.QUESTION_AGE.replace(':company_id',             this.state.user.company_id).replace(':question_id', value.id),
+            gender          : settings.QUESTION_GENDER.replace(':company_id',          this.state.user.company_id).replace(':question_id', value.id),
+            avg_age         : settings.QUESTION_AVG_AGE.replace(':company_id',         this.state.user.company_id).replace(':question_id', value.id),
+            number_by_gender: settings.QUESTION_AVG_BY_GENDER.replace(':company_id',   this.state.user.company_id).replace(':question_id', value.id),
+            total_by_gender : settings.QUESTION_TOTAL_BY_GENDER.replace(':company_id', this.state.user.company_id).replace(':question_id', value.id),
           };
-          uris[value.type] = uriGetter[value.type].replace(':company_id', 1).replace(':question_id', value.id);
+          uris[value.type] = uriGetter[value.type].replace(':company_id', this.state.user.company_id).replace(':question_id', value.id);
           return (
             <CardControlled
             expand={(id, toggle) => (this._expandListElement(id, toggle))}

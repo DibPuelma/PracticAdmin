@@ -13,9 +13,10 @@ export default class OptionsContainers extends Component {
   constructor(props) {
     super(props);
     this.state = { 
-      status: OptionsContainersStatus.LOADING,
-      showCreateDialog: false, 
-      createDialog: null, 
+      status          : OptionsContainersStatus.LOADING,
+      showCreateDialog: false,
+      createDialog    : null,
+      user            : this.props.route.getUser()
     };
   }
 
@@ -105,7 +106,7 @@ export default class OptionsContainers extends Component {
   _updateSubmit = (id, body) => {
     // Make request
     var self = this;
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var container_id = id;
     var url = settings.COMPANY_OPTIONS_CONTAINER.replace(":company_id", company_id);
     url = url.replace(":id", container_id);
@@ -129,7 +130,7 @@ export default class OptionsContainers extends Component {
 
   _createSubmit = (id, body) => {
     var self = this;
-    var company_id = 2;
+    var company_id = this.state.user.company_id;
     var url = settings.COMPANY_OPTIONS_CONTAINERS.replace(":company_id", company_id);
 
     console.log(JSON.stringify(body));

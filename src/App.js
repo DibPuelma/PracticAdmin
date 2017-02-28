@@ -5,7 +5,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 
-import { Link } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 
 import logo from './logo.svg';
 import './App.css';
@@ -44,6 +44,12 @@ var titleGetter = {
 injectTapEventPlugin();
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { user: this.props.route.getUser()};
+  }
+
   render() {
     return (
       <MuiThemeProvider>
@@ -54,14 +60,12 @@ export default class App extends Component {
                 <img src={logo} className="App-logo" alt="logo" />
               </div>
               <h5>Practiweb</h5>
+              <h5>{ this.state.user.first_name } { this.state.user.last_name }</h5>
             </div>
-
-            <h1>??{ JSON.stringify(this.props.route.user) }??</h1>
 
             <Link to="/dashboard" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Inicio</MenuItem>
             </Link>
-
 
             <h4>Datos/Análisis</h4>
             {
@@ -88,7 +92,6 @@ export default class App extends Component {
             <Link to="/analisis_avanzado" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Avanzado/Personalizado</MenuItem>
             </Link>
-
 
             <h4>Administración</h4>
             <Link to="/encuestas" className="menu-item-link" activeClassName="menu-item-link-active">
@@ -119,7 +122,7 @@ export default class App extends Component {
 
             <h4>Cuenta</h4>
             <Link to="/" className="menu-item-link">
-              <MenuItem className="menu-item" style={ styles.menuItem }>Salir</MenuItem>
+              <MenuItem className="menu-item" style={ styles.menuItem } onClick={ this._exit }>Salir</MenuItem>
             </Link>
           </Drawer>
 
@@ -138,5 +141,10 @@ export default class App extends Component {
         </div>
       </MuiThemeProvider>
     );
+  }
+
+  _exit = () => {
+    this.props.route.logout();
+    this.props.router.push('/');
   }
 }

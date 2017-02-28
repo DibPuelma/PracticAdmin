@@ -78,7 +78,7 @@ export default class PollEditForm extends Component {
                 fullWidth={ true }
                 multiLine={ true }
                 defaultValue={ this.props.poll.name }
-                onChange={ (event) => this.setState({ name: event.target.value}) }
+                onChange={ (event) => this.setState({ name: event.target.value }) }
               />
               <TextField
                 floatingLabelText="Descripción:"
@@ -134,7 +134,7 @@ export default class PollEditForm extends Component {
 
   _load = () => {
     var form = this;
-    var company_id = 2;
+    var company_id = this.props.user.company_id;
     var poll_id    = this.props.poll.id;
     var url = settings.COMPANY_POLL.replace(":company_id", company_id);
         url = url.replace(":poll_id", poll_id);
