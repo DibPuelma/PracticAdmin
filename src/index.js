@@ -53,26 +53,25 @@ class Application extends Component {
           <Route path="descargas" component={DumbExcel} />
         </Route>
 
-        <div>Hola</div>
         <Route path="/" component={App} getUser={ this._getUser } logout={ this._logout } onEnter={ this.requireAuth }>
-          { /* Análisis */ }
+
+          {/* Análisis */}
           <Route path="analisis_tiendas" component={StoresAnalysis} getUser={ this._getUser } />
           <Route path="analisis_empleados" component={EmployeesAnalysis} getUser={ this._getUser } />
           <Route path="analisis_encuestas" component={PollsAnalysis} getUser={ this._getUser } />
           <Route path="analisis_preguntas" component={QuestionsAnalysis} getUser={ this._getUser } />
           <Route path="analisis_avanzado" component={NotImplemented} getUser={ this._getUser } />
-          <Route path="dashboard" component={Dashboard} />
+          <Route path="dashboard" component={Dashboard} getUser={ this._getUser }/>
           { /* <Route path="analisis_compania" component={CompanyAnalysis} /> */ }
 
-          { /* Admin */ }
+          {/* Admin */}
           <Route path="encuestas" component={Polls} getUser={ this._getUser }/>
           <Route path="preguntas" component={Questions} getUser={ this._getUser } />
           <Route path="opciones" component={OptionsContainers} getUser={ this._getUser } />
           <Route path="empleados" component={Employees} getUser={ this._getUser } />
 
-          { /* Super Admin */}
-          <Route path="administracion_companias" component={CompaniesAdministration} user={this._getUser} />
-          <Route path="administracion_administradores" component={NotImplemented} user={this._getUser} />
+          {/* Super Admin */}
+          <Route path="administracion_companias" component={CompaniesAdministration} getUser={this._getUser} />
 
         </Route>
       </Router>
@@ -83,6 +82,34 @@ class Application extends Component {
     var user = this.state.user;
     if (typeof user === 'undefined') {
       replace({ pathname: '/', state: { } });
+    }
+  }
+
+  _getRoutes = () => {
+    console.log(this.state.user);
+    if(!this.state.user.is_super_admin)
+    /* Análisis */
+    return (
+      [<Route path="analisis_tiendas" component={StoresAnalysis} getUser={ this._getUser } />,
+      <Route path="analisis_empleados" component={EmployeesAnalysis} getUser={ this._getUser } />,
+      <Route path="analisis_encuestas" component={PollsAnalysis} getUser={ this._getUser } />,
+      <Route path="analisis_preguntas" component={QuestionsAnalysis} getUser={ this._getUser } />,
+      <Route path="analisis_avanzado" component={NotImplemented} getUser={ this._getUser } />,
+      <Route path="dashboard" component={Dashboard} getUser={ this._getUser }/>,
+      /* <Route path="analisis_compania" component={CompanyAnalysis} /> */
+
+      /* Admin */
+      <Route path="encuestas" component={Polls} getUser={ this._getUser }/>,
+      <Route path="preguntas" component={Questions} getUser={ this._getUser } />,
+      <Route path="opciones" component={OptionsContainers} getUser={ this._getUser } />,
+      <Route path="empleados" component={Employees} getUser={ this._getUser } />]
+    );
+    else{
+      return (
+        /* Super Admin */
+        [<Route path="administracion_companias" component={CompaniesAdministration} user={this._getUser} />,
+        <Route path="administracion_administradores" component={NotImplemented} user={this._getUser} />]
+      );
     }
   }
 

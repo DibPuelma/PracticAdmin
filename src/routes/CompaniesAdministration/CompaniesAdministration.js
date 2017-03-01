@@ -26,7 +26,8 @@ export default class CompaniesAdministration extends Component {
       expanded: null,
       doubleExpanded: false,
       open: false,
-      message: ''
+      message: '',
+      user: this.props.route.getUser()
     };
   }
 
@@ -35,6 +36,11 @@ export default class CompaniesAdministration extends Component {
   }
 
   render() {
+    if (!this.state.user.is_super_user){
+      return (
+        <h1> No tienes los permisos para administrar compañías </h1>
+      )
+    }
     if (this.state.status === CompaniesStatus.LOADING) {
       return (
         <FullPageLoading />
