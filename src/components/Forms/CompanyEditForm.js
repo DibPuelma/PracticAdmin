@@ -80,7 +80,6 @@ export default class CompanyEditForm extends Component {
   }
 
   _getLogoHeader = () => {
-    console.log('gettting header ', this.state.logoError);
     if(this.state.logoError === ''){
       return (
         <div style={{color: '#b3b3b3', marginBottom: '5px', marginTop: '40px', borderBottomStyle: 'solid', borderBottomWidth: '1px', borderBottomColor: '#E3E3E3'}}>
@@ -99,7 +98,6 @@ export default class CompanyEditForm extends Component {
   }
 
   _getPreview = () => {
-    console.log('getting preview ', this.state.image);
     if(this.state.image !== null){
       return (
         <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}} >
@@ -114,6 +112,8 @@ export default class CompanyEditForm extends Component {
     var url = '';
     var method = '';
     var message = '';
+    var formData = new FormData();
+    formData.append('logo', this.state.image);
     var body = {
       name: this.state.name,
       email: this.state.email,
@@ -129,7 +129,6 @@ export default class CompanyEditForm extends Component {
       url = settings.COMPANIES;
       method = 'POST';
       message = 'Compañía Creada';
-
     }
     fetch(url, {
       method: method,
@@ -141,9 +140,16 @@ export default class CompanyEditForm extends Component {
     })
     .then((response) => response.json())
     .then((result) => {
-      this.props.handleSnackbarOpen(message);
-      this.props.handleClose();
-      this.props.reload();
+      fetch(settings.COMPANY_ADDLOGO.replace(':company_id', result.id), {
+        method: 'PUT',
+        body: formData
+      })
+      .then((response) => response.json())
+      .then((result) => {
+        this.props.handleSnackbarOpen(message);
+        this.props.handleClose();
+        this.props.reload();
+      })
     })
     .catch((error) => {
       this.props.handleSnackbarOpen('Hubo un error, algún campo está malo');
@@ -153,7 +159,6 @@ export default class CompanyEditForm extends Component {
 
   _onDrop = (acceptedFiles, rejectedFiles) => {
     console.log('Accepted files: ', acceptedFiles);
-    console.log('Rejected files: ', rejectedFiles);
     if(acceptedFiles.length > 1){
       this.setState({
         logoError: 'Solo puedes subir una imagen',
