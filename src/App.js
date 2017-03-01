@@ -110,11 +110,7 @@ export default class App extends Component {
               <MenuItem className="menu-item" style={ styles.menuItem }>Empleados</MenuItem>
             </Link>
 
-            <h4>Super Administración</h4>
-            <Link to="/administracion_companias" className="menu-item-link" activeClassName="menu-item-link-active">
-              <MenuItem className="menu-item" style={ styles.menuItem }>Compañías</MenuItem>
-            </Link>
-
+            {this._getSuperAdminPanel()}
 
             <h4>Cuenta</h4>
             <Link to="/" className="menu-item-link">
@@ -139,6 +135,15 @@ export default class App extends Component {
     );
   }
 
+  _getSuperAdminPanel = () => {
+    if(this.state.user.is_super_user){
+      return [<h4>Super Administración</h4>,
+          <Link to="/administracion_companias" className="menu-item-link" activeClassName="menu-item-link-active">
+            <MenuItem className="menu-item" style={ styles.menuItem }>Compañías</MenuItem>
+          </Link>]
+    }
+
+  }
   _exit = () => {
     this.props.route.logout();
     this.props.router.push('/');
