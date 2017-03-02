@@ -96,6 +96,13 @@ export default class CompanyEditForm extends Component {
         </div>
       );
     }
+    else if (this.state.logo !== ''){
+      return (
+        <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}} >
+        <img src={this.state.logo} style={{height: '150px', widht: '150px'}}/>
+        </div>
+      );
+    }
   }
 
   _submit = () => {
@@ -113,7 +120,6 @@ export default class CompanyEditForm extends Component {
       url = settings.COMPANY.replace(':id', this.props.company.id);
       method = 'PUT';
       message = 'Compañía Modificada';
-
     }
     else {
       url = settings.COMPANIES;
@@ -131,7 +137,9 @@ export default class CompanyEditForm extends Component {
     .then((response) => response.json())
     .then((result) => {
       if(this.state.image !== null){
-        fetch(settings.COMPANY_ADDLOGO.replace(':company_id', result.id), {
+        var company_id;
+        this.props.company ? company_id = this.props.company.id : company_id = result.id;
+        fetch(settings.COMPANY_ADDLOGO.replace(':company_id', company_id), {
           method: 'PUT',
           body: formData
         })
@@ -183,7 +191,8 @@ export default class CompanyEditForm extends Component {
     else {
       this.setState({
         logoError: '',
-        image: acceptedFiles[0]
+        image: acceptedFiles[0],
+        logo: ''
       });
     }
   }

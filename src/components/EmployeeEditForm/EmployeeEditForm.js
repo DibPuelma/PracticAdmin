@@ -93,6 +93,7 @@ export default class EmployeeEditForm extends Component {
           pictureError  : '',
           pictureUrl    : employee.picture,
           picture       : null,
+          SellPoints    : employee.SellPoints,
           sellpoints    : sellpointsIds,
           freeSellPoints: freeSellpointsIds,
           newValue      : freeSellpointsIds[0]
@@ -213,7 +214,6 @@ export default class EmployeeEditForm extends Component {
       );
     }
     else if (this.state.pictureUrl !== ''){
-      console.log(this.state.pictureUrl);
       return (
         <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}} >
         <img src={this.state.pictureUrl} style={{height: '150px', widht: '150px'}}/>
