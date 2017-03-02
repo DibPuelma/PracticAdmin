@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 
 import TextField from 'material-ui/TextField';
-import DropDownMenu from 'material-ui/DropDownMenu';
-import MenuItem from 'material-ui/MenuItem';
-import Chip from 'material-ui/Chip';
 import FlatButton from 'material-ui/FlatButton';
 
 import settings from '../../config/settings';
@@ -53,15 +50,8 @@ export default class CompanyEditForm extends Component {
       {this._getLogoHeader()}
       {this._getPreview()}
       <Dropzone onDrop={this._onDrop} style={{width: '100%', height: '60px', marginTop: '15px', marginBottom: '15px', borderStyle: 'dotted', borderColor: '#E3E3E3'}}>
-      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Arrastra el archivo o has click para explorar</div>
+      <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Arrastra el archivo o has click para explorar (Máx 1MB)</div>
       </Dropzone>
-      <TextField
-      floatingLabelText="Logo: "
-      fullWidth={ true }
-      multiLine={true}
-      value={ this.state.logo }
-      onChange={this._changeLogo}
-      />
       <div>
       <FlatButton
       label="Cancelar"
@@ -140,16 +130,23 @@ export default class CompanyEditForm extends Component {
     })
     .then((response) => response.json())
     .then((result) => {
-      fetch(settings.COMPANY_ADDLOGO.replace(':company_id', result.id), {
-        method: 'PUT',
-        body: formData
-      })
-      .then((response) => response.json())
-      .then((result) => {
+      if(this.state.image !== null){
+        fetch(settings.COMPANY_ADDLOGO.replace(':company_id', result.id), {
+          method: 'PUT',
+          body: formData
+        })
+        .then((response) => response.json())
+        .then((result) => {
+          this.props.handleSnackbarOpen(message);
+          this.props.handleClose();
+          this.props.reload();
+        })
+      }
+      else {
         this.props.handleSnackbarOpen(message);
         this.props.handleClose();
         this.props.reload();
-      })
+      }
     })
     .catch((error) => {
       this.props.handleSnackbarOpen('Hubo un error, algún campo está malo');
@@ -162,19 +159,25 @@ export default class CompanyEditForm extends Component {
     if(acceptedFiles.length > 1){
       this.setState({
         logoError: 'Solo puedes subir una imagen',
-        preview: null
+        image: null
       });
     }
     else if (rejectedFiles.length > 0){
       this.setState({
         logoError: 'La imagen que seleccionaste no es válida',
-        preview: null
+        image: null
       });
     }
     else if (acceptedFiles.length === 1 && acceptedFiles[0].type.split('/')[0] !== 'image'){
         this.setState({
           logoError: 'La imagen que seleccionaste no es válida',
-          preview: null
+          image: null
+        });
+    }
+    else if (acceptedFiles.length === 1 && acceptedFiles[0].size > 1000000){
+        this.setState({
+          logoError: 'La imagen no puede tener más de 1MB',
+          image: null
         });
     }
     else {
@@ -183,7 +186,6 @@ export default class CompanyEditForm extends Component {
         image: acceptedFiles[0]
       });
     }
-
   }
 
   _changeName = (event) => {

@@ -11,10 +11,10 @@ var EmployeesStatus = { LOADING: 'loading', READY: 'ready' };
 export default class Employees extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       status          : EmployeesStatus.LOADING,
-      showCreateDialog: false, 
-      createDialog    : null, 
+      showCreateDialog: false,
+      createDialog    : null,
       user            : this.props.route.getUser()
     };
   }
@@ -38,7 +38,7 @@ export default class Employees extends Component {
 
         <div className="employees-container">
           { this.state.employees.map((x, i) =>
-            <Employee 
+            <Employee
               employee={ x }
               allSellpoints={ this.state.allSellpoints }
               updateEmployees={ this._load }
@@ -47,7 +47,7 @@ export default class Employees extends Component {
           )}
         </div>
 
-        { this.state.showCreateDialog && 
+        { this.state.showCreateDialog &&
           this.state.createDialog
         }
 
@@ -66,18 +66,19 @@ export default class Employees extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
     })
     .then((response) => response.json());
 
     promise.then(function(result) {
+      console.log(result);
       var url2 = settings.COMPANY_SELLPOINTS.replace(":company_id", company_id);
       var promise2 = fetch(url2, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        }, 
+        },
       })
       .then((response) => response.json());
 
@@ -94,9 +95,9 @@ export default class Employees extends Component {
   }
 
   _create = () => {
-    this.setState({ 
-      showCreateDialog: true, 
-      createDialog:     (<EmployeeEditForm 
+    this.setState({
+      showCreateDialog: true,
+      createDialog:     (<EmployeeEditForm
                           onDestroy={ this._hideDialog }
                           onSubmit={ this._createSubmit }
                           allSellpoints={ this.state.allSellpoints }
@@ -109,7 +110,13 @@ export default class Employees extends Component {
     this.setState({ showCreateDialog: false, createDialog: null });
   }
 
-  _createSubmit = (body) => {
+  _createSubmit = (data) => {
+    var body = {
+      name             : data.name,
+      last_name        : data.last_name,
+      newSellpoints    : data.newSellpoints,
+      deletedSellpoints: data.deletedSellpoints,
+    }
     var self = this;
     var company_id = this.state.user.company_id;
     var url = settings.COMPANY_EMPLOYEES.replace(":company_id", company_id);
@@ -119,14 +126,28 @@ export default class Employees extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
       body: JSON.stringify(body)
     })
     .then((response) => response.json());
-
     promise.then(function(result) {
-      self._hideDialog();
-      self._load();
+      if(data.pictureUrl === ''){
+        var formData = new FormData();
+        formData.append('picture', data.picture);
+        fetch(settings.EMPLOYEE_ADDPICTURE.replace(':company_id', company_id).replace(':employee_id', result.id), {
+          method: 'PUT',
+          body: formData
+        })
+        .then((response) => response.json())
+        .then((result) => {
+          self._hideDialog();
+          self._load();
+        })
+      }
+      else {
+        self._hideDialog();
+        self._load();
+      }
     }, function(err) {
       self._hideDialog();
       console.log(err);

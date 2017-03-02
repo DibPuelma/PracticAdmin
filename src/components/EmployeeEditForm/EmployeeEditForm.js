@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Dropzone from 'react-dropzone';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
@@ -60,31 +61,43 @@ export default class EmployeeEditForm extends Component {
     super(props);
 
     var employee = this.props.employee;
-    if (typeof this.props.employee === 'undefined') {
-      employee = {
-        name: '',
-        last_name: '',
-        picture: '',
-        SellPoints: [],
-        freeSellPoints: []
-      }
-    }
-
     var allSellpointsIds  = this._toIdArray(this.props.allSellpoints);
-    var sellpointsIds     = this._toIdArray(employee.SellPoints);
-    var freeSellpointsIds = this._freeSellpoints(allSellpointsIds, sellpointsIds);
+    var freeSellpointsIds = this._freeSellpoints(allSellpointsIds, []);
 
-    this.state = {
+
+    if (typeof this.props.employee === 'undefined') {
+      this.state = {
         status        : EmployeeEditFormStatus.READY,
         open          : true,
         employee      : employee,
-        name          : employee.name,
-        last_name     : employee.last_name,
-        picture       : employee.picture,
-        sellpoints    : sellpointsIds,
+        name: '',
+        last_name: '',
+        pictureError: 'Debes subir una imagen',
+        pictureUrl: '',
+        picture: null,
+        SellPoints: [],
+        sellpoints    : [],
         freeSellPoints: freeSellpointsIds,
         newValue      : freeSellpointsIds[0]
-      };
+      }
+    }
+    else {
+      var sellpointsIds     = this._toIdArray(employee.SellPoints);
+
+      this.state = {
+          status        : EmployeeEditFormStatus.READY,
+          open          : true,
+          employee      : employee,
+          name          : employee.name,
+          last_name     : employee.last_name,
+          pictureError  : '',
+          pictureUrl    : employee.picture,
+          picture       : null,
+          sellpoints    : sellpointsIds,
+          freeSellPoints: freeSellpointsIds,
+          newValue      : freeSellpointsIds[0]
+        };
+    }
   }
 
   render() {
@@ -105,23 +118,21 @@ export default class EmployeeEditForm extends Component {
               floatingLabelText="Nombre:"
               fullWidth={ true }
               multiLine={ false }
-              defaultValue={ this.state.employee.name }
+              defaultValue={ this.state.name }
               onChange={ (event) => this.setState({ name: event.target.value }) }
             />
           <TextField
               floatingLabelText="Apellido:"
               fullWidth={ true }
               multiLine={ false }
-              defaultValue={ this.state.employee.last_name }
+              defaultValue={ this.state.last_name }
               onChange={ (event) => this.setState({ last_name: event.target.value }) }
             />
-          <TextField
-              floatingLabelText="Foto:"
-              fullWidth={ true }
-              multiLine={ false }
-              defaultValue={ this.state.employee.picture }
-              onChange={ (event) => this.setState({ picture: event.target.value }) }
-            />
+            {this._getPictureHeader()}
+            {this._getPreview()}
+            <Dropzone onDrop={this._onDrop} style={{width: '100%', height: '60px', marginTop: '15px', marginBottom: '15px', borderStyle: 'dotted', borderColor: '#E3E3E3'}}>
+            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Arrastra el archivo o has click para explorar (Máx 1MB)</div>
+            </Dropzone>
           <Divider />
 
           { /* Employee's sellpoints edit */}
@@ -172,6 +183,78 @@ export default class EmployeeEditForm extends Component {
       </Dialog>
     </div>
     );
+  }
+
+  _getPictureHeader = () => {
+    if(this.state.pictureError === ''){
+      return (
+        <div style={{color: '#b3b3b3', marginBottom: '5px', marginTop: '40px', borderBottomStyle: 'solid', borderBottomWidth: '1px', borderBottomColor: '#E3E3E3'}}>
+        Foto:
+        </div>
+      );
+    }
+    return (
+      [<div key='logoHeader' style={{color: '#b3b3b3', marginBottom: '5px', marginTop: '40px', borderBottomStyle: 'solid', borderBottomWidth: '1px', borderBottomColor: 'red'}}>
+      Foto:
+      </div>,
+      <div key='pictureError' style={{color: 'red', margin: '0px', fontSize: '14px', padding: '0px'}}>
+      {this.state.pictureError}
+      </div>]
+    );
+  }
+
+  _getPreview = () => {
+    if(this.state.picture !== null){
+      return (
+        <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}} >
+        <div> {this.state.picture.name} </div>
+        <img src={this.state.picture.preview} style={{height: '150px', widht: '150px'}}/>
+        </div>
+      );
+    }
+    else if (this.state.pictureUrl !== ''){
+      console.log(this.state.pictureUrl);
+      return (
+        <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}} >
+        <img src={this.state.pictureUrl} style={{height: '150px', widht: '150px'}}/>
+        </div>
+      );
+    }
+  }
+
+  _onDrop = (acceptedFiles, rejectedFiles) => {
+    console.log('Accepted files: ', acceptedFiles);
+    if(acceptedFiles.length > 1){
+      this.setState({
+        pictureError: 'Solo puedes subir una imagen',
+        picture: null
+      });
+    }
+    else if (rejectedFiles.length > 0){
+      this.setState({
+        pictureError: 'La imagen que seleccionaste no es válida',
+        picture: null
+      });
+    }
+    else if (acceptedFiles.length === 1 && acceptedFiles[0].type.split('/')[0] !== 'image'){
+        this.setState({
+          pictureError: 'La imagen que seleccionaste no es válida',
+          picture: null
+        });
+    }
+    else if (acceptedFiles.length === 1 && acceptedFiles[0].size > 1000000){
+        this.setState({
+          logoError: 'La imagen no puede tener más de 1MB',
+          image: null
+        });
+    }
+    else {
+      this.setState({
+        pictureError: '',
+        picture: acceptedFiles[0],
+        pictureUrl: ''
+      });
+    }
   }
 
   _toIdArray = (array) => {
@@ -246,7 +329,7 @@ export default class EmployeeEditForm extends Component {
     this.setState({ status: EmployeeEditFormStatus.SAVING });
     var allSellpoints      = this.props.allSellpoints;
     var allSellpointsIds   = this._toIdArray(allSellpoints);
-    var originalSellpoints = this._toIdArray(this.state.employee.SellPoints);
+    var originalSellpoints = this._toIdArray(this.state.SellPoints);
     var selectedSellpoints = this.state.sellpoints;
 
     var newSellpoints     = [];
@@ -266,15 +349,16 @@ export default class EmployeeEditForm extends Component {
     // console.log(newSellpoints);
     // console.log(deletedSellpoints);
 
-    var body = {
+    var data = {
       name             : this.state.name,
       last_name        : this.state.last_name,
       picture          : this.state.picture,
       newSellpoints    : newSellpoints,
-      deletedSellpoints: deletedSellpoints
+      deletedSellpoints: deletedSellpoints,
+      pictureUrl       : this.state.pictureUrl
     };
 
-    this.props.onSubmit(body);
+    this.props.onSubmit(data);
   }
 
 }

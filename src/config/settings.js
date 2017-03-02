@@ -65,6 +65,7 @@ exports.QUESTION_TEXT              = API_HOST + '/company/:company_id/question/:
 exports.QUESTION_OPTIONS           = API_HOST + '/company/:company_id/question/:question_id/options_answers/:start_date/:end_date';
 
 exports.EMPLOYEES                      = API_HOST + '/company/:company_id/employee';
+exports.EMPLOYEE_ADDPICTURE            = API_HOST + '/company/:company_id/employee/:employee_id/add_picture';
 exports.EMPLOYEE_AVG                   = API_HOST + '/company/:company_id/employee/:employee_id/average_stars/:start_date/:end_date';
 exports.EMPLOYEE_AVG_BY_GENDER         = API_HOST + '/company/:company_id/employee/:employee_id/average_stars_by_gender/:start_date/:end_date';
 exports.EMPLOYEE_TOTAL                 = API_HOST + '/company/:company_id/employee/:employee_id/total_answers/:start_date/:end_date';
