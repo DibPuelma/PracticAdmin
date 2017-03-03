@@ -16,6 +16,7 @@ import PollsAnalysis from './routes/PollsAnalysis/PollsAnalysis.js';
 import QuestionsAnalysis from './routes/QuestionsAnalysis/QuestionsAnalysis.js';
 import EmployeesAnalysis from './routes/EmployeesAnalysis/EmployeesAnalysis.js';
 
+import SellPoints from './routes/SellPoints/SellPoints';
 import Polls from './routes/Polls/Polls';
 import Questions from './routes/Questions/Questions';
 import OptionsContainers from './routes/OptionsContainers/OptionsContainers';
@@ -63,6 +64,7 @@ class Application extends Component {
           { /* <Route path="analisis_compania" component={CompanyAnalysis} /> */ }
 
           { /* Admin */ }
+          <Route path="locales" component={SellPoints} getUser={ this._getUser }/>
           <Route path="encuestas" component={Polls} getUser={ this._getUser }/>
           <Route path="preguntas" component={Questions} getUser={ this._getUser } />
           <Route path="opciones" component={OptionsContainers} getUser={ this._getUser } />

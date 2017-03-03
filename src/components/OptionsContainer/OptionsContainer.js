@@ -50,7 +50,7 @@ export default class OptionsContainer extends Component {
             <div className="title">{ this.props.optionsContainer.name }</div>
             <div style={styles.wrapper}>
               { this.props.optionsContainer.PossibleOptions.map((x, i) =>
-                 <Chip style={styles.chip} className="chip">{ x.value }</Chip>
+                <Chip style={styles.chip} className="chip" key={ x.id } >{ x.value }</Chip>
               )}
             </div>
 
@@ -60,7 +60,9 @@ export default class OptionsContainer extends Component {
               onClick={ this._edit }
               />
             <FlatButton className="option" label="Eliminar" 
-              icon={ <ActionDelete {...iconProps}/> } />
+              icon={ <ActionDelete {...iconProps}/> }
+              onClick={ () => this.props.doDelete(this.props.optionsContainer.id) }
+              />
             </div>
           }
           

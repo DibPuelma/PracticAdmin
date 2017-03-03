@@ -64,6 +64,39 @@ body {
 }
 
 
+/* Sellpoints */
+.app .sellpoints-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.app .sellpoint {
+  margin: 8px;
+}
+
+.app .sellpoint .title {
+  font-size: 18px;
+  padding: 20px 20px 20px;
+}
+
+.app .sellpoint .option {
+  min-width: 30px !important;
+  width: 33.33% !important;
+}
+
+.app .sellpoint .option span {
+  font-size: 11px !important;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+
+.selectContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* Polls */
 .app .polls-container {
@@ -71,25 +104,26 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
   position: relative;
+  margin: 12px -8px 0;
 }
 
 @media (max-width: 800px) { /* 320 */
-  .app .poll-container {
+  .app .poll-container, .app .sellpoint-container {
     width: 100%;
   }
 }
 @media (min-width: 801px) and (max-width: 1200px) {
-  .app .poll-container {
+  .app .poll-container, .app .sellpoint-container {
     width: 50%;
   }
 }
 @media (min-width: 1201px) and (max-width: 1600px) {
-  .app .poll-container {
+  .app .poll-container, .app .sellpoint-container {
     width: 33%;
   }
 }
 @media (min-width: 1600px) {
-  .app .poll-container {
+  .app .poll-container, .app .sellpoint-container {
     width: 400px;
   }
 }
@@ -127,8 +161,28 @@ body {
 
 /* Edit question*/
 
-.dialog .question {
+.question {
   margin-bottom: 20px;
+  padding: 0 10px 10px;
+  margin-top: 20px;
+  box-shadow: 0 0 3px #CCC;
+  position: relative;
+}
+
+.question .options {
+  text-align: right;
+  position: absolute;
+  right: 0px;
+  z-index: 10;
+  top: 0px;
+}
+
+.question .options button {
+  min-width: 40px !important;
+}
+
+.question .answer-example {
+  font-size: 12px;
 }
 
 .dialog .chip span {
@@ -141,6 +195,7 @@ body {
 }
 
 .app .question-container {
+  margin-top: 20px;
   margin-bottom: 16px;
 }
 
@@ -160,9 +215,26 @@ body {
   padding-right: 2px !important;
 }
 
+.app .questionShow .title {
+  font-size: 18px;
+  padding: 10px 12px 4px;
+}
+
+.app .questionShow .option {
+  min-width: 30px !important;
+  padding: 0 10px !important;
+}
+
+.app .questionShow .option span {
+  font-size: 11px !important;
+  padding-left: 2px !important;
+  padding-right: 2px !important;
+}
+
 /* OptionsContainer */
 .app .options-containers-container {
   max-width: 800px;
+  margin-top: 20px;
 }
 
 .app .options-container-container {
@@ -185,12 +257,21 @@ body {
   padding-right: 2px !important;
 }
 
+.app .options-container-container .optionsContainerEdit {
+  padding: 0 20px;
+}
+
+.secondButton {
+  margin-left: 20px !important;
+}
+
 /* Employees */
 .app .employees-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   position: relative;
+  margin: 12px -8px 0;
 }
 
 @media (max-width: 800px) { /* 320 */
@@ -279,5 +360,47 @@ body {
 .dialog .add-button {
   min-width: 140px !important;
   height: 48px;
+}
+
+
+.answer-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.answer-number {
+  margin: 20px 0;
+}
+
+.add-wrapper .option {
+  box-shadow: none !important;
+}
+
+.add-wrapper .option button {
+  background-color: #EEE !important;
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+
+.add-wrapper .option button span {
+  color: #999 !important;
+}
+
+.add-wrapper .option.selected button {
+  background-color: #00bcd4 !important;
+}
+
+.add-wrapper .option.selected button span {
+  color: #FFF !important;
+}
+
+/* Error */
+.error {
+  color: #D00;
+  font-size: 15px;
+  text-align: center;
+  padding: ;
+  font-variant: all-small-caps;
 }
 

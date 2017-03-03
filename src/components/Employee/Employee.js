@@ -54,7 +54,13 @@ export default class Employee extends Component {
           <div className="sellpoints-title">Puntos de venta:</div>
           <div className="sellpoints-wrapper" style={styles.wrapper}>
             { this.props.employee.SellPoints.map((x, i) =>
-               <Chip style={styles.chip} className="chip">{ x.location }</Chip>
+               <Chip 
+                style={styles.chip}
+                className="chip"
+                key={ x.id }
+                >
+                  { x.location }
+                </Chip>
             )}
           </div>
 
@@ -64,7 +70,9 @@ export default class Employee extends Component {
             onClick={ this._edit }
             />
           <FlatButton className="option" label="Eliminar" 
-            icon={ <ActionDelete {...iconProps}/> } />
+            icon={ <ActionDelete {...iconProps}/> } 
+            onClick={ () => this.props.doDelete(this.state.employee.id) }
+            />
         </Paper>
 
         { this.state.showEditDialog && 
@@ -111,9 +119,11 @@ export default class Employee extends Component {
 
     promise.then(function(result) {
       self._hideDialog();
+      self.props.display("Empleado modificado con éxito.")
       self.props.updateEmployees();
     }, function(err) {
       self._hideDialog();
+      self.props.display("Error interno. Consultar al administrador.")
       console.log(err);
       // TODO: show error on dialog
     });

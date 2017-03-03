@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Dialog from 'material-ui/Dialog';
-import DropDownMenu from 'material-ui/DropDownMenu';
+import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
@@ -10,6 +10,8 @@ import QuestionEdit from '../../components/QuestionEdit/QuestionEdit.js';
 
 const customContentStyle = {
   maxWidth: 700,
+  paddingTop: 15, 
+  paddingBottom: 15
 };
 
 const styles = {
@@ -65,7 +67,7 @@ export default class QuestionDialog extends Component {
 
   render() {
     return (
-      <div className="questionDialog">
+      <div className="dialog">
         <Dialog
           title={ 'Crear Pregunta' }
           actions={ [] }
@@ -74,17 +76,20 @@ export default class QuestionDialog extends Component {
           contentStyle={ customContentStyle }
           autoScrollBodyContent={ true }
         >
-          <DropDownMenu
-            value={ this.state.question.type }
-            onChange={ this.typeChange }
-            style={ styles.customWidth }
-            autoWidth={ true }
-            >
-              <MenuItem value={ 'number' } primaryText={ 'Número' } />
-              <MenuItem value={ 'boolean' } primaryText={ 'Sí/No' } />
-              <MenuItem value={ 'text' } primaryText={ 'Texto' } />
-              <MenuItem value={ 'options' } primaryText={ 'Opciones' } />
-          </DropDownMenu>
+          <div className={ 'selectContainer' } >
+            <SelectField
+              floatingLabelText="Tipo de pregunta"
+              value={ this.state.question.type }
+              onChange={ this.typeChange }
+              style={ styles.customWidth }
+              autoWidth={ true }
+              >
+                <MenuItem value={ 'number' } primaryText={ 'Número' } />
+                <MenuItem value={ 'boolean' } primaryText={ 'Sí/No' } />
+                <MenuItem value={ 'text' } primaryText={ 'Texto' } />
+                <MenuItem value={ 'options' } primaryText={ 'Opciones' } />
+            </SelectField>
+          </div>
 
           { this.state.showQuestion &&
             this.state.questionEdit
@@ -115,8 +120,6 @@ export default class QuestionDialog extends Component {
     var question = this.state.question;
     question.type = value;
 
-    console.log(value);
-
     this.setState({ question: question });
     this.updateQuestionEdit();
   }
@@ -129,25 +132,45 @@ export default class QuestionDialog extends Component {
           onChangeText={ this._onChangeText } 
           onChangeOptCont={ this._onChangeOptCont } 
           optionsContainers={ this.props.optionsContainers }
+          textError={ this.state.textError }
           /> 
           )});
   }
 
   _onChangeText = (question_id, text) => {
-    console.log(text);
     var question = this.state.question;
     question.text = text;
     this.setState({ question: question });
   }
 
   _onChangeOptCont = (question_id, optionsContainerId) => {
-    console.log(optionsContainerId);
     var question = this.state.question;
     question.options_container_id = optionsContainerId;
     this.setState({ question: question });
   }
 
+  _validate = () => {
+    var result = true;
+    
+    if (this.state.question.text.length < 1 || this.state.question.text.length > 100) {
+      
+      this.setState({ showQuestion: false });
+      
+      this.setState({ textError: 'Este campo es necesario. Entre 1 y 100 caracteres.' });
+
+      this.updateQuestionEdit();
+      
+      result = false;
+    } else {
+      this.setState({ textError: null });
+    }
+
+    return result;
+  }
+
   _save = () => {
+    if (!this._validate()) return;
+
     this.setState({ status: QuestionDialogStatus.SAVING });
     var body = { text: this.state.question.text, type: this.state.question.type };
 

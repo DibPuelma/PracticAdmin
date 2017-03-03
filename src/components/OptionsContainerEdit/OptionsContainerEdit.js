@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+
 import TextField from 'material-ui/TextField';
 import Chip from 'material-ui/Chip';
 import FlatButton from 'material-ui/FlatButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import AutoComplete from 'material-ui/AutoComplete';
+import Checkbox from 'material-ui/Checkbox';
 
 const styles = {
   customWidth: {
@@ -44,19 +47,23 @@ export default class OptionsContainerEdit extends Component {
     if (optionsContainer == null) {
       optionsContainer = {
         name: '',
-        PossibleOptions: []
+        PossibleOptions: [],
+        allow_other: false
       }
     }
 
     super(props);
-    this.state = { status: OptionsContainerEditStatus.WAITING,
-                   optionsContainer: optionsContainer,
-                   name: optionsContainer.name,
-                   possibleOptions: optionsContainer.PossibleOptions.slice(0), // Create a copy
-                   allOptions: props.allOptions,
-                   newValue: '',
-                   company_id: props.allOptions[0].company_id
-                 };
+    this.state = { 
+      status          : OptionsContainerEditStatus.WAITING,
+      optionsContainer: optionsContainer,
+      name            : optionsContainer.name,
+      allow_other     : optionsContainer.allow_other,
+      possibleOptions : optionsContainer.PossibleOptions.slice(0), // Create a copy
+      allOptions      : props.allOptions,
+      newValue        : '',
+      company_id      : props.allOptions[0].company_id,
+      dataSource      : this._getTextArray(props.allOptions)
+    };
   }
 
   render() {
@@ -68,18 +75,27 @@ export default class OptionsContainerEdit extends Component {
           multiLine={ true }
           defaultValue={ this.state.optionsContainer.name }
           onChange={ (event) => this.setState({ name: event.target.value}) }
+          errorText={ this.state.nameError }
           />
 
         <div>Opciones</div>
         <div className="add-wrapper">
-          <TextField
+          <AutoComplete
             className="add-input"
+            hintText="Presiona enter para ingresar una opción"
             floatingLabelText="Añadir opción:"
             fullWidth={ true }
-            multiLine={ true }
-            defaultValue={ '' }
+            multiLine={ false }
+            
             value={ this.state.newValue }
-            onChange={ (event) => this.setState({ newValue: event.target.value}) }
+
+            onUpdateInput={ (value) => this.setState({ newValue: value }) }
+            onNewRequest={ (chosenRequest, index) => this._addValue(chosenRequest) }
+            onKeyPress={ this._handleKeyPress }
+            
+            filter={AutoComplete.caseInsensitiveFilter}
+            dataSource={ this.state.dataSource }
+
             />
 
           <FlatButton className="add-button" label="Añadir"
@@ -90,15 +106,29 @@ export default class OptionsContainerEdit extends Component {
 
         <div style={styles.wrapper}>
           { this.state.possibleOptions.map((x, i) =>
-             <Chip style={styles.chip} className="chip"
-              onRequestDelete={ () => this._deleteOption(x) }>{ x.value }</Chip>
+             <Chip 
+              style={ styles.chip } 
+              className={ 'chip' }
+              onRequestDelete={ () => this._deleteOption(x) }
+              key={ x.value }
+              >
+              { x.value }
+              </Chip>
           )}
+        </div>
+
+        <div style={{ marginTop: 20, marginBottom: 10 }}>
+          <Checkbox
+            checked={ this.state.allow_other }
+            label={ 'Permitir campo de texto "Otros"' }
+            onCheck={ this._changeAllowOther }
+          />
         </div>
 
         { this.state.status === OptionsContainerEditStatus.WAITING  &&
           <div style={ styles.loginButtonsContainer }>
             <RaisedButton onClick={ this._save } primary={ true } style={ styles.loginSubmit } label="Guardar" />
-            <RaisedButton onClick={ this.props.onCancel } label="Cancelar" />
+            <RaisedButton className={ 'secondButton' }onClick={ this.props.onCancel } label="Cancelar" />
           </div>
         }
 
@@ -112,8 +142,23 @@ export default class OptionsContainerEdit extends Component {
     );
   }
 
-  _changeText = (event) => {
-    this.props.onChangeText(this.props.question.id, event.target.value);
+  _handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      this._addOption();
+    }
+  }
+
+  _getTextArray = (allOptions) => {
+    if (!allOptions) return;
+    var array = [];
+    allOptions.forEach((x) => {
+      array.push(x.value)
+    })
+    return array;
+  }
+
+  _changeAllowOther = (event, isInputChecked) => {
+    this.setState({ allow_other: isInputChecked });
   }
 
   _findOptionByValue = (value) => {
@@ -134,8 +179,16 @@ export default class OptionsContainerEdit extends Component {
     return false;
   }
 
+  _addValue = (value) => {
+    this.setState({ newValue: value });
+    this._addOption();
+  }
+
   _addOption = () => {
     var value = this.state.newValue;
+
+    if (value === null || value === undefined || value === '')
+      return;
 
     var option = this._findOptionByValue(value);
     if (option === null)
@@ -148,7 +201,9 @@ export default class OptionsContainerEdit extends Component {
       possibleOptions.push(newOption);
       this.setState({ possibleOptions: possibleOptions });
     }
+
     this.setState({ newValue: '' });
+    this.forceUpdate();
   }
 
   _deleteOption = (option) => {
@@ -161,7 +216,22 @@ export default class OptionsContainerEdit extends Component {
     this.setState({ possibleOptions: possibleOptions });
   }
 
+  _validate = () => {
+    var result = true;
+    
+    if (this.state.name.length < 1 || this.state.name.length > 30) {
+      this.setState({ nameError: 'Este campo es necesario. Entre 1 y 30 caracteres.' });
+      result = false;
+    } else {
+      this.setState({ nameError: null });
+    }
+
+    return result;
+  }
+
   _save = () => {
+    if (!this._validate()) return;
+
     this.setState({ status: OptionsContainerEditStatus.SAVING });
 
     var company_id = this.state.company_id;
@@ -206,6 +276,7 @@ export default class OptionsContainerEdit extends Component {
 
     var body = {
       name            : this.state.name,
+      allow_other     : this.state.allow_other,
       newOptions      : newOptions,
       existingOptions : existingOptions,
       deletedOptions  : deletedOptions

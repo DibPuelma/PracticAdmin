@@ -12,7 +12,7 @@ export default class OptionsContainerDialog extends Component {
     super(props);
 
     this.state = {
-      open: true,
+      open: true
     }
   }
 

@@ -29,8 +29,7 @@ const styles = {
     width: '100%'
   },
   loginButtonsContainer: {
-    paddingTop: 24,
-    paddingBottom: 8,
+    paddingBottom: 18,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -48,7 +47,7 @@ export default class Question extends Component {
   render() {
     return (
       <div className="question-container">
-        <Paper className="question" >
+        <Paper className="questionShow" >
           { this.state.status === QuestionStatus.WAITING &&
             <div>
               <div className="title">{ this.state.question.text }</div>
@@ -58,7 +57,9 @@ export default class Question extends Component {
                 onClick={ this._onEdit }
                 />
               <FlatButton className="option" label="Eliminar" 
-                icon={ <ActionDelete {...iconProps}/> } />
+                icon={ <ActionDelete {...iconProps}/> } 
+                onClick={ () => this.props.doDelete(this.state.question.id) }
+                />
             </div>
           }
 
@@ -69,6 +70,7 @@ export default class Question extends Component {
                 onChangeText={ this._onChangeText } 
                 onChangeOptCont={ this._onChangeOptCont } 
                 optionsContainers={ this.props.optionsContainers }
+                editingMode={ true }
               />
 
               { this.state.status === QuestionStatus.EDITING  &&
@@ -155,6 +157,9 @@ export default class Question extends Component {
 
       self.setState({ question: question });
       self.setState({ status: QuestionStatus.WAITING });
+
+      self.props.display("Pregunta modificada con éxito");
+      self.props.onSaved();
     }, function(err) {
       self.setState({ status: QuestionStatus.EDITING });      
       console.log(err);

@@ -6,7 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import TextField from 'material-ui/TextField';
 import Divider from 'material-ui/Divider';
 import Chip from 'material-ui/Chip';
-import DropDownMenu from 'material-ui/DropDownMenu';
+import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import FlatButton from 'material-ui/FlatButton';
@@ -82,8 +82,7 @@ export default class EmployeeEditForm extends Component {
         last_name     : employee.last_name,
         picture       : employee.picture,
         sellpoints    : sellpointsIds,
-        freeSellPoints: freeSellpointsIds,
-        newValue      : freeSellpointsIds[0]
+        freeSellPoints: freeSellpointsIds
       };
   }
 
@@ -107,6 +106,7 @@ export default class EmployeeEditForm extends Component {
               multiLine={ false }
               defaultValue={ this.state.employee.name }
               onChange={ (event) => this.setState({ name: event.target.value }) }
+              errorText={ this.state.nameError }
             />
           <TextField
               floatingLabelText="Apellido:"
@@ -114,6 +114,7 @@ export default class EmployeeEditForm extends Component {
               multiLine={ false }
               defaultValue={ this.state.employee.last_name }
               onChange={ (event) => this.setState({ last_name: event.target.value }) }
+              errorText={ this.state.lastNameError }
             />
           <TextField
               floatingLabelText="Foto:"
@@ -122,34 +123,27 @@ export default class EmployeeEditForm extends Component {
               defaultValue={ this.state.employee.picture }
               onChange={ (event) => this.setState({ picture: event.target.value }) }
             />
-          <Divider />
 
           { /* Employee's sellpoints edit */}
-          <div>Puntos de venta:</div>
+          <div style={{ marginTop: 20 }}>Puntos de venta:</div>
           <div className="add-wrapper">
-            <DropDownMenu
-              value={ this.state.newValue }
-              onChange={ (event, index, value) => this.setState({ newValue: value }) }
+            <SelectField
+              value={ null }
+              onChange={ this._onChange }
               style={ styles.customWidth }
               autoWidth={ true }
               >
+              <MenuItem value={ null } primaryText={ 'Añadir punto de venta' } key={ 0 } />
               { this.state.freeSellPoints.map((x, i) =>
-                <MenuItem value={ x } primaryText={ this._getSellPointsById(x).location } />
+                <MenuItem value={ x } primaryText={ this._getSellPointsById(x).location } key={ x } />
               )}
-            </DropDownMenu>
-
-            <FlatButton
-              className="add-button"
-              label="Añadir"
-              icon={ <ContentAdd {...iconProps}/> }
-              onClick={ this._addSellpoint }
-              />
+            </SelectField>
           </div>
 
           <p>Puntos de ventas actuales:</p>
           <div style={styles.wrapper}>
             { this.state.sellpoints.map((x, i) =>
-               <Chip style={styles.chip} className="chip"
+               <Chip style={styles.chip} className="chip" key={ x }
                 onRequestDelete={ () => this._deleteOption(x) }>{ this._getSellPointsById(x).location }</Chip>
             )}
           </div>
@@ -172,6 +166,12 @@ export default class EmployeeEditForm extends Component {
       </Dialog>
     </div>
     );
+  }
+
+  _onChange = (event, index, value) => {
+    if (value === null)
+      return;
+    this._addSellpoint(value);
   }
 
   _toIdArray = (array) => {
@@ -202,16 +202,11 @@ export default class EmployeeEditForm extends Component {
   _hide = () => {
     var self = this;
     this.setState({ open: false });
-    new Promise(function(resolve, reject) {
-      setTimeout(function() {
-        self.props.onDestroy();
-        resolve("Stuff worked!");
-      }, 250);
-    });
+    new Promise(() =>  { setTimeout(() => { self.props.onDestroy() }, 250) });
   }
 
-  _addSellpoint = () => {
-    var value = this.state.newValue;
+  _addSellpoint = (newValue) => {
+    var value = newValue;
     var sellpoints = this.state.sellpoints;
     var freeSellPoints = this.state.freeSellPoints;
 
@@ -242,7 +237,29 @@ export default class EmployeeEditForm extends Component {
     if (freeSellPoints.length === 1) this.setState({ newValue: freeSellPoints[0] });
   }
 
+  _validate = () => {
+    var result = true;
+    
+    if (this.state.name.length < 1 || this.state.name.length > 30) {
+      this.setState({ nameError: 'Este campo es necesario. Entre 1 y 30 caracteres.' });
+      result = false;
+    } else {
+      this.setState({ nameError: null });
+    }
+
+    if (this.state.last_name.length < 1 || this.state.last_name.length > 30) {
+      this.setState({ lastNameError: 'Este campo es necesario. Entre 1 y 30 caracteres.' });
+      result = false;
+    } else {
+      this.setState({ lastNameError: null });
+    }
+
+    return result;
+  }
+
   _save = () => {
+    if (!this._validate()) return;
+
     this.setState({ status: EmployeeEditFormStatus.SAVING });
     var allSellpoints      = this.props.allSellpoints;
     var allSellpointsIds   = this._toIdArray(allSellpoints);

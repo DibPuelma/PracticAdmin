@@ -5,7 +5,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 
-import { browserHistory, Link } from 'react-router'
+import { Link } from 'react-router'
 
 import logo from './logo.svg';
 import './App.css';
@@ -33,6 +33,7 @@ var titleGetter = {
   '/analisis_encuestas': 'Análisis por Encuesta',
   '/analisis_preguntas': 'Análisis por Pregunta',
   '/analisis_avanzado' : 'Análisis Personalizado',
+  '/locales'           : 'Puntos de Venta',
   '/encuestas'         : 'Encuestas',
   '/preguntas'         : 'Preguntas',
   '/opciones'          : 'Opciones',
@@ -92,6 +93,10 @@ export default class App extends Component {
             </Link>
 
             <h4>Administración</h4>
+            <Link to="/locales" className="menu-item-link" activeClassName="menu-item-link-active">
+              <MenuItem className="menu-item" style={ styles.menuItem }>Puntos de Venta</MenuItem>
+            </Link>
+
             <Link to="/encuestas" className="menu-item-link" activeClassName="menu-item-link-active">
               <MenuItem className="menu-item" style={ styles.menuItem }>Encuestas</MenuItem>
             </Link>

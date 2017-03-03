@@ -5,12 +5,12 @@ import Dialog from 'material-ui/Dialog';
 import CircularProgress from 'material-ui/CircularProgress';
 import settings from '../../config/settings';
 import TextField from 'material-ui/TextField';
-import Divider from 'material-ui/Divider';
 
 import QuestionEdit from '../../components/QuestionEdit/QuestionEdit.js';
 
 const customContentStyle = {
   maxWidth: 700,
+  padding: 0 
 };
 
 const styles = {
@@ -72,24 +72,21 @@ export default class PollEditForm extends Component {
 
           { this.state.status !== PollEditFormStatus.LOADING &&
             <div className="dialog">
-
+              <h5 style={{ marginBottom: 0 }}>Información</h5>
               <TextField
                 floatingLabelText="Nombre:"
                 fullWidth={ true }
-                multiLine={ true }
                 defaultValue={ this.props.poll.name }
                 onChange={ (event) => this.setState({ name: event.target.value }) }
               />
               <TextField
                 floatingLabelText="Descripción:"
                 fullWidth={ true }
-                multiLine={ true }
                 defaultValue={ this.props.poll.description }
                 onChange={ (event) => this.setState({ description: event.target.value }) }
-                rows={ 2 }
               />
-              <Divider />
-
+              
+              <h5 style={{ marginTop: 40, marginBottom: 0 }}>Preguntas</h5>
               <div>
                 { this.state.poll.Questions.map((x, i) =>
                   <QuestionEdit
@@ -204,9 +201,6 @@ export default class PollEditForm extends Component {
     var self     = this;
     var requests = [];
 
-    console.log(this.state.name);
-    console.log(this.state.description);
-
     var poll_id = this.state.poll.id;
     var company_id = 2;
     var url = settings.COMPANY_POLL.replace(":company_id", company_id);
@@ -237,9 +231,6 @@ export default class PollEditForm extends Component {
 
         var url = settings.COMPANY_QUESTION.replace(":company_id", company_id);
             url = url.replace(":question_id", question_id);
-
-        console.log(url);
-        console.log(x.optionsContainer);
 
         var body = { text: x.text, type: x.type };
 
