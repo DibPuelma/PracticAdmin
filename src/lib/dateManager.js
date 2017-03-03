@@ -8,10 +8,15 @@
 // var yearStart = getYearStart(today);
 
 var weekDays = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
-
+var spanishMonths = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
 var getDayOfWeek = function(date){
   var _date = new Date(date);
   return weekDays[_date.getDay()];
+}
+
+var getHumanSpanishString = function(date){
+  var _date = new Date(date);
+  return _date.getDate() + ' de ' + spanishMonths[(parseInt(_date.getMonth(), 10) + 1)] + ' de ' + _date.getFullYear()
 }
 
 var getString = function(date){
@@ -94,6 +99,7 @@ var getYearStart = function(date){
 // }
 
 module.exports = {
+  getHumanSpanishString: getHumanSpanishString,
   getDayOfWeek: getDayOfWeek,
   getString: getString,
   getYesterday: getYesterday,

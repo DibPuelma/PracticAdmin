@@ -81,6 +81,7 @@ export default class OptionsContainerEdit extends Component {
         <div>Opciones</div>
         <div className="add-wrapper">
           <AutoComplete
+            ref='autoComplete'
             className="add-input"
             hintText="Presiona enter para ingresar una opción"
             floatingLabelText="Añadir opción:"
@@ -90,7 +91,7 @@ export default class OptionsContainerEdit extends Component {
             value={ this.state.newValue }
 
             onUpdateInput={ (value) => this.setState({ newValue: value }) }
-            onNewRequest={ (chosenRequest, index) => this._addValue(chosenRequest) }
+            onNewRequest={ (chosenRequest, index) => this._addValue(chosenRequest) }       
             onKeyPress={ this._handleKeyPress }
             
             filter={AutoComplete.caseInsensitiveFilter}
@@ -202,7 +203,9 @@ export default class OptionsContainerEdit extends Component {
       this.setState({ possibleOptions: possibleOptions });
     }
 
+    this.refs.autoComplete.setState({ searchText: ''})
     this.setState({ newValue: '' });
+    console.log(this.state.newValue)
     this.forceUpdate();
   }
 

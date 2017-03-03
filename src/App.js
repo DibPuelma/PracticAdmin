@@ -27,17 +27,18 @@ var styles = {
 }
 
 var titleGetter = {
-  '/dashboard'         : 'Dashboard',
-  '/analisis_tiendas'  : 'Análisis por Local',
-  '/analisis_empleados': 'Análisis por Empleado',
-  '/analisis_encuestas': 'Análisis por Encuesta',
-  '/analisis_preguntas': 'Análisis por Pregunta',
-  '/analisis_avanzado' : 'Análisis Personalizado',
-  '/locales'           : 'Puntos de Venta',
-  '/encuestas'         : 'Encuestas',
-  '/preguntas'         : 'Preguntas',
-  '/opciones'          : 'Opciones',
-  '/empleados'         : 'Empleados'
+  '/dashboard'                     : 'Dashboard',
+  '/analisis_tiendas'              : 'Análisis por Local',
+  '/analisis_empleados'            : 'Análisis por Empleado',
+  '/analisis_encuestas'            : 'Análisis por Encuesta',
+  '/analisis_preguntas'            : 'Análisis por Pregunta',
+  '/analisis_avanzado'             : 'Análisis Personalizado',
+  '/encuestas'                     : 'Administración de encuestas',
+  '/preguntas'                     : 'Administración de preguntas',
+  '/opciones'                      : 'Administración de opciones para las preguntas',
+  '/empleados'                     : 'Administración de empleados',
+  '/administracion_companias'      : 'Administración de compañías',
+  '/administracion_administradores': 'Administración de usuarios administradores'
 }
 
 injectTapEventPlugin();
@@ -113,6 +114,8 @@ export default class App extends Component {
               <MenuItem className="menu-item" style={ styles.menuItem }>Empleados</MenuItem>
             </Link>
 
+            {this._getSuperAdminPanel()}
+
             <h4>Cuenta</h4>
             <Link to="/" className="menu-item-link">
               <MenuItem className="menu-item" style={ styles.menuItem } onClick={ this._exit }>Salir</MenuItem>
@@ -136,6 +139,15 @@ export default class App extends Component {
     );
   }
 
+  _getSuperAdminPanel = () => {
+    if(this.state.user.is_super_user){
+      return [<h4>Super Administración</h4>,
+          <Link to="/administracion_companias" className="menu-item-link" activeClassName="menu-item-link-active">
+            <MenuItem className="menu-item" style={ styles.menuItem }>Compañías</MenuItem>
+          </Link>]
+    }
+
+  }
   _exit = () => {
     this.props.route.logout();
     this.props.router.push('/');

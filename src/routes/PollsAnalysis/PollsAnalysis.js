@@ -83,7 +83,6 @@ export default class Panel extends Component {
         var ref = this.state.expanded;
         this.setState({doubleExpanded: true})
         this.setState({expanded: id}, () => {
-          console.log(this);
           this.refs[ref].handleToggle(null, false);
         })
       }

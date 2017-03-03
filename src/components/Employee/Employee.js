@@ -35,10 +35,10 @@ export default class Employee extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { 
-      showEditDialog: false, 
-      editDialog: null, 
-      employee: this.props.employee 
+    this.state = {
+      showEditDialog: false,
+      editDialog: null,
+      employee: this.props.employee
     };
   }
 
@@ -50,7 +50,7 @@ export default class Employee extends Component {
           <div className="thumb-wrapper">
             <div className="thumb" style={{ backgroundImage: "url(" + this.props.employee.picture + ")" }}></div>
           </div>
-          
+
           <div className="sellpoints-title">Puntos de venta:</div>
           <div className="sellpoints-wrapper" style={styles.wrapper}>
             { this.props.employee.SellPoints.map((x, i) =>
@@ -65,7 +65,7 @@ export default class Employee extends Component {
           </div>
 
           <Divider />
-          <FlatButton className="option" label="Editar" 
+          <FlatButton className="option" label="Editar"
             icon={ <ContentCreate {...iconProps}/> }
             onClick={ this._edit }
             />
@@ -75,7 +75,7 @@ export default class Employee extends Component {
             />
         </Paper>
 
-        { this.state.showEditDialog && 
+        { this.state.showEditDialog &&
           this.state.editDialog
         }
 
@@ -84,12 +84,12 @@ export default class Employee extends Component {
   }
 
   _edit = () => {
-    this.setState({ 
-      showEditDialog: true, 
-      editDialog:     (<EmployeeEditForm 
-                        employee={ this.props.employee } 
-                        onDestroy={ this._hideDialog } 
-                        onSubmit={ this._update } 
+    this.setState({
+      showEditDialog: true,
+      editDialog:     (<EmployeeEditForm
+                        employee={ this.props.employee }
+                        onDestroy={ this._hideDialog }
+                        onSubmit={ this._update }
                         allSellpoints={ this.props.allSellpoints }
                         user={ this.props.user }
                         />)
@@ -100,7 +100,13 @@ export default class Employee extends Component {
     this.setState({ showEditDialog: false, editDialog: null });
   }
 
-  _update = (body) => {
+  _update = (data) => {
+    var body = {
+      name             : data.name,
+      last_name        : data.last_name,
+      newSellpoints    : data.newSellpoints,
+      deletedSellpoints: data.deletedSellpoints,
+    }
     var self = this;
     var company_id = this.props.user.company_id;
     var employee_id = this.props.employee.id;
@@ -112,20 +118,37 @@ export default class Employee extends Component {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }, 
+      },
       body: JSON.stringify(body)
     })
     .then((response) => response.json());
 
     promise.then(function(result) {
-      self._hideDialog();
-      self.props.display("Empleado modificado con éxito.")
-      self.props.updateEmployees();
+
+      // self._hideDialog();
+      // self.props.updateEmployees();
+      if (data.pictureUrl === '') {
+        var formData = new FormData();
+        formData.append('picture', data.picture);
+        fetch(settings.EMPLOYEE_ADDPICTURE.replace(':company_id', company_id).replace(':employee_id', employee_id), {
+          method: 'PUT',
+          body: formData
+        })
+        .then((response) => response.json())
+        .then((result) => {
+          self._hideDialog();
+          self.props.display("Empleado modificado con éxito.")
+          self.props.updateEmployees();
+        })
+      } else {
+        self._hideDialog();
+        self.props.display("Empleado modificado con éxito.")
+        self.props.updateEmployees();
+      }
     }, function(err) {
       self._hideDialog();
       self.props.display("Error interno. Consultar al administrador.")
       console.log(err);
-      // TODO: show error on dialog
     });
   }
 }
